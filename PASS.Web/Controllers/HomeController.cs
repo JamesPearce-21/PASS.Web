@@ -23,6 +23,36 @@ namespace PASS.Web.Controllers
             return View();
         }
 
+        public IActionResult Bikeability()
+        {
+            return View();
+        }
+
+        public IActionResult Balanceability()
+        {
+            return View();
+        }
+
+        public IActionResult TheTeam()
+        {
+            return View();
+        }
+
+        public IActionResult Memberships()
+        {
+            return View();
+        }
+
+        public IActionResult HomeLearning()
+        {
+            return View();
+        }
+
+        public IActionResult MembersArea()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
