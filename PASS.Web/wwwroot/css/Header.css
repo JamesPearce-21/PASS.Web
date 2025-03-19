@@ -76,6 +76,7 @@ body {
 .nav-link {
     text-decoration: none;
     color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.9);
     font-size: 16px;
     font-weight: 600;
     text-transform: uppercase;
