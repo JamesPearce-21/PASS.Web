@@ -53,6 +53,47 @@ namespace PASS.Web.Controllers
             return View();
         }
 
+        public IActionResult TermsAndConditions()
+        {
+            return View();
+        }
+
+        public IActionResult PrivacyPolicy()
+        {
+            return View();
+        }
+
+        public IActionResult Legal()
+        {
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        public IActionResult FAQ()
+        {
+            return View();
+        }
+
+        public IActionResult Careers()
+        {
+            return View();
+        }
+
+        public IActionResult Testamonials()
+        {
+            return View();
+        }
+
+        [Route("schools-we-work-with")]
+        public IActionResult OtherSchools()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

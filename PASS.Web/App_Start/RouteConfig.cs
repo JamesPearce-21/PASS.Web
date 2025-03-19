@@ -10,8 +10,12 @@ namespace PASS.Web.App_Start
         {
             // Default MVC Route
             endpoints.MapControllerRoute(
-                name: "default",
+                name: "Home",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            endpoints.MapControllerRoute(
+                name: "Staff",
+                pattern: "{controller=StaffArea}/{action=StaffHome}/{id?}");
         }
     }
 }
