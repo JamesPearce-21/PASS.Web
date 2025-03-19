@@ -1,34 +1,59 @@
-﻿/* Footer base styles */
+﻿/* -------------------- */
+/* Footer Base & Layout */
+/* -------------------- */
+
 .site-footer {
+    position: relative;
     background: #f5f5f5;
-    padding: 60px 20px 20px;
-    font-size: 14px;
+    color: #333;
+    font-family: Arial, sans-serif;
 }
 
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+/* Wave at the top of the footer */
+.footer-wave {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    margin-bottom: -5px; /* So wave overlaps slightly */
+}
+
+    .footer-wave svg {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+/* Main footer container */
+.footer-container {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 40px 20px 20px; /* top, sides, bottom */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px; /* space between columns */
 }
 
-/* Brand & social icons section */
-.footer-brand {
-    flex: 1;
-    margin: 20px;
+/* Columns */
+.footer-column {
+    flex: 1 1 200px; /* at least 200px wide, grows if space allows */
+}
+
+/* Brand & Social */
+.footer-brand-col {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .footer-logo {
     height: 60px;
-    margin-bottom: 10px;
+    width: auto;
+    margin-bottom: 15px;
 }
 
 .footer-social a {
-    margin: 0 5px;
+    margin-right: 10px;
     display: inline-block;
 }
 
@@ -42,60 +67,42 @@
         transform: scale(1.1);
     }
 
-/* Navigation links section */
-.footer-nav {
-    flex: 1;
-    margin: 20px;
-    text-align: center;
+/* Links Columns */
+.footer-links-col h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #00509e; /* accent heading color */
 }
 
 .footer-links {
     list-style: none;
     padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
+    margin: 0;
 }
 
     .footer-links li {
-        margin: 5px 10px;
+        margin-bottom: 8px;
     }
 
     .footer-links a {
-        color: #fff;
+        color: #00509e;
         text-decoration: none;
-        position: relative;
-        text-transform: uppercase;
         transition: color 0.3s ease;
     }
 
-        .footer-links a::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -2px;
-            width: 100%;
-            height: 2px;
-            background-color: #FFD700;
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.3s ease-out;
-        }
-
         .footer-links a:hover {
-            color: #FFD700;
+            color: #003366;
         }
 
-            .footer-links a:hover::after {
-                transform: scaleX(1);
-                transform-origin: bottom left;
-            }
-
-/* Brands carousel section */
-.footer-brands {
-    flex: 1;
-    margin: 20px;
+/* ---------------- */
+/* Carousel Section */
+/* ---------------- */
+.footer-carousel {
+    width: 100%;
+    padding: 10px 0;
+    background: #fff;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -122,12 +129,14 @@
     }
 }
 
-/* Footer bottom copyright */
+/* ---------------- */
+/* Bottom Bar       */
+/* ---------------- */
 .footer-bottom {
-    border-top: 1px solid #fff;
-    margin-top: 20px;
-    padding-top: 10px;
     text-align: center;
     font-size: 12px;
-    opacity: 0.8;
+    padding: 10px;
+    color: #333;
+    background: #f5f5f5;
+    opacity: 0.9;
 }

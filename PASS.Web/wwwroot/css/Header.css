@@ -82,7 +82,7 @@ body {
     text-transform: uppercase;
     position: relative;
     padding: 5px;
-    transition: color 0.3s ease, transform 0.3s ease;
+    transition: color 0.3s ease, background 0.3s ease;
 }
 
     .nav-link::after {
