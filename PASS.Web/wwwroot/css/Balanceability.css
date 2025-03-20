@@ -1,79 +1,139 @@
-﻿/* Main container */
-.balanceability-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 60px 20px;
-    background: rgb(0, 51, 102);
-}
-
-/* Content Wrapper */
-.balanceability-content {
-    max-width: 1200px;
-    background: white;
-    padding: 100px;
-    border-radius: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+﻿/* ============================ */
+/* HERO SECTION */
+/* ============================ */
+.balanceability-hero {
+    width: 100%;
+    background: linear-gradient(to bottom, #00509E, #003366);
+    color: white;
+    padding: 80px 20px;
     text-align: center;
 }
 
-    /* Title */
-    .balanceability-content h1 {
-        font-size: 2.5rem;
-        color: #00509E;
-        margin-bottom: 20px;
-    }
-
-/* Flex Grid */
-.balanceability-grid {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 30px;
-    align-items: center;
+.hero-content{
+    padding-top: 100px;
 }
 
-/* Text Bubble */
+.hero-content h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.hero-content p {
+    font-size: 1.5rem;
+    opacity: 0.9;
+}
+
+/* ============================ */
+/* CONTENT SECTION */
+/* ============================ */
+.balanceability-content {
+    display: flex;
+    justify-content: center;
+    padding: 60px 20px;
+    background: #f8f9fa;
+}
+
+.balanceability-wrapper {
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+/* TEXT SECTION */
 .balanceability-text {
     flex: 1;
-    padding: 20px;
-    background: #f5f5f5;
-    border-radius: 15px;
     font-size: 1.2rem;
-    color: #00509E;
-    text-align: left;
-    font-weight: 600;
+    color: #003366;
 }
 
-/* Images */
+    .balanceability-text h2 {
+        font-size: 2rem;
+        color: #00509E;
+        margin-bottom: 15px;
+    }
+
+    .balanceability-text ul {
+        list-style: none;
+        padding: 0;
+    }
+
+        .balanceability-text ul li {
+            padding: 8px 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+
+            .balanceability-text ul li::before {
+                content: "✔"; /* Bullet Point */
+                color: #00509E;
+                font-weight: bold;
+                margin-right: 10px;
+            }
+
+/* IMAGE SECTION */
 .balanceability-images {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    align-items: center;
 }
 
-.balanceability-img {
-    width: 100%;
-    max-width: 450px;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
-}
-
-    .balanceability-img:hover {
-        transform: scale(1.05);
-    }
-
-/* Responsive */
-@media (max-width: 1024px) {
-    .balanceability-grid {
-        flex-direction: column;
-    }
-
-    .balanceability-text, .balanceability-images {
+    .balanceability-images img {
         width: 100%;
+        max-width: 450px;
+        border-radius: 15px;
+        transition: transform 0.3s ease;
+    }
+
+        .balanceability-images img:hover {
+            transform: scale(1.05);
+        }
+
+/* ============================ */
+/* TESTIMONIAL SECTION */
+/* ============================ */
+.testimonial-section {
+    background: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.testimonial-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+    .testimonial-container blockquote {
+        font-size: 1.5rem;
+        font-style: italic;
+        color: #003366;
+        margin-bottom: 10px;
+    }
+
+    .testimonial-container cite {
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #00509E;
+    }
+
+/* ============================ */
+/* RESPONSIVE DESIGN */
+/* ============================ */
+@media (max-width: 1024px) {
+    .balanceability-wrapper {
+        flex-direction: column;
         text-align: center;
+    }
+
+    .balanceability-images {
+        width: 100%;
+        align-items: center;
+    }
+
+    .balanceability-text ul {
+        text-align: left;
     }
 }
