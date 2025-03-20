@@ -33,6 +33,14 @@
                     calendarContainer.classList.add('show');
                 }
 
+                // Smooth Scroll to Calendar
+                setTimeout(() => {
+                    document.getElementById('calendar-container').scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+                }, 300); // Small delay to ensure calendar appears before scrolling
+
                 // Make sure React is available
                 if (typeof React === "undefined" || typeof ReactDOM === "undefined") {
                     console.error("React or ReactDOM is not loaded");
@@ -58,8 +66,7 @@
 <section class="hero">
     <div id="hero-content" class="hero-content">
         <h1>Physical Activity & Sports Specialists</h1>
-        <p>See our events calendar below:</p>
-        <button id="show-calendar-btn" class="btn">Events</button>
+        <p>See our events calendar below</p>
     </div>
 
     <!-- Hidden by default, React will mount here -->

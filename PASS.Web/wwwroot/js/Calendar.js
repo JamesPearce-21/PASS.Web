@@ -12,9 +12,9 @@
 
     // Example events (Replace with dynamic data later)
     const events = {
-        "2025-03-15": { title: "Sports Day", description: "Join us for a full day of sports events!", url: "/events/sports-day" },
-        "2025-03-20": { title: "Football Match", description: "Exciting match between top teams!", url: "/events/football-match" },
-        "2025-03-25": { title: "Community Fun Run", description: "Get involved in our fun run!", url: "/events/community-run" }
+        "2025-03-15": { title: "Sports Day", description: "Join us for a full day of sports events!", url: "/underconstruction" },
+        "2025-03-20": { title: "Football Match", description: "Exciting match between top teams!", url: "/underconstruction" },
+        "2025-03-25": { title: "Fun Run", description: "Get involved in our fun run!", url: "/underconstruction" }
     };
 
     function renderCalendar() {

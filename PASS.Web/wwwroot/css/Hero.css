@@ -1,4 +1,8 @@
-﻿.hero {
+﻿html {
+    scroll-behavior: smooth; /* Ensures all scrolling is smooth */
+}
+
+.hero {
     position: relative;
     width: 100%;
     height: 100vh;
@@ -13,6 +17,58 @@
     color: #fff;
 }
 
+.hero h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.7); /* Shadow effect */
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid #fff; /* Cursor effect */
+    width: 0;
+    animation: typewriter 3s steps(30, end) forwards, removeCursor 0s linear 3s forwards;
+}
+
+/* Hero Paragraph */
+.hero p {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-top: 10px;
+    opacity: 0;
+    animation: fadeInText 1.5s ease-in-out 3s forwards;
+}
+
+/* Typewriter Animation - Now Stops Exactly at the End */
+@keyframes typewriter {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+/* Instantly Remove Cursor After Typing */
+@keyframes removeCursor {
+    from {
+        border-right: 3px solid #fff;
+    }
+
+    to {
+        border-right: none;
+    }
+}
+
+/* Fade-in Effect for Paragraph */
+@keyframes fadeInText {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
 /* bottom gradient if needed */
 .hero-bottom-gradient {
     position: absolute;
