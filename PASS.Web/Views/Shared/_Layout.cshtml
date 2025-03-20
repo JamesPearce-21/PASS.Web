@@ -20,8 +20,23 @@
             <path d="M0,0V40c47.8,30,106.1,50,173,40,72.1-11,130.3-56.5,193-58,69.6-1.8,128,41,197,42,69.4,1,127-45,197-44,67.3,0.9,125.7,46.3,194,45,67.4-1.2,126.5-43.5,192-43,60.3,0,115.4,27.2,180,40V0Z" fill="#003366"></path>
         </svg>
     </div>
+    <section class="twitter-feed">
+        <a class="twitter-timeline"
+           href="https://twitter.com/ltd_pass"
+           data-width="600"
+           data-height="600"
+           data-theme="light">
+            Tweets by PASS
+        </a>
+    </section>
+    <script>
+        setInterval(function () {
+            document.querySelector(".twitter-feed iframe").src = document.querySelector(".twitter-feed iframe").src;
+        }, 30000); // Refresh every 30 seconds
+    </script>
     @await Html.PartialAsync("Footer")
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     @* <script src="~/js/carousel.js" asp-append-version="true"></script> *@
     @await RenderSectionAsync("Scripts", required: false)
 </body>

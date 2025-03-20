@@ -20,3 +20,19 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Twitter Feed Styling */
+.twitter-feed {
+    width: 100%;
+    max-width: 600px;
+    margin: 40px auto; /* Centers it below hero */
+    text-align: center;
+}
+
+    .twitter-feed iframe {
+        border-radius: 10px; /* Rounded corners for a modern look */
+        border: none;
+        width: 100%; /* Responsive */
+        max-width: 600px;
+        height: 600px; /* Adjust height as needed */
+    }
