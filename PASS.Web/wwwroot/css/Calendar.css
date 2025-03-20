@@ -1,0 +1,79 @@
+﻿/* Calendar Container */
+.calendar-container {
+    max-width: 800px;
+    margin: 40px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Calendar Header */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+    .calendar-header h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: #00509E;
+    }
+
+    .calendar-header button {
+        background: #00509E;
+        color: white;
+        border: none;
+        padding: 10px;
+        font-size: 1rem;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background 0.3s ease;
+    }
+
+        .calendar-header button:hover {
+            background: #003366;
+        }
+
+/* Calendar Grid */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+/* Calendar Days */
+.calendar-day {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    position: relative;
+}
+
+/* Event Styling */
+.event {
+    display: block;
+    margin-top: 5px;
+    padding: 5px;
+    background: #FFD700;
+    color: #333;
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+    .event:hover {
+        background: #ffcc00;
+    }
+
+/* Empty Days (For alignment) */
+.empty {
+    background: transparent;
+    visibility: hidden;
+}

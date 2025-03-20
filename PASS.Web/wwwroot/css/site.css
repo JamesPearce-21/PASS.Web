@@ -18,21 +18,29 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
-/* Twitter Feed Styling */
-.twitter-feed {
-    width: 100%;
-    max-width: 600px;
-    margin: 40px auto; /* Centers it below hero */
-    text-align: center;
+.twitter-feed-overlay {
+    position: absolute;
+    top: 80%; /* Centered vertically on the hero */
+    left: 90%; /* Centered horizontally */
+    transform: translate(-50%, -50%); /* Ensures perfect centering */
+    width: 300px;
+    height: 400px;
+    z-index: 5; /* Ensures it stays on top */
+    background: rgba(255, 255, 255, 0.9); /* Slight white transparency */
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow effect */
 }
 
-    .twitter-feed iframe {
-        border-radius: 10px; /* Rounded corners for a modern look */
-        border: none;
-        width: 100%; /* Responsive */
-        max-width: 600px;
-        height: 600px; /* Adjust height as needed */
+    /* Adjusting Twitter embed */
+    .twitter-feed-overlay .twitter-timeline {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 10px;
     }
