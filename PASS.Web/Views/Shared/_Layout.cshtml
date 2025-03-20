@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Calendar.css" asp-append-version="true" />
 
+    @RenderSection("Styles", required: false)
+
 </head>
 <body>
     @await Html.PartialAsync("Header")
@@ -27,16 +29,6 @@
             document.querySelector(".twitter-feed iframe").src = document.querySelector(".twitter-feed iframe").src;
         }, 30000); // Refresh every 30 seconds
     </script>
-    <section class="twitter-feed-overlay">
-        <a class="twitter-timeline"
-           data-width="400"
-           data-height="400"
-           data-theme="light"
-           href="https://twitter.com/ltd_pass">
-            Tweets by PASS
-        </a>
-    </section>
-    @await Html.PartialAsync("Calendar")
     @await Html.PartialAsync("Footer")
     <script src="~/js/calendar.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

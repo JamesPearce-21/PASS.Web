@@ -1,10 +1,29 @@
-﻿<section class="calendar-container">
-    <div class="calendar-header">
-        <button id="prevMonth">&lt;</button>
-        <h2 id="currentMonth">Loading...</h2>
-        <button id="nextMonth">&gt;</button>
+﻿<section class="calendar-wrapper">
+    <!-- Main Calendar Container -->
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <button id="prevMonth">&lt;</button>
+            <h2 id="currentMonth">Loading...</h2>
+            <button id="nextMonth">&gt;</button>
+        </div>
+        <div class="calendar-grid"></div>
     </div>
-    <div class="calendar-grid">
-        <!-- Days will be injected dynamically here -->
+
+    <!-- Event Details Section (Initially Hidden) -->
+    <div id="eventDetails" class="event-details hidden">
+        <h3 id="eventTitle">Event Title</h3>
+        <p id="eventDescription">Event description will appear here.</p>
+        <a id="eventLink" href="#" class="event-link">View Event</a>
+    </div>
+
+    <!-- Twitter Feed Overlay (Anchored Right) -->
+    <div class="twitter-feed-overlay">
+        <a class="twitter-timeline"
+           data-width="280"
+           data-height="400"
+           data-theme="light"
+           href="https://twitter.com/ltd_pass">
+            Tweets by ltd_pass
+        </a>
     </div>
 </section>

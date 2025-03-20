@@ -3,14 +3,18 @@
     const currentMonth = document.getElementById("currentMonth");
     const prevMonthBtn = document.getElementById("prevMonth");
     const nextMonthBtn = document.getElementById("nextMonth");
+    const eventDetails = document.getElementById("eventDetails");
+    const eventTitle = document.getElementById("eventTitle");
+    const eventDescription = document.getElementById("eventDescription");
+    const eventLink = document.getElementById("eventLink");
 
     let date = new Date();
 
     // Example events (Replace with dynamic data later)
     const events = {
-        "2025-03-15": { title: "Sports Day", url: "/events/sports-day" },
-        "2025-03-20": { title: "Football Match", url: "/events/football-match" },
-        "2025-03-25": { title: "Community Fun Run", url: "/events/community-run" }
+        "2025-03-15": { title: "Sports Day", description: "Join us for a full day of sports events!", url: "/events/sports-day" },
+        "2025-03-20": { title: "Football Match", description: "Exciting match between top teams!", url: "/events/football-match" },
+        "2025-03-25": { title: "Community Fun Run", description: "Get involved in our fun run!", url: "/events/community-run" }
     };
 
     function renderCalendar() {
@@ -39,11 +43,19 @@
             let eventDate = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 
             if (events[eventDate]) {
-                let eventLink = document.createElement("a");
-                eventLink.href = events[eventDate].url;
-                eventLink.textContent = events[eventDate].title;
-                eventLink.classList.add("event");
-                dayDiv.appendChild(eventLink);
+                let eventBtn = document.createElement("button");
+                eventBtn.textContent = events[eventDate].title;
+                eventBtn.classList.add("event");
+
+                // Click event to show event details
+                eventBtn.addEventListener("click", function () {
+                    eventTitle.textContent = events[eventDate].title;
+                    eventDescription.textContent = events[eventDate].description;
+                    eventLink.href = events[eventDate].url;
+                    eventDetails.classList.add("show");
+                });
+
+                dayDiv.appendChild(eventBtn);
             }
 
             calendarGrid.appendChild(dayDiv);
