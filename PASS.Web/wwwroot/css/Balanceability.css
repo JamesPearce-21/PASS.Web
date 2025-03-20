@@ -54,82 +54,109 @@
 .balanceability-content {
     display: flex;
     justify-content: center;
-    padding: 60px 20px;
-    background: #f8f9fa;
+    padding: 100px 20px;
+    background: linear-gradient(180deg, #5b95d1 0%, #003366 100%); /* Gradient like logo */
+    position: relative;
+    overflow: hidden;
 }
 
+/* Wrapper for text & images */
 .balanceability-wrapper {
     max-width: 1200px;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 40px;
     flex-direction: row-reverse;
+    z-index: 2;
 }
 
-/* TEXT SECTION */
+/* Fancy card for text */
 .balanceability-text {
     flex: 1;
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
     font-size: 1.2rem;
     color: #003366;
+    position: relative;
+    z-index: 2;
 }
 
+    /* Modern Title */
     .balanceability-text h2 {
         font-size: 2rem;
         color: #00509E;
         margin-bottom: 15px;
+        position: relative;
     }
 
+    /* List with Icons */
     .balanceability-text ul {
         list-style: none;
         padding: 0;
         margin: 0;
     }
 
-
         .balanceability-text ul li {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             font-size: 1.1rem;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
+            /* Fancy checkmarks */
             .balanceability-text ul li::before {
-                content: "✔"; /* Bullet Point */
+                content: "✔";
                 color: #00509E;
-                font-size: 1.3rem;
+                font-size: 1.5rem;
                 font-weight: bold;
-                margin-right: 10px;
-                min-width: 20px; /* Keeps bullet point aligned */
+                margin-right: 12px;
+                min-width: 25px;
             }
 
-.list-item-content {
-    display: flex;
-    flex-direction: column;
-}
-
-.list-item-title {
-    font-weight: bold;
-    color: #003366;
-}
-
-/* IMAGE SECTION */
+/* Image section */
 .balanceability-images {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 25px;
+    align-items: center;
 }
 
+    /* Make images pop */
     .balanceability-images img {
         width: 100%;
         max-width: 450px;
         border-radius: 15px;
-        transition: transform 0.3s ease;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
 
+        /* Hover Effect */
         .balanceability-images img:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) rotate(-2deg);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
         }
+
+/* Animation when scrolling */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.balanceability-text,
+.balanceability-images img {
+    opacity: 0;
+    animation: fadeInUp 1s ease forwards;
+}
 
 /* ============================ */
 /* TESTIMONIAL SECTION */
@@ -164,6 +191,11 @@
 @media (max-width: 1024px) {
     .balanceability-wrapper {
         flex-direction: column;
+        text-align: center;
+    }
+
+    .balanceability-text {
+        width: 100%;
         text-align: center;
     }
 
