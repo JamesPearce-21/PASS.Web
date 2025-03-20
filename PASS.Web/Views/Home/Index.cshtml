@@ -1,12 +1,5 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>React + ASP.NET Core</title>
-</head>
-<body>
-    <div id="react-root"></div>
-            <!-- Use Vite's dev server -->
-            <script type="module" src="http://localhost:5173/src/main.jsx"></script>
-</body>
-</html>
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+@await Html.PartialAsync("_Hero")
