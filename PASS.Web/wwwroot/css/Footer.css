@@ -1,108 +1,175 @@
-﻿/* -------------------- */
-/* Footer Base & Layout */
-/* -------------------- */
-
+﻿/* ========================= */
+/* Modern Compact Footer     */
+/* ========================= */
 .site-footer {
     position: relative;
     background: #f5f5f5;
     color: #333;
-    font-family: Arial, sans-serif;
-}
-
-/* Wave at the top of the footer */
-.footer-wave {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-    margin-bottom: -5px; /* So wave overlaps slightly */
-}
-
-    .footer-wave svg {
-        display: block;
-        width: 100%;
-        height: auto;
-    }
-
-/* Main footer container */
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px 20px; /* top, sides, bottom */
+    font-family: 'Inter', sans-serif;
+    padding: 20px 0;
+    border-top: 3px solid #00509E;
     display: flex;
-    flex-wrap: wrap;
-    gap: 40px; /* space between columns */
+    flex-direction: column;
+    align-items: center;
+    min-height: 80px; /* Keeps it compact */
 }
 
-/* Columns */
+/* Footer container with 3 columns */
+.footer-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Footer columns */
 .footer-column {
-    flex: 1 1 200px; /* at least 200px wide, grows if space allows */
+    flex: 1;
+    text-align: center;
 }
 
-/* Brand & Social */
-.footer-brand-col {
+/* ========================= */
+/* Footer Logo & Socials     */
+/* ========================= */
+.footer-brand {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
 .footer-logo {
-    height: 60px;
+    height: 80px;
     width: auto;
-    margin-bottom: 15px;
+    transition: transform 0.3s ease-in-out;
 }
 
-.footer-social a {
-    margin-right: 10px;
-    display: inline-block;
+    .footer-logo:hover {
+        transform: scale(1.05);
+    }
+
+/* Social Media Icons */
+.footer-social {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
 }
 
-.footer-social img {
-    height: 25px;
-    width: auto;
-    transition: transform 0.3s ease;
-}
+    .footer-social a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+        background: #00509E;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
 
-    .footer-social img:hover {
+    .footer-social img {
+        width: 18px;
+        height: 18px;
+        filter: invert(1);
+    }
+
+    .footer-social a:hover {
+        background: #003366;
         transform: scale(1.1);
     }
 
-/* Links Columns */
-.footer-links-col h4 {
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #00509e; /* accent heading color */
-}
-
+/* ========================= */
+/* Footer Links              */
+/* ========================= */
 .footer-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    text-align: center;
 }
 
-    .footer-links li {
-        margin-bottom: 8px;
+    .footer-links ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
     }
 
+    /* Footer links hover effect (Matches Header) */
     .footer-links a {
-        color: #00509e;
+        color: #00509E;
         text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        position: relative;
+        padding: 5px;
         transition: color 0.3s ease;
     }
+
+        .footer-links a::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: #00509E;
+            bottom: -3px;
+            left: 0;
+            transform: scaleX(0);
+            transition: transform 0.3s ease-out;
+        }
 
         .footer-links a:hover {
             color: #003366;
         }
 
-/* ---------------- */
-/* Carousel Section */
-/* ---------------- */
+            .footer-links a:hover::after {
+                transform: scaleX(1);
+            }
+
+/* ========================= */
+/* Staff Area & Copyright    */
+/* ========================= */
+.footer-staff {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/* Staff Area Button */
+.staff-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #00509E;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+    .staff-button:hover {
+        background: #003366;
+        transform: translateY(-2px);
+    }
+
+/* Copyright */
+.footer-copyright {
+    font-size: 12px;
+    color: #666;
+    opacity: 0.9;
+    margin-top: 5px;
+}
+
+/* ========================= */
+/* Full-width Carousel       */
+/* ========================= */
 .footer-carousel {
     width: 100%;
-    padding: 10px 0;
-    background: #fff;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+    margin-top: 10px;
+    background: #f5f5f5;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -110,15 +177,24 @@
 
 .brand-carousel {
     display: flex;
-    gap: 20px;
-    animation: brandCarousel 10s linear infinite;
+    gap: 15px;
+    animation: brandCarousel 15s linear infinite;
+    overflow: hidden;
 }
 
     .brand-carousel img {
         height: 40px;
         width: auto;
+        opacity: 0.8;
+        transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
+        .brand-carousel img:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+/* Continuous scrolling animation */
 @keyframes brandCarousel {
     0% {
         transform: translateX(0);
@@ -129,14 +205,26 @@
     }
 }
 
-/* ---------------- */
-/* Bottom Bar       */
-/* ---------------- */
-.footer-bottom {
-    text-align: center;
-    font-size: 12px;
-    padding: 10px;
-    color: #333;
-    background: #f5f5f5;
-    opacity: 0.9;
+/* ========================= */
+/* Mobile Responsive Fixes   */
+/* ========================= */
+@media (max-width: 1024px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .footer-staff {
+        align-items: center;
+    }
+
+    .footer-social {
+        justify-content: center;
+    }
+
+    .footer-links ul {
+        flex-direction: column;
+        gap: 10px;
+    }
 }
