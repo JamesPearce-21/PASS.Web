@@ -31,73 +31,85 @@ body {
 
 /* Navigation bar styles */
 .navbar {
-    position: relative;
-    z-index: 2;
+    position: fixed; /* Ensures it stays at the top */
+    top: 0;
+    left: 0;
     width: 100%;
-    background: transparent;
-    padding: 20px 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.9); /* Slight transparency */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px 0;
+    transition: background 0.3s ease-in-out, padding 0.3s ease-in-out;
 }
 
+/* Navbar container for alignment */
 .navbar-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 90%;
-    max-width: 1200px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .logo {
-    height: 75px;
+    height: 70px;
     width: auto;
+    transition: transform 0.3s ease-in-out;
 }
+
+    .logo:hover {
+        transform: scale(1.05);
+    }
 
 .navbar-nav {
     display: flex;
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .nav-item {
-    margin: 0 20px;
+    margin: 0 15px;
 }
 
 .nav-link {
     text-decoration: none;
-    color: #fff;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+    color: #003366;
     font-size: 16px;
     font-weight: 600;
     text-transform: uppercase;
+    padding: 8px 15px;
     position: relative;
-    padding: 5px;
     transition: color 0.3s ease, background 0.3s ease;
 }
 
-    .nav-link::after {
-        content: "";
-        position: absolute;
-        width: 100%;
-        transform: scaleX(0);
-        height: 2px;
-        bottom: -2px;
-        left: 0;
-        background-color: #00509E;
-        transform-origin: bottom right;
-        transition: transform 0.3s ease-out;
-    }
+.nav-link::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: #00509E;
+    bottom: -5px;
+    left: 0;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+}
 
-    .nav-link:hover {
-        color: #00509E;
-        transform: translateY(-2px);
-    }
+/* Hover effect */
+.nav-link:hover {
+    color: #00509E;
+}
 
-        .nav-link:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
+.nav-link:hover::after {
+    transform: scaleX(1);
+}
 
 
 .hero-bottom-gradient {
@@ -148,3 +160,20 @@ body {
     .btn:hover {
         background-color: #FFC107;
     }
+
+/* Responsive fixes */
+@media (max-width: 1024px) {
+    .navbar-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .logo {
+        height: 60px;
+    }
+}

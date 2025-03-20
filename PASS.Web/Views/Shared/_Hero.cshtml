@@ -1,9 +1,70 @@
-﻿<section class="hero">
-    <div class="hero-content">
+﻿@section Scripts {
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- Load Calendar Component -->
+    <script src="~/js/Calendar.js" asp-append-version="true"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("JavaScript Loaded"); // ✅ CONFIRM THIS LOGS
+
+            var showCalendarBtn = document.getElementById('show-calendar-btn');
+            if (!showCalendarBtn) {
+                console.error("Button not found!"); // ❌ If you see this, the button doesn't exist
+                return;
+            }
+
+            console.log("Button found, adding event listener"); // ✅ CONFIRM THIS LOGS
+
+            showCalendarBtn.addEventListener('click', function () {
+                console.log("Button clicked!"); // ✅ CONFIRM THIS LOGS
+
+                // Hide hero content
+                var heroContent = document.getElementById('hero-content');
+                if (heroContent) {
+                    heroContent.classList.add('hidden');
+                }
+
+                // Show calendar container
+                var calendarContainer = document.getElementById('calendar-container');
+                if (calendarContainer) {
+                    calendarContainer.classList.remove('hidden');
+                    calendarContainer.classList.add('show');
+                }
+
+                // Make sure React is available
+                if (typeof React === "undefined" || typeof ReactDOM === "undefined") {
+                    console.error("React or ReactDOM is not loaded");
+                    return;
+                }
+
+                // Make sure Calendar is defined
+                if (typeof Calendar === "undefined") {
+                    console.error("Calendar component is not loaded");
+                    return;
+                }
+
+                // Render React Calendar inside the container
+                ReactDOM.render(
+                    React.createElement(Calendar, null),
+                    document.getElementById('calendar-container')
+                );
+            });
+        });
+    </script>
+}
+
+<section class="hero">
+    <div id="hero-content" class="hero-content">
         <h1>Physical Activity & Sports Specialists</h1>
         <p>See our events below:</p>
-        <a href="#learn-more" class="btn">Events</a>
+        <button id="show-calendar-btn" class="btn">Events</button>
     </div>
-    <!-- If you have a bottom gradient or overlay, keep it here -->
+
+    <!-- Hidden by default, React will mount here -->
+    <div id="calendar-container" class="calendar-container hidden"></div>
+
+    <!-- Keep the bottom gradient if needed -->
     <div class="hero-bottom-gradient"></div>
 </section>
