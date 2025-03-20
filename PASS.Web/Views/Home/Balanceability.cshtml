@@ -1,26 +1,31 @@
 ﻿@{
     ViewData["Title"] = "Balanceability";
 }
-<h1>Balanceability</h1>
-<p>Balanceability is the UK's only afPE Approved Learn to Cycle programme for children predominantly in EYFS and KS1 but we cater for the needs of all children. 
-Balanceability supply equipment, resources and staff training.
-​
-Balanceability is a nationwide programme available to schools, local authorities and leisure sites.
 
-33% of parents say their children can't ride a bike (British Cycling / You Gov 2018), which means they miss out on the countless benefits of being able to cycle.
+@section Styles {
+    <link rel="stylesheet" href="~/css/Balanceability.css" asp-append-version="true" />
+}
 
-​
+@await Html.PartialAsync("Header")
 
-We want to embed cycling into the lives and psyches of all children. The unique Balanceability programme has been specially designed with child development experts and cycling professionals so that all children have the opportunity to learn to ride a bike.
+<section class="balanceability-container">
+    <div class="balanceability-content">
+        <h1>Balanceability</h1>
+        <div class="balanceability-grid">
+            <!-- Left: Text Bubble -->
+            <div class="balanceability-text">
+                <p>Balanceability is the UK's only afPE Approved Learn to Cycle programme for children predominantly in EYFS and KS1 but we cater for the needs of all children.</p>
+                <p>Balanceability supply equipment, resources, and staff training. The program is available to schools, local authorities, and leisure sites nationwide.</p>
+                <p>33% of parents say their children can't ride a bike (British Cycling / YouGov 2018), meaning they miss out on countless benefits of cycling.</p>
+                <p>The unique Balanceability programme is designed with child development experts and cycling professionals so that all children have the opportunity to learn to ride a bike.</p>
+                <p>The programme is designed to help children gain the confidence and skills required to ride a pedal bike independently, assisting their ability to participate in Bikeability at a later stage.</p>
+            </div>
 
-​
-
-​
-
-​
-
-Balanceability provides an afPE approved learn to cycle programme for children aged 2½ years upwards.
-
-The programme is designed to help children gain the confidence and skills required to ride a pedal bike independently, getting them off to the best start in cycling and assisting their ability to participate in Bikeability at a later stage.
-
-Schools are able to get set up with Balanceability by purchasing a Balanceability Pack which includes all the equipment, resources and training required to deliver the sessions as a sustainable programme. Balanceability can be run by teachers indoors or outdoors as part of the weekly regular PE activity and has been developed to fit into school lesson planning. </p>
+            <!-- Right: Image Placeholders -->
+            <div class="balanceability-images">
+                <img src="/Assets/Images/test-balance-image.jpg" alt="Balanceability Training" class="balanceability-img">
+                <img src="/Assets/Images/test-balance-image-2.jpg" alt="Children Learning to Ride" class="balanceability-img">
+            </div>
+        </div>
+    </div>
+</section>
