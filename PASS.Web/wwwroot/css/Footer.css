@@ -22,7 +22,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
 }
 
 /* Footer columns */
@@ -57,28 +56,38 @@
     margin-top: 5px;
 }
 
+    /* Remove link styling (no underline, no default colors) */
     .footer-social a {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 35px;
         height: 35px;
-        background: #00509E;
-        border-radius: 50%;
-        transition: all 0.3s ease;
+        text-decoration: none; /* Removes underline */
+        color: #00509E; /* Sets correct blue color */
+        transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1); /* Instant but smooth */
+        will-change: transform;
     }
 
+    /* Ensure the icons match the blue color */
+    .footer-social i {
+        color: #00509E; /* Ensures FontAwesome icons are blue */
+        font-size: 18px; /* Adjust icon size if needed */
+    }
+
+    /* Fix image-based icons (like PNGs/SVGs) */
     .footer-social img {
         width: 18px;
         height: 18px;
-        filter: invert(1);
     }
 
+    /* Hover zoom effect */
     .footer-social a:hover {
-        background: #003366;
         transform: scale(1.1);
     }
 
+
+/*
 /* ========================= */
 /* Footer Links              */
 /* ========================= */
@@ -156,54 +165,68 @@
 
 /* Copyright */
 .footer-copyright {
-    font-size: 12px;
+    font-size: 10px;
     color: #666;
-    opacity: 0.9;
+    opacity: 0.8;
     margin-top: 5px;
+    padding: 10px;
 }
 
 /* ========================= */
 /* Full-width Carousel       */
 /* ========================= */
-.footer-carousel {
-    width: 100%;
-    padding: 15px 0;
-    margin-top: 10px;
-    background: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.brand-carousel {
-    display: flex;
-    gap: 15px;
-    animation: brandCarousel 15s linear infinite;
-    overflow: hidden;
-}
-
-    .brand-carousel img {
-        height: 40px;
-        width: auto;
-        opacity: 0.8;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-
-        .brand-carousel img:hover {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-/* Continuous scrolling animation */
-@keyframes brandCarousel {
-    0% {
+@keyframes slide {
+    from {
         transform: translateX(0);
     }
 
-    100% {
-        transform: translateX(-50%);
+    to {
+        transform: translateX(-100%);
     }
 }
+
+.logos {
+    overflow: hidden;
+    padding: 60px 0;
+    background: #f5f5f5;
+    white-space: nowrap;
+    position: relative;
+    width: 100%;
+}
+
+    .logos:before,
+    .logos:after {
+        position: absolute;
+        top: 0;
+        width: 250px;
+        height: 100%;
+        content: "";
+        z-index: 2;
+    }
+
+    .logos:before {
+        left: 0;
+        background: linear-gradient(to left, rgba(255, 255, 255, 0), white);
+    }
+
+    .logos:after {
+        right: 0;
+        background: linear-gradient(to right, rgba(255, 255, 255, 0), white);
+    }
+
+    .logos:hover .logos-slide {
+        animation-play-state: paused;
+    }
+
+.logos-slide {
+    display: inline-block;
+    animation: 35s slide infinite linear;
+}
+
+    .logos-slide img {
+        height: 50px;
+        margin: 0 40px;
+    }
 
 /* ========================= */
 /* Mobile Responsive Fixes   */

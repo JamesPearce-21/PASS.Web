@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="obj\" />
+    <Folder Include="wwwroot\Assets\Icons\" />
     <Folder Include="wwwroot\React\" />
   </ItemGroup>
 
