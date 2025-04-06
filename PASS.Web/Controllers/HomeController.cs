@@ -88,6 +88,11 @@ namespace PASS.Web.Controllers
             return View();
         }
 
+        public IActionResult Events()
+        {
+            return View();
+        }
+
         [Route("schools-we-work-with")]
         public IActionResult OtherSchools()
         {

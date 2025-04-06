@@ -185,3 +185,36 @@ body {
         height: 60px;
     }
 }
+
+/* Top white banner for logo */
+.top-banner {
+    background-color: #ffffff;
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.menu-bar {
+    background-color: #003366; /* Dark blue */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+    /* Override nav link styles for white text */
+    .menu-bar .nav-link {
+        color: white;
+    }
+
+        .menu-bar .nav-link:hover {
+            color: #FFC107;
+        }
+
+/* Adjust logo */
+.logo {
+    height: 70px;
+    width: auto;
+}
+
