@@ -1,5 +1,32 @@
 ﻿@{
     ViewData["Title"] = "Home Learning";
 }
-<h1>Home Learning</h1>
-<p>Welcome to the Home Learning page.</p>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/HomeLearning.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/homelearning.js" asp-append-version="true"></script>
+}
+
+<section class="home-learning">
+    <div class="home-header">
+        <h1>Home Learning</h1>
+        <p>Select your child’s year group to access interactive learning videos.</p>
+    </div>
+
+    <div class="year-buttons" id="menu">
+        <button class="year-btn" data-group="eyfs">EYFS</button>
+        <button class="year-btn" data-group="y1-2">Years 1-2</button>
+        <button class="year-btn" data-group="y3-4">Years 3-4</button>
+        <button class="year-btn" data-group="y5-6">Years 5-6</button>
+    </div>
+
+    <div class="video-section hidden" id="videoSection">
+        <button id="backButton" class="back-button">← Back</button>
+        <div class="video-grid" id="videoGrid">
+            <!-- JS will load YouTube iframes here -->
+        </div>
+    </div>
+</section>

@@ -3,45 +3,33 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/Balanceability.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/Balanceability.css" asp-append-version="true" />
 }
 
-@* @await Html.PartialAsync("Header") *@
-
-<!-- Hero Section -->
-<section class="balanceability-hero">
-    <div class="hero-content">
-        <h1>Balanceability</h1>
-        <p>The UK's only <strong>afPE Approved</strong> Learn to Cycle programme.</p>
-    </div>
-</section>
-
-<!-- Content Section -->
-<section class="balanceability-content">
-    <div class="balanceability-wrapper">
-        <div class="balanceability-text">
-            <h2>Why Choose Balanceability?</h2>
-            <p>Balanceability is a <strong>national programme</strong> designed for <strong>EYFS and KS1</strong>, providing a structured approach for children to learn cycling at an early stage.</p>
-            <ul>
-                <li><strong>Certified Programme: </strong> Official afPE Approved Learn to Cycle course.</li>
-                <li><strong>Confidence & Safety: </strong> Helps kids develop key cycling skills safely.</li>
-                <li><strong>Schools & Communities: </strong> Available nationwide to schools & local authorities.</li>
-                <li><strong>Industry Experts: </strong> Developed with cycling professionals & child development specialists.</li>
+<section class="balanceability-section">
+    <div class="balanceability-grid">
+        <div class="text-content">
+            <h1 class="fade-in">Balanceability</h1>
+            <p class="lead fade-in delay-1">
+                The UK's only <strong>afPE Approved</strong> Learn to Cycle programme for children in EYFS & KS1 — with resources, equipment, and staff training.
+            </p>
+            <p class="fade-in delay-2">
+                Balanceability is a nationwide cycling programme used in schools, councils and leisure centres. 33% of children can't ride a bike (British Cycling/YouGov 2018), missing out on life-changing skills.
+            </p>
+            <p class="fade-in delay-2">
+                Designed with child development experts and cycling professionals, Balanceability ensures every child can build confidence and independence.
+            </p>
+            <ul class="fade-in delay-3">
+                <li>✔ afPE Approved for children aged 2½+</li>
+                <li>✔ Builds confidence & independent riding</li>
+                <li>✔ Equipment packs, training & full support</li>
+                <li>✔ Fits into regular PE lessons</li>
             </ul>
         </div>
-        <div class="balanceability-images">
-            <img src="/Assets/Images/test-balance-image.jpg" alt="Child on balance bike">
-            <img src="/Assets/Images/test-balance-image-2.jpg" alt="Cycling training session">
+        <div class="image-content fade-in delay-4">
+            <div class="image-card">
+                <img src="/Assets/Images/balanceability-header.jpg" alt="Child learning to ride a balance bike">
+            </div>
         </div>
-    </div>
-</section>
-
-<!-- Testimonial Section -->
-<section class="testimonial-section">
-    <div class="testimonial-container">
-        <blockquote>
-            <p>"Since introducing Balanceability, we’ve seen a huge improvement in children's cycling confidence. A fantastic initiative!"</p>
-            <cite>- PE Teacher, London</cite>
-        </blockquote>
     </div>
 </section>

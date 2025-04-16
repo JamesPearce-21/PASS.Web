@@ -1,5 +1,52 @@
 ﻿@{
     ViewData["Title"] = "The Team";
 }
-<h1>The Team</h1>
-<p>Welcome to the The Team page.</p>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Team.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/team.js" asp-append-version="true"></script>
+}
+
+<section class="team-section">
+    <div class="team-intro">
+        <h1>Meet Our Team</h1>
+        <p>We’re a passionate group dedicated to helping children thrive through physical activity and fun.</p>
+    </div>
+
+    <div class="team-card-grid">
+        <!-- Card 1 -->
+        <div class="team-card">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="/Assets/Team/staff1.jpg" alt="Alex" />
+                    <div class="card-info">
+                        <h3>Alex</h3>
+                        <p>Lead Coach</p>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <p>Alex leads our school programmes and specialises in early years cycling confidence.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Repeat as needed -->
+        <div class="team-card">
+            <div class="card-inner">
+                <div class="card-front">
+                    <img src="/Assets/Team/staff2.jpg" alt="Jamie" />
+                    <div class="card-info">
+                        <h3>Jamie</h3>
+                        <p>Programme Coordinator</p>
+                    </div>
+                </div>
+                <div class="card-back">
+                    <p>Jamie organises Balanceability sessions across the UK and provides school staff training.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
