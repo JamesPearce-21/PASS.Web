@@ -2,7 +2,7 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
 
-    <!-- Load Calendar Component -->
+    @* <!-- Load Calendar Component -->
     <script src="~/js/Calendar.js" asp-append-version="true"></script>
 
     <script>
@@ -60,18 +60,23 @@
                 );
             });
         });
-    </script>
+    </script> *@
 }
 
-<section class="hero">
-    <div id="hero-content" class="hero-content">
-        <h1>Physical Activity & Sports Specialists</h1>
-        <p>See our events calendar below</p>
+<section class="hero-section">
+    <div class="hero-content">
+        <div class="form-container">
+            <h1>Book a Free Trial</h1>
+            <p>Start your child’s journey with physical activity today.</p>
+            <form class="booking-form">
+                <input type="text" placeholder="Full Name" required />
+                <input type="email" placeholder="Email Address" required />
+                <input type="text" placeholder="Child's Age" required />
+                <button type="submit">Submit</button>
+            </form>
+        </div>
     </div>
-
-    <!-- Hidden by default, React will mount here -->
-    <div id="calendar-container" class="calendar-container hidden"></div>
-
-    <!-- Keep the bottom gradient if needed -->
-    <div class="hero-bottom-gradient"></div>
+    <div class="hero-image">
+        <img src="/Assets/Images/IMG_1075.jpg" alt="Activity Image" />
+    </div>
 </section>
