@@ -1,0 +1,220 @@
+﻿/* General body reset */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+}
+
+    /* Dark overlay for overall contrast */
+    .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 0;
+    }
+
+    /* Top white gradient for logo clarity */
+    .hero::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 20%;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+        z-index: 1;
+    }
+
+/* Navigation bar styles */
+.navbar {
+    position: fixed; /* Ensures it stays at the top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.9); /* Slight transparency */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px 0;
+    transition: background 0.3s ease-in-out, padding 0.3s ease-in-out;
+}
+
+/* Navbar container for alignment */
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    height: 70px;
+    width: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+    .logo:hover {
+        transform: scale(1.05);
+    }
+
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    justify-content: center;
+}
+
+.nav-item {
+    margin: 0 15px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #003366;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 8px 15px;
+    position: relative;
+    transition: color 0.3s ease, background 0.3s ease;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: #00509E;
+    bottom: -5px;
+    left: 0;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Hover effect */
+.nav-link:hover {
+    color: #00509E;
+}
+
+.nav-link:hover::after {
+    transform: scaleX(1);
+}
+
+
+.hero-bottom-gradient {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #003366);
+    z-index: 1;
+}
+
+/* Hero content styles */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    padding: 0 20px;
+}
+
+    .hero-content h1 {
+        font-size: 3rem;
+        margin: 0;
+    }
+
+    .hero-content p {
+        font-size: 1.25rem;
+        margin: 20px 0;
+    }
+
+/* Button styling */
+.btn {
+    text-decoration: none;
+    padding: 12px 30px;
+    background-color: #2f7ec1;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 30px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn:hover {
+        background-color: #FFC107;
+    }
+
+/* Responsive fixes */
+@media (max-width: 1024px) {
+    .navbar-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .logo {
+        height: 60px;
+    }
+}
+
+/* Top white banner for logo */
+.top-banner {
+    background-color: #ffffff;
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.menu-bar {
+    background-color: #003366; /* Dark blue */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+    /* Override nav link styles for white text */
+    .menu-bar .nav-link {
+        color: white;
+    }
+
+        .menu-bar .nav-link:hover {
+            color: #FFC107;
+        }
+
+/* Adjust logo */
+.logo {
+    height: 70px;
+    width: auto;
+}
+

@@ -1,0 +1,174 @@
+﻿/* ============================ */
+/* GENERAL */
+/* ============================ */
+body {
+    margin: 0;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background-color: #f8fafc;
+    color: #222;
+}
+
+h1, h2, h3 {
+    font-weight: 700;
+}
+
+/* ============================ */
+/* SECTION LAYOUT */
+/* ============================ */
+.balanceability-section {
+    padding: 60px 30px;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(to right, #f5faff, #ffffff);
+}
+
+.balanceability-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+    max-width: 1300px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+/* ============================ */
+/* TEXT CONTENT */
+/* ============================ */
+.text-content {
+    flex: 1.6;
+    max-width: 700px;
+}
+
+    .text-content h1 {
+        font-size: 2.5rem;
+        color: #003366;
+        margin-bottom: 20px;
+    }
+
+    .text-content .lead {
+        font-size: 1.25rem;
+        font-weight: 500;
+        margin-bottom: 20px;
+        color: #003366;
+    }
+
+    .text-content p {
+        font-size: 1rem;
+        color: #444;
+        margin-bottom: 15px;
+        line-height: 1.6;
+    }
+
+    .text-content ul {
+        list-style: none;
+        padding-left: 0;
+        margin-top: 20px;
+    }
+
+        .text-content ul li {
+            margin-bottom: 12px;
+            font-size: 1rem;
+            position: relative;
+            padding-left: 28px;
+            color: #003366;
+        }
+
+            .text-content ul li::before {
+                content: "✔";
+                position: absolute;
+                left: 0;
+                top: 0;
+                color: #00aaff;
+                font-weight: bold;
+            }
+
+/* ============================ */
+/* IMAGE */
+/* ============================ */
+.image-content {
+    flex: 1.2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 500px;
+    width: 100%;
+}
+
+    .image-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+    }
+
+    .image-card img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+/* ============================ */
+/* ANIMATIONS */
+/* ============================ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.delay-1 {
+    animation-delay: 0.2s;
+}
+
+.delay-2 {
+    animation-delay: 0.4s;
+}
+
+.delay-3 {
+    animation-delay: 0.6s;
+}
+
+.delay-4 {
+    animation-delay: 0.8s;
+}
+
+/* ============================ */
+/* RESPONSIVE */
+/* ============================ */
+@media (max-width: 992px) {
+    .balanceability-grid {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .text-content {
+        text-align: center;
+    }
+
+        .text-content h1 {
+            font-size: 2rem;
+        }
+
+        .text-content p, .text-content ul li {
+            font-size: 1rem;
+        }
+}

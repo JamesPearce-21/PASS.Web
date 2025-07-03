@@ -18,10 +18,19 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "custom",
+        pattern: "{action=Index}",
+        defaults: new { controller = "Home" });
+});
+
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    PASS.Web.App_Start.RouteConfig.RegisterRoutes(endpoints);
+});
 
 app.Run();
