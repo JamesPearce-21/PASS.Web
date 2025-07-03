@@ -1,0 +1,257 @@
+﻿/* ========================= */
+/* Modern Compact Footer     */
+/* ========================= */
+.site-footer {
+    position: relative;
+    background: #f5f5f5;
+    color: #333;
+    font-family: 'Inter', sans-serif;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 80px; /* Keeps it compact */
+}
+
+/* Footer container with 3 columns */
+.footer-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Footer columns */
+.footer-column {
+    flex: 1;
+    text-align: center;
+}
+
+/* ========================= */
+/* Footer Logo & Socials     */
+/* ========================= */
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.footer-logo {
+    height: 80px;
+    width: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+    .footer-logo:hover {
+        transform: scale(1.05);
+    }
+
+/* Social Media Icons */
+.footer-social {
+    display: flex;
+    gap: 30px;
+    margin-top: 5px;
+}
+
+    /* Remove link styling (no underline, no default colors) */
+    .footer-social a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+        text-decoration: none; /* Removes underline */
+        color: #00509E; /* Sets correct blue color */
+        transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1); /* Instant but smooth */
+        will-change: transform;
+    }
+
+    /* Ensure the icons match the blue color */
+    .footer-social i {
+        color: #00509E; /* Ensures FontAwesome icons are blue */
+        font-size: 18px; /* Adjust icon size if needed */
+    }
+
+    /* Fix image-based icons (like PNGs/SVGs) */
+    .footer-social img {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Hover zoom effect */
+    .footer-social a:hover {
+        transform: scale(1.1);
+    }
+
+
+/*
+/* ========================= */
+/* Footer Links              */
+/* ========================= */
+.footer-links {
+    text-align: center;
+}
+
+    .footer-links ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    /* Footer links hover effect (Matches Header) */
+    .footer-links a {
+        color: #00509E;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        position: relative;
+        padding: 5px;
+        transition: color 0.3s ease;
+    }
+
+        .footer-links a::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: #00509E;
+            bottom: -3px;
+            left: 0;
+            transform: scaleX(0);
+            transition: transform 0.3s ease-out;
+        }
+
+        .footer-links a:hover {
+            color: #003366;
+        }
+
+            .footer-links a:hover::after {
+                transform: scaleX(1);
+            }
+
+/* ========================= */
+/* Staff Area & Copyright    */
+/* ========================= */
+.footer-staff {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/* Staff Area Button */
+.staff-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #00509E;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+    .staff-button:hover {
+        background: #003366;
+        transform: translateY(-2px);
+    }
+
+/* Copyright */
+.footer-copyright {
+    font-size: 10px;
+    color: #666;
+    opacity: 0.8;
+    margin-top: 5px;
+    padding: 10px;
+}
+
+/* ========================= */
+/* Full-width Carousel       */
+/* ========================= */
+@keyframes slide {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+.logos {
+    overflow: hidden;
+    padding: 60px 0;
+    background: #f5f5f5;
+    white-space: nowrap;
+    position: relative;
+    width: 100%;
+}
+
+    .logos:before,
+    .logos:after {
+        position: absolute;
+        top: 0;
+        width: 250px;
+        height: 100%;
+        content: "";
+        z-index: 2;
+    }
+
+    .logos:before {
+        left: 0;
+        background: linear-gradient(to left, rgba(255, 255, 255, 0), white);
+    }
+
+    .logos:after {
+        right: 0;
+        background: linear-gradient(to right, rgba(255, 255, 255, 0), white);
+    }
+
+    .logos:hover .logos-slide {
+        animation-play-state: paused;
+    }
+
+.logos-slide {
+    display: inline-block;
+    animation: 60s slide infinite linear;
+}
+
+    .logos-slide img {
+        height: 50px;
+        margin: 0 40px;
+    }
+
+    .logos-slide a {
+        text-decoration: none; /* Removes underline */
+        display: inline-block; /* Ensures the link wraps just around the image */
+    }
+
+/* ========================= */
+/* Mobile Responsive Fixes   */
+/* ========================= */
+@media (max-width: 1024px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .footer-staff {
+        align-items: center;
+    }
+
+    .footer-social {
+        justify-content: center;
+    }
+
+    .footer-links ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

@@ -1,0 +1,16 @@
+﻿.under-construction-container {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+    .under-construction-container h1 {
+        font-size: 3rem;
+        color: #00509E;
+        font-weight: bold;
+    }
+
+    .under-construction-container p {
+        font-size: 1.5rem;
+        color: #333;
+        margin-top: 10px;
+    }
