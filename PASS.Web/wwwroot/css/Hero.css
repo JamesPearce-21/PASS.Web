@@ -304,3 +304,127 @@
         color: #333;
     }
 
+.testimonial-slider {
+    background: #f0f4f8;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+    .testimonial-slider h2 {
+        font-size: 2.2rem;
+        margin-bottom: 30px;
+        color: #003366;
+    }
+
+.testimonial-display {
+    max-width: 800px;
+    margin: 0 auto 30px auto;
+    padding: 30px 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease-in-out;
+}
+
+#quote-text {
+    font-size: 1.2rem;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#quote-author {
+    font-size: 1rem;
+    color: #0055aa;
+    font-weight: bold;
+}
+
+.testimonial-nav {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.quote-btn {
+    width: 16px;
+    height: 16px;
+    background: #ccc;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+    .quote-btn.active,
+    .quote-btn:hover {
+        background: #0055aa;
+    }
+
+/* General layout for the sections */
+/* Global Layout */
+.schools-section, .credentials-section {
+    padding: 40px 20px;
+    background-color: #f7f9fc;
+    text-align: center;
+}
+/* Schools Section: Grid Layout */
+.schools-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Grid items will adjust */
+    gap: 5px;
+    padding: 0 10px;
+}
+
+.school-item {
+    font-size: 8px; /* Tiny text */
+    color: #555;
+    font-weight: 400;
+    background-color: #f0f7fc;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Credentials Section: Text with Minimal Spacing */
+.credential-item {
+    font-size: 8px; /* Tiny text */
+    color: #555;
+    margin-bottom: 5px;
+    font-weight: 400;
+    padding: 5px;
+    background-color: #f0f7fc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+    .school-item, .credential-item {
+        font-size: 7px; /* Smaller font size on mobile */
+    }
+}
+

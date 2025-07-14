@@ -1,0 +1,119 @@
+﻿/* ============================ */
+/* GENERAL STYLES */
+/* ============================ */
+.events-section {
+    padding: 60px 30px;
+    background-color: #f6faff;
+    color: #003366;
+    text-align: center;
+}
+
+.events-intro h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.events-intro p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+/* ============================ */
+/* EVENTS LIST */
+/* ============================ */
+.events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.event-item {
+    width: 80%;
+    max-width: 600px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+    .event-item:hover {
+        transform: scale(1.05);
+    }
+
+    .event-item h3 {
+        font-size: 1.5rem;
+        color: #003366;
+        margin-bottom: 10px;
+    }
+
+    .event-item p {
+        font-size: 1rem;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+/* ============================ */
+/* BUTTON STYLES */
+/* ============================ */
+.event-btn {
+    display: inline-block;
+    background-color: #003366;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+    .event-btn:hover {
+        background-color: #0055aa;
+    }
+
+    /* ============================ */
+    /* STATUS BUTTONS */
+    /* ============================ */
+    .event-btn.coming-soon {
+        background-color: #f0ad4e;
+    }
+
+        .event-btn.coming-soon:hover {
+            background-color: #e68930;
+        }
+
+    .event-btn.open {
+        background-color: #5bc0de;
+    }
+
+        .event-btn.open:hover {
+            background-color: #31b0d5;
+        }
+
+    .event-btn.closed {
+        background-color: #d9534f;
+    }
+
+        .event-btn.closed:hover {
+            background-color: #c9302c;
+        }
+
+/* ============================ */
+/* RESPONSIVE STYLES */
+/* ============================ */
+@media (max-width: 768px) {
+    .events-intro h1 {
+        font-size: 2rem;
+    }
+
+    .events-intro p {
+        font-size: 1rem;
+    }
+
+    .event-item {
+        width: 90%;
+    }
+}

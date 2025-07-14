@@ -1,5 +1,66 @@
 ﻿@page
 @model PASS.Web.Views.Home.ContactModel
 @{
-    <h1>CONTACT US</h1>
+    <h1>Contact Us</h1>
 }
+
+<div class="contact-container">
+    <p>If you'd like to learn more about how we can support your school, we'd love to hear from you!</p>
+    <p>Get in touch with our team today to discover how PASS can help enhance your PE, sport & physical activity provision and support the development of your staff and pupils.</p>
+
+    <div class="contact-email">
+        <p><strong>Email Us:</strong></p>
+        <a href="mailto:info@passltd.org">info@passltd.org</a>
+    </div>
+</div>
+
+<style>
+    /* Container for contact section */
+    .contact-container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 30px;
+        background-color: #f4f7fb;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        padding-bottom: 50px; /* Add more padding at the bottom */
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #003366;
+        text-align: center;
+    }
+
+    p {
+        font-size: 1.1rem;
+        color: #555;
+        line-height: 1.8;
+        margin-bottom: 20px;
+        text-align: center; /* Center the paragraph text */
+    }
+
+    .contact-email {
+        font-size: 1.2rem;
+        color: #003366;
+    }
+
+        .contact-email p {
+            margin-bottom: 10px; /* Add spacing between the paragraph and the email */
+        }
+
+        .contact-email a {
+            color: #0055aa;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            font-size: 1.1rem; /* Make the email link a bit larger */
+        }
+
+            .contact-email a:hover {
+                color: #003366;
+            }
+
+</style>
