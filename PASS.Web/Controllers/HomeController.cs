@@ -93,6 +93,11 @@ namespace PASS.Web.Controllers
             return View();
         }
 
+        public IActionResult Training()
+        {
+            return View();
+        }
+
         [Route("schools-we-work-with")]
         public IActionResult OtherSchools()
         {

@@ -101,6 +101,15 @@
             background-color: #c9302c;
         }
 
+    .event-btn.booking-form {
+        background-color: #6c757d; /* muted grey-blue for distinction */
+        margin-top: 10px;
+    }
+
+        .event-btn.booking-form:hover {
+            background-color: #5a6268;
+        }
+
 /* ============================ */
 /* RESPONSIVE STYLES */
 /* ============================ */
