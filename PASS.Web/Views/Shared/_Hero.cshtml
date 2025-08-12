@@ -14,25 +14,25 @@
         <div class="course-icon">🎯</div>
         <h3>Memberships</h3>
         <p>View the memberships we offer here.</p>
-        <a href="#" class="course-btn">View Memberships</a>
+        <a href="/memberships" class="course-btn">View Memberships</a>
     </div>
     <div class="course-box">
         <div class="course-icon">📘</div>
         <h3>Member's Area'</h3>
         <p>Access our Member's Area here.'</p>
-        <a href="#" class="course-btn">View Member's Area</a>
+        <a href="/membersarea" class="course-btn">View Member's Area</a>
     </div>
     <div class="course-box">
         <div class="course-icon">🏃</div>
         <h3>Training</h3>
         <p>View our Training resources here.</p>
-        <a href="#" class="course-btn">View Training</a>
+        <a href="/training" class="course-btn">View Training</a>
     </div>
     <div class="course-box">
         <div class="course-icon">🌳</div>
         <h3>Events</h3>
         <p>View our current Events here.</p>
-        <a href="#" class="course-btn">View Events</a>
+        <a href="/events" class="course-btn">View Events</a>
     </div>
     <div class="course-box">
         <div class="course-icon">❤️</div>
@@ -102,46 +102,77 @@
         <button class="quote-btn" data-index="6"></button>
     </div>
 </section>
-<section class="schools-section">
-    <h2>PASS Membership Schools</h2>
-    <div class="schools-container">
-        <div class="school-item">Borough Green Primary School</div>
-        <div class="school-item">Ditton Infants</div>
-        <div class="school-item">Five Acre Wood School</div>
-        <div class="school-item">Four Elms Primary School</div>
-        <div class="school-item">Holy Family Catholic Primary School</div>
-        <div class="school-item">Kings Hill Primary School and Nursery</div>
-        <div class="school-item">Laddingford Church of England Primary School</div>
-        <div class="school-item">Loose Primary School</div>
-        <div class="school-item">Meopham Community Academy Primary School</div>
-        <div class="school-item">More Park Catholic Primary School</div>
-        <div class="school-item">Offham Primary School</div>
-        <div class="school-item">Park Way Primary School</div>
-        <div class="school-item">Platt Church of England Primary School</div>
-        <div class="school-item">Roseacre Junior School</div>
-        <div class="school-item">Ryarsh Primary School</div>
-        <div class="school-item">Sandling Primary School</div>
-        <div class="school-item">St Katherine’s School and Nursery</div>
-        <div class="school-item">St Margaret's Collier Street Church of England Primary School</div>
-        <div class="school-item">Trottiscliffe Church of England Primary School</div>
-        <div class="school-item">West Malling Church of England Primary School</div>
+<section class="membership-accordion-section">
+    <h2>PASS Membership Schools & Credentials</h2>
+
+    <div class="accordion">
+        <button class="accordion-toggle" aria-expanded="false" aria-controls="schoolsPanel" id="schoolsToggle">
+            PASS Membership Schools
+            <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-panel" id="schoolsPanel" role="region" aria-labelledby="schoolsToggle" hidden>
+            <ul class="schools-list">
+                <li>Borough Green Primary School</li>
+                <li>Ditton Infants</li>
+                <li>Five Acre Wood School</li>
+                <li>Four Elms Primary School</li>
+                <li>Holy Family Catholic Primary School</li>
+                <li>Kings Hill Primary School and Nursery</li>
+                <li>Laddingford Church of England Primary School</li>
+                <li>Loose Primary School</li>
+                <li>Meopham Community Academy Primary School</li>
+                <li>More Park Catholic Primary School</li>
+                <li>Offham Primary School</li>
+                <li>Park Way Primary School</li>
+                <li>Platt Church of England Primary School</li>
+                <li>Roseacre Junior School</li>
+                <li>Ryarsh Primary School</li>
+                <li>Sandling Primary School</li>
+                <li>St Katherine’s School and Nursery</li>
+                <li>St Margaret's Collier Street Church of England Primary School</li>
+                <li>Trottiscliffe Church of England Primary School</li>
+                <li>West Malling Church of England Primary School</li>
+            </ul>
+        </div>
+
+        <button class="accordion-toggle" aria-expanded="false" aria-controls="credentialsPanel" id="credentialsToggle">
+            Our Credentials & Delivery
+            <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-panel" id="credentialsPanel" role="region" aria-labelledby="credentialsToggle" hidden>
+            <ul class="credentials-list">
+                <li>Operating in Kent since 2013</li>
+                <li>Currently partnered with 80+ schools across the county</li>
+                <li>Hold full Public Liability Insurance up to 10 million</li>
+                <li>Expert educators minimum QTS or NGB Level 2 Qualified</li>
+                <li>All staff hold enhanced DBS</li>
+                <li>Staff first aid trained</li>
+                <li>Up to date safeguarding training undertaken by all staff</li>
+                <li>Designated staff for continuity</li>
+                <li>Lesson planning provided for all activities delivered</li>
+                <li>Wide range of sports delivery and resources</li>
+                <li>Termly impact reports provided</li>
+            </ul>
+        </div>
     </div>
 </section>
+<script>
+    // Accordion toggle script (vanilla JS)
+    document.querySelectorAll('.accordion-toggle').forEach(button => {
+        button.addEventListener('click', () => {
+            const expanded = button.getAttribute('aria-expanded') === 'true';
+            button.setAttribute('aria-expanded', !expanded);
+            const panel = document.getElementById(button.getAttribute('aria-controls'));
 
-<section class="credentials-section">
-    <h2>Our Credentials & Delivery</h2>
-    <div class="credential-item">Operating in Kent since 2013</div>
-    <div class="credential-item">Currently partnered with 80+ schools across the county</div>
-    <div class="credential-item">Hold full Public Liability Insurance up to 10 million</div>
-    <div class="credential-item">Expert educators minimum QTS or NGB Level 2 Qualified</div>
-    <div class="credential-item">All staff hold enhanced DBS</div>
-    <div class="credential-item">Staff first aid trained</div>
-    <div class="credential-item">Up-to-date safeguarding training undertaken by all staff</div>
-    <div class="credential-item">Designated staff for continuity</div>
-    <div class="credential-item">Lesson planning provided for all activities delivered</div>
-    <div class="credential-item">Wide range of sports delivery and resources</div>
-    <div class="credential-item">Termly impact reports provided</div>
-</section>
+            if (!expanded) {
+                panel.removeAttribute('hidden');
+            } else {
+                panel.setAttribute('hidden', '');
+            }
+        });
+    });
+
+</script>
 
 
 

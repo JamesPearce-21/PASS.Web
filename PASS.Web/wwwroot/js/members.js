@@ -3,10 +3,11 @@
     const loginWrapper = document.querySelector(".login-contact-wrapper");
     const membersContent = document.querySelector(".members-content");
     const errorBox = document.querySelector(".login-error");
+    const publicSamples = document.querySelector(".public-samples");
 
     if (!loginForm || !membersContent || !loginWrapper) return;
 
-    membersContent.style.display = "none"; // Hide members content initially
+    membersContent.style.display = "none";
 
     loginForm.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -15,6 +16,7 @@
 
         if (username === "TEST" && password === "TEST") {
             loginWrapper.style.display = "none";
+            publicSamples.style.display = "none";
             membersContent.style.display = "block";
             errorBox.style.display = "none";
             window.scrollTo({ top: 0, behavior: "smooth" });
