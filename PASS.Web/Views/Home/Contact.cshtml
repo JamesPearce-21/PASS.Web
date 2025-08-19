@@ -1,21 +1,29 @@
-﻿@page
-@model PASS.Web.Views.Home.ContactModel
-@{
-    <h1>Contact Us</h1>
+﻿@{
+    ViewData["Title"] = "Contact";
 }
 
-<div class="contact-container">
-    <p>If you'd like to learn more about how we can support your school, we'd love to hear from you!</p>
-    <p>Get in touch with our team today to discover how PASS can help enhance your PE, sport & physical activity provision and support the development of your staff and pupils.</p>
 
-    <div class="contact-email">
-        <p><strong>Email Us:</strong></p>
-        <a href="mailto:info@passltd.org">info@passltd.org</a>
+<div class="contact-container-main">
+    <h1>Contact Us</h1>
+    <div class="contact-container">
+        <p>If you'd like to learn more about how we can support your school, we'd love to hear from you!</p>
+        <p>Get in touch with our team today to discover how PASS can help enhance your PE, sport & physical activity provision and support the development of your staff and pupils.</p>
+
+        <div class="contact-email">
+            <p><strong>Email Us:</strong></p>
+            <a href="mailto:info@passltd.org">info@passltd.org</a>
+        </div>
     </div>
 </div>
 
+
 <style>
     /* Container for contact section */
+
+    .contact-container-main {
+        background-color: #f6faff;
+        padding: 50px;
+    }
     .contact-container {
         max-width: 800px;
         margin: 30px auto;
@@ -29,7 +37,9 @@
 
     h1 {
         font-size: 2.5rem;
-        margin-bottom: 20px;
+        margin-bottom: 0px;
+        margin-top: 0px;
+        padding: 30px;
         color: #003366;
         text-align: center;
     }

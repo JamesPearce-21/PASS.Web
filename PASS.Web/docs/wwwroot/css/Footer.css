@@ -71,7 +71,7 @@
     /* Ensure the icons match the blue color */
     .footer-social i {
         color: #00509E; /* Ensures FontAwesome icons are blue */
-        font-size: 18px; /* Adjust icon size if needed */
+        font-size: 25px; /* Adjust icon size if needed */
     }
 
     /* Fix image-based icons (like PNGs/SVGs) */

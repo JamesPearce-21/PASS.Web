@@ -22,16 +22,19 @@
 /* ============================ */
 /* EVENTS LIST */
 /* ============================ */
+/* ============================ */
+/* EVENTS LIST */
+/* ============================ */
 .events-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* two columns */
+    gap: 30px;
+    justify-items: center;
 }
 
 .event-item {
-    width: 80%;
-    max-width: 600px;
+    width: 100%;
+    max-width: 500px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -44,17 +47,27 @@
         transform: scale(1.05);
     }
 
-    .event-item h3 {
-        font-size: 1.5rem;
-        color: #003366;
-        margin-bottom: 10px;
+/* ============================ */
+/* BUTTON STYLES */
+/* ============================ */
+.event-btn {
+    display: inline-block;
+    width: 160px; /* fixed width so all buttons match */
+    text-align: center;
+    background-color: #003366;
+    color: white;
+    padding: 10px 0;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin: 5px; /* spacing between buttons */
+}
+
+    .event-btn:hover {
+        background-color: #0055aa;
     }
 
-    .event-item p {
-        font-size: 1rem;
-        color: #555;
-        margin-bottom: 20px;
-    }
 
 /* ============================ */
 /* BUTTON STYLES */
@@ -109,6 +122,13 @@
         .event-btn.booking-form:hover {
             background-color: #5a6268;
         }
+
+.event-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 
 /* ============================ */
 /* RESPONSIVE STYLES */
