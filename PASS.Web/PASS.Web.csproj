@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\css\Memberships.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="docs\wwwroot\Assets\Icons\yt_logo_mono_dark.png" />
     <None Remove="docs\wwwroot\Assets\Icons\yt_logo_rgb_dark.png" />
     <None Remove="docs\wwwroot\Assets\Icons\yt_logo_rgb_light.png" />

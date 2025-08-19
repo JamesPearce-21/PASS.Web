@@ -1,5 +1,51 @@
 ﻿@{
     ViewData["Title"] = "Memberships";
 }
-<h1>Memberships</h1>
-<p>Welcome to the Memberships page.</p>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Memberships.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/memberships.js" asp-append-version="true"></script>
+}
+
+<section class="memberships-section">
+    <div class="memberships-intro">
+        <h1>Memberships</h1>
+        <p>Welcome to the Memberships page.</p>
+        <p>PASS offer a range of flexible membership options (Bronze, Silver, and Gold), each designed to meet different needs and budgets. Every membership includes:</p>
+        <div class="membership-benefits">
+            <p>✔ Access to high-quality competitions and festivals</p>
+            <p>✔ CPD opportunities to support teacher development</p>
+            <p>✔ Bespoke support tailored to your school’s priorities</p>
+            <p>✔ Optional bolt-ons including Experience Days and specialist workshops</p>
+        </div>
+        <p>All of our work is grounded in national priorities for PE and school sport, and we’re proud to be trusted by schools across the region for our reliable, friendly, and impactful service.</p>
+        <p>If you’d like to find out more, discuss how we can support your school, or arrange a face-to-face or virtual meeting, we’d love to hear from you.</p>
+    </div>
+
+    <div class="membership-packages">
+        <div class="package-card">
+            <h3>Bronze Package</h3>
+            <p class="package-description">A basic package offering core support and access to competitions and CPD training.</p>
+        </div>
+
+        <div class="package-card">
+            <h3>Silver Package</h3>
+            <p class="package-description">A more comprehensive package with additional competitions, events, and priority support.</p>
+        </div>
+
+        <div class="package-card">
+            <h3>Gold Package</h3>
+            <p class="package-description">Our premium package, including dedicated account support and customised workshops.</p>
+        </div>
+    </div>
+
+    <div class="contact-info">
+        <b></b>
+        <h3>Get in Touch</h3>
+        <p>If you'd like more information, discuss how we can support your school, or arrange a meeting, don't hesitate to reach out!</p>
+        <a href="mailto:info@passltd.org" class="contact-btn">Contact Us</a>
+    </div>
+</section>
