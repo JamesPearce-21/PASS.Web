@@ -172,12 +172,10 @@ body {
 /* Responsive fixes */
 @media (max-width: 1024px) {
     .navbar-container {
-        flex-direction: column;
         text-align: center;
     }
 
     .navbar-nav {
-        flex-direction: column;
         gap: 10px;
     }
 
@@ -220,12 +218,10 @@ body {
 
 @media (max-width: 1024px) {
     .navbar-container {
-        flex-direction: column;
         text-align: center;
     }
 
     .navbar-nav {
-        flex-direction: column;
         gap: 10px;
         margin-top: 10px;
     }
@@ -246,12 +242,10 @@ body {
 /* Mobiles */
 @media (max-width: 768px) {
     .navbar-container {
-        flex-direction: column;
         padding: 10px;
     }
 
     .navbar-nav {
-        flex-direction: column;
         gap: 8px;
     }
 
@@ -300,3 +294,56 @@ body {
         font-size: 0.85rem;
     }
 }
+
+/* Make nav items always stay in one row */
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: nowrap; /* prevent wrapping */
+    overflow: hidden; /* avoids overflow issues */
+}
+
+/* Allow nav links to shrink */
+.nav-link {
+    text-decoration: none;
+    color: #fff;
+    font-size: clamp(9px, 1.2vw, 15px); /* slightly smaller min + max */
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 4px 8px; /* tighter padding */
+    white-space: nowrap; /* never break text */
+    position: relative;
+    transition: color 0.3s ease, background 0.3s ease;
+}
+
+/* Adjust margins so spacing is tighter */
+.nav-item {
+    margin: 0 5px; /* narrower spacing */
+}
+
+/* Scrollable nav on small screens */
+@media (max-width: 768px) {
+    .navbar-nav {
+        display: flex;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        justify-content: flex-start; /* ✅ align items left */
+        -webkit-overflow-scrolling: touch; /* smooth swipe */
+        scrollbar-width: none; /* hide scrollbar Firefox */
+    }
+
+        .navbar-nav::-webkit-scrollbar {
+            display: none; /* hide scrollbar Chrome/Safari */
+        }
+
+    .nav-item {
+        flex: 0 0 auto; /* ✅ prevents shrinking too small */
+        margin: 0 10px;
+    }
+}
+
+
