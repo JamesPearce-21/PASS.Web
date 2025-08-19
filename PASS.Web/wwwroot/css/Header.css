@@ -172,12 +172,10 @@ body {
 /* Responsive fixes */
 @media (max-width: 1024px) {
     .navbar-container {
-        flex-direction: column;
         text-align: center;
     }
 
     .navbar-nav {
-        flex-direction: column;
         gap: 10px;
     }
 
@@ -217,4 +215,135 @@ body {
     height: 70px;
     width: auto;
 }
+
+@media (max-width: 1024px) {
+    .navbar-container {
+        text-align: center;
+    }
+
+    .navbar-nav {
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .logo {
+        height: 60px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero-content p {
+        font-size: 1.1rem;
+    }
+}
+
+/* Mobiles */
+@media (max-width: 768px) {
+    .navbar-container {
+        padding: 10px;
+    }
+
+    .navbar-nav {
+        gap: 8px;
+    }
+
+    .nav-item {
+        margin: 0;
+    }
+
+    .logo {
+        height: 50px;
+    }
+
+    .hero-content h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Small mobiles */
+@media (max-width: 480px) {
+    .navbar {
+        padding: 10px 0;
+    }
+
+    .hero-content {
+        padding: 0 10px;
+    }
+
+        .hero-content h1 {
+            font-size: 1.5rem;
+        }
+
+        .hero-content p {
+            font-size: 0.9rem;
+        }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Make nav items always stay in one row */
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: nowrap; /* prevent wrapping */
+    overflow: hidden; /* avoids overflow issues */
+}
+
+/* Allow nav links to shrink */
+.nav-link {
+    text-decoration: none;
+    color: #fff;
+    font-size: clamp(9px, 1.2vw, 15px); /* slightly smaller min + max */
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 4px 8px; /* tighter padding */
+    white-space: nowrap; /* never break text */
+    position: relative;
+    transition: color 0.3s ease, background 0.3s ease;
+}
+
+/* Adjust margins so spacing is tighter */
+.nav-item {
+    margin: 0 5px; /* narrower spacing */
+}
+
+/* Scrollable nav on small screens */
+@media (max-width: 768px) {
+    .navbar-nav {
+        display: flex;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        justify-content: flex-start; /* ✅ align items left */
+        -webkit-overflow-scrolling: touch; /* smooth swipe */
+        scrollbar-width: none; /* hide scrollbar Firefox */
+    }
+
+        .navbar-nav::-webkit-scrollbar {
+            display: none; /* hide scrollbar Chrome/Safari */
+        }
+
+    .nav-item {
+        flex: 0 0 auto; /* ✅ prevents shrinking too small */
+        margin: 0 10px;
+    }
+}
+
 

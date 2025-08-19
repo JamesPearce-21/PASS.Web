@@ -1,0 +1,109 @@
+﻿/* ============================ */
+/* GENERAL STYLES */
+/* ============================ */
+.memberships-section {
+    padding: 60px 30px;
+    background-color: #f6faff;
+    color: #003366;
+    text-align: center;
+}
+
+.memberships-intro h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.memberships-intro p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.membership-benefits p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* ============================ */
+/* MEMBERSHIP PACKAGE CARDS */
+/* ============================ */
+.membership-packages {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.package-card {
+    width: 250px;
+    height: auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+    .package-card:hover {
+        transform: scale(1.05);
+    }
+
+    .package-card h3 {
+        font-size: 1.5rem;
+        color: #003366;
+        margin-bottom: 10px;
+    }
+
+.package-description {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* ============================ */
+/* BUTTONS AND LINKS */
+/* ============================ */
+.contact-btn {
+    display: inline-block;
+    background-color: #003366;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+    .contact-btn:hover {
+        background-color: #0055aa;
+    }
+
+/* ============================ */
+/* RESPONSIVE STYLES */
+/* ============================ */
+@media (max-width: 768px) {
+    .membership-packages {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .package-card {
+        width: 80%;
+        max-width: 350px;
+    }
+
+    .memberships-intro h1 {
+        font-size: 2rem;
+    }
+
+    .memberships-intro p {
+        font-size: 1rem;
+    }
+}

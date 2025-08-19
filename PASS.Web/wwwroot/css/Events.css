@@ -1,0 +1,148 @@
+﻿/* ============================ */
+/* GENERAL STYLES */
+/* ============================ */
+.events-section {
+    padding: 60px 30px;
+    background-color: #f6faff;
+    color: #003366;
+    text-align: center;
+}
+
+.events-intro h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.events-intro p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+/* ============================ */
+/* EVENTS LIST */
+/* ============================ */
+/* ============================ */
+/* EVENTS LIST */
+/* ============================ */
+.events-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* two columns */
+    gap: 30px;
+    justify-items: center;
+}
+
+.event-item {
+    width: 100%;
+    max-width: 500px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+    .event-item:hover {
+        transform: scale(1.05);
+    }
+
+/* ============================ */
+/* BUTTON STYLES */
+/* ============================ */
+.event-btn {
+    display: inline-block;
+    width: 160px; /* fixed width so all buttons match */
+    text-align: center;
+    background-color: #003366;
+    color: white;
+    padding: 10px 0;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin: 5px; /* spacing between buttons */
+}
+
+    .event-btn:hover {
+        background-color: #0055aa;
+    }
+
+
+/* ============================ */
+/* BUTTON STYLES */
+/* ============================ */
+.event-btn {
+    display: inline-block;
+    background-color: #003366;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+    .event-btn:hover {
+        background-color: #0055aa;
+    }
+
+    /* ============================ */
+    /* STATUS BUTTONS */
+    /* ============================ */
+    .event-btn.coming-soon {
+        background-color: #f0ad4e;
+    }
+
+        .event-btn.coming-soon:hover {
+            background-color: #e68930;
+        }
+
+    .event-btn.open {
+        background-color: #5bc0de;
+    }
+
+        .event-btn.open:hover {
+            background-color: #31b0d5;
+        }
+
+    .event-btn.closed {
+        background-color: #d9534f;
+    }
+
+        .event-btn.closed:hover {
+            background-color: #c9302c;
+        }
+
+    .event-btn.booking-form {
+        background-color: #6c757d; /* muted grey-blue for distinction */
+        margin-top: 10px;
+    }
+
+        .event-btn.booking-form:hover {
+            background-color: #5a6268;
+        }
+
+.event-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* ============================ */
+/* RESPONSIVE STYLES */
+/* ============================ */
+@media (max-width: 768px) {
+    .events-intro h1 {
+        font-size: 2rem;
+    }
+
+    .events-intro p {
+        font-size: 1rem;
+    }
+
+    .event-item {
+        width: 90%;
+    }
+}

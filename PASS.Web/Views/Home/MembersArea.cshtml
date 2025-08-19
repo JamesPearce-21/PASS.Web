@@ -1,5 +1,131 @@
 ﻿@{
     ViewData["Title"] = "Members Area";
 }
-<h1>Members Area</h1>
-<p>Welcome to the Members Area page.</p>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Members.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/members.js" asp-append-version="true"></script>
+}
+
+<section class="members-section">
+    <!-- Login + Contact Form Section -->
+    <div class="login-contact-wrapper">
+        <div class="login-box">
+            <h2>Member Login</h2>
+            <p>Enter your login credentials to access PASS member resources.</p>
+            <form class="login-form">
+                <input type="text" name="username" placeholder="Username" required />
+                <input type="password" name="password" placeholder="Password" required />
+                <button type="submit" class="login-btn">Login</button>
+                <div class="login-error" style="display:none;">Incorrect username or password.</div>
+            </form>
+        </div>
+
+        <div class="contact-box">
+            <h2>Not a Member?</h2>
+            <p>If you're interested in accessing our high-quality PE resources, please get in touch with us.</p>
+            <a href="/contact" class="contact-btn">Contact Us</a>
+        </div>
+    </div>
+
+    <!-- Public Sample Lesson Plans -->
+    <div class="example-section public-samples">
+        <h2>Free Sample Lesson Plans</h2>
+        <p>Try a couple of example lessons—no login required.</p>
+        <div class="sample-list">
+            <a href="/downloads/sample-lesson-ks1.pdf" target="_blank" class="sample-link">KS1 Sample Lesson</a>
+            <a href="/downloads/sample-lesson-ks2.pdf" target="_blank" class="sample-link">KS2 Sample Lesson</a>
+        </div>
+    </div>
+
+    <!-- Hidden until login -->
+    <div class="members-content">
+        <div class="members-intro">
+            <h1>Members Area</h1>
+            <p>As a PASS member school, you gain access to high-quality PE schemes of work from EYFS to Year 6. These comprehensive resources are built to support inclusive, progressive, and exciting PE delivery.</p>
+        </div>
+
+        <div class="schemes-section">
+            <h2>Download Schemes of Work</h2>
+            <div class="year-group-list">
+
+                <!-- EYFS -->
+                <div class="year-group-card">
+                    <h3>Reception / EYFS</h3>
+                    <ul class="scheme-links">
+                        <li><a href="/downloads/eyfs-scheme-1.pdf" target="_blank">EYFS Scheme 1</a></li>
+                        <li><a href="/downloads/eyfs-scheme-2.pdf" target="_blank">EYFS Scheme 2</a></li>
+                        <li><a href="/downloads/eyfs-scheme-3.pdf" target="_blank">EYFS Scheme 3</a></li>
+                    </ul>
+                </div>
+
+                <!-- Year 1 -->
+                <div class="year-group-card">
+                    <h3>Year 1</h3>
+                    <ul class="scheme-links">
+                        <li><a href="/downloads/y1-scheme-1.pdf" target="_blank">Year 1 Scheme 1</a></li>
+                        <li><a href="/downloads/y1-scheme-2.pdf" target="_blank">Year 1 Scheme 2</a></li>
+                    </ul>
+                </div>
+
+                <!-- Year 2 -->
+                <div class="year-group-card">
+                    <h3>Year 2</h3>
+                    <ul class="scheme-links">
+                        <li><a href="#">Year 2 Scheme 1</a></li>
+                        <li><a href="#">Year 2 Scheme 2</a></li>
+                    </ul>
+                </div>
+
+                <!-- Year 3 -->
+                <div class="year-group-card">
+                    <h3>Year 3</h3>
+                    <ul class="scheme-links">
+                        <li><a href="#">Year 3 Scheme 1</a></li>
+                        <li><a href="#">Year 3 Scheme 2</a></li>
+                        <li><a href="#">Year 3 Scheme 3</a></li>
+                        <li><a href="#">Year 3 Scheme 4</a></li>
+                        <li><a href="#">Year 3 Scheme 5</a></li>
+                        <li><a href="#">Year 3 Scheme 6</a></li>
+                        <li><a href="#">Year 3 Scheme 7</a></li>
+                        <li><a href="#">Year 3 Scheme 8</a></li>
+                        <li><a href="#">Year 3 Scheme 9</a></li>
+                        <li><a href="#">Year 3 Scheme 10</a></li>
+                    </ul>
+                </div>
+
+                <!-- Year 4 -->
+                <div class="year-group-card">
+                    <h3>Year 4</h3>
+                    <ul class="scheme-links">
+                        <li><a href="#">Year 4 Scheme 1</a></li>
+                        <li><a href="#">Year 4 Scheme 2</a></li>
+                    </ul>
+                </div>
+
+                <!-- Year 5 -->
+                <div class="year-group-card">
+                    <h3>Year 5</h3>
+                    <ul class="scheme-links">
+                        <li><a href="#">Year 5 Scheme 1</a></li>
+                        <li><a href="#">Year 5 Scheme 2</a></li>
+                    </ul>
+                </div>
+
+                <!-- Year 6 -->
+                <div class="year-group-card">
+                    <h3>Year 6</h3>
+                    <ul class="scheme-links">
+                        <li><a href="#">Year 6 Scheme 1</a></li>
+                        <li><a href="#">Year 6 Scheme 2</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
