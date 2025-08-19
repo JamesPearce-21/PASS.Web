@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: pass-web
+    env: dotnet
+    plan: free
+    branch: main  # change if your main branch has a different name
+    buildCommand: 'dotnet publish PASS.Web/PASS.Web.csproj -c Release -o ./publish'
+    startCommand: 'dotnet ./publish/PASS.Web.dll'
+    autoDeploy: true
+    envVars:
+      - key: DOTNET_ROOT
+        value: /usr/share/dotnet
