@@ -1,5 +1,27 @@
 ﻿@{
-    ViewData["Title"] = "Staff Home Test";
+    ViewData["Title"] = "Staff Home";
+    bool isAdmin = ViewBag.IsAdmin ?? false;
+    string username = ViewBag.Username ?? "";
 }
-<h1>STAFF TEST</h1>
-<p>STAFF TEST STAFF TEST STAFF TEST</p>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Members.css" asp-append-version="true" />
+}
+
+<h1>Welcome, @username</h1>
+
+<p>This is the staff area.</p>
+
+@if (isAdmin)
+{
+    <div class="admin-section">
+        <h2>Admin Only Section</h2>
+        <p>Here you can see admin-specific content.</p>
+    </div>
+}
+else
+{
+    <p>You are logged in as staff. Admin content is hidden.</p>
+}
+
+<a href="/StaffArea/Logout">Logout</a>
