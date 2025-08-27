@@ -235,3 +235,61 @@
             background: #e6f0ff;
         }
 
+/* Login box styling */
+.login-box {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 400px;
+    margin: 0 auto 30px auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+    .login-box h2 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        color: #003366;
+    }
+
+    .login-box p {
+        font-size: 1rem;
+        margin-bottom: 20px;
+        color: #555555;
+    }
+
+/* Login form */
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+    font-size: 1rem;
+}
+
+.login-form .login-btn {
+    display: inline-block;
+    width: 50%;
+    padding: 10px 0;
+    margin-top: 10px;
+    background-color: #003366;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .login-form .login-btn:hover {
+        background-color: #0055aa;
+    }
+
+/* Error message */
+.login-error {
+    color: #d9534f;
+    font-weight: bold;
+    margin-top: 15px;
+}

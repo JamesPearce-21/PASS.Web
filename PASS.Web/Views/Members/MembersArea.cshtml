@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Members Area";
+    bool isLoggedIn = ViewBag.IsLoggedIn ?? false;
 }
 
 @section Styles {
@@ -11,16 +12,21 @@
 }
 
 <section class="members-section">
+
     <!-- Login + Contact Form Section -->
-    <div class="login-contact-wrapper">
+    <div class="login-contact-wrapper" style="@(isLoggedIn ? "display:none;" : "display:flex;")">
         <div class="login-box">
             <h2>Member Login</h2>
             <p>Enter your login credentials to access PASS member resources.</p>
-            <form class="login-form">
+            <form method="post" action="/Account/Login">
                 <input type="text" name="username" placeholder="Username" required />
                 <input type="password" name="password" placeholder="Password" required />
                 <button type="submit" class="login-btn">Login</button>
-                <div class="login-error" style="display:none;">Incorrect username or password.</div>
+
+                @if (TempData["LoginError"] != null)
+                {
+                    <div class="login-error" style="display:block;">@TempData["LoginError"]</div>
+                }
             </form>
         </div>
 
@@ -31,7 +37,7 @@
         </div>
     </div>
 
-    <!-- Public Sample Lesson Plans -->
+    <!-- Public Sample Lesson Plans (always visible) -->
     <div class="example-section public-samples">
         <h2>Free Sample Lesson Plans</h2>
         <p>Try a couple of example lessons—no login required.</p>
@@ -41,8 +47,8 @@
         </div>
     </div>
 
-    <!-- Hidden until login -->
-    <div class="members-content">
+    <!-- Members Content (visible only when logged in) -->
+    <div class="members-content" style="@(isLoggedIn ? "display:block;" : "display:none;")">
         <div class="members-intro">
             <h1>Members Area</h1>
             <p>As a PASS member school, you gain access to high-quality PE schemes of work from EYFS to Year 6. These comprehensive resources are built to support inclusive, progressive, and exciting PE delivery.</p>
@@ -51,7 +57,6 @@
         <div class="schemes-section">
             <h2>Download Schemes of Work</h2>
             <div class="year-group-list">
-
                 <!-- EYFS -->
                 <div class="year-group-card">
                     <h3>Reception / EYFS</h3>
@@ -123,9 +128,7 @@
                         <li><a href="#">Year 6 Scheme 2</a></li>
                     </ul>
                 </div>
-
             </div>
         </div>
-
     </div>
 </section>
