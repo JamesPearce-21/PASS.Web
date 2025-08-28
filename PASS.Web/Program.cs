@@ -1,3 +1,5 @@
+using PASS.Web.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +11,8 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+builder.Services.AddSingleton<BlobStorageService>();
+builder.Services.AddSingleton<ContentService>();
 
 var app = builder.Build();
 

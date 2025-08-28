@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="~/css/StaffArea.css" asp-append-version="true" />
 }
 
+@inject PASS.Web.Services.ContentService Content
+
 <section class="staff-home-section">
     <h1>Welcome, @username</h1>
 
@@ -29,12 +31,69 @@
 
     @if (isAdmin)
     {
-        <!-- Content Section (Admin Only) -->
-        <div class="staff-section admin-content-section">
-            <h2>Content</h2>
-            <p>Admin-only content management tools and reports.</p>
+        <!-- Admin-only Balanceability Editor -->
+        <div class="staff-section admin-balanceability-section">
+            <h2>Edit Balanceability Content</h2>
+
+            <form id="balanceabilityForm">
+                <div class="balanceability-editor">
+                    <label>Heading</label>
+                    <input type="text" name="Heading" value="@Content.Get("Balanceability:Sections:0:TextContent:0:Heading")" />
+
+                    <label>Paragraph 1</label>
+                    <textarea name="Paragraph0">@Content.Get("Balanceability:Sections:0:TextContent:0:Paragraph")</textarea>
+
+                    <label>Paragraph 2</label>
+                    <textarea name="Paragraph1">@Content.Get("Balanceability:Sections:0:TextContent:1:Paragraph")</textarea>
+
+                    <label>Paragraph 3</label>
+                    <textarea name="Paragraph2">@Content.Get("Balanceability:Sections:0:TextContent:2:Paragraph")</textarea>
+
+                    <label>Paragraph 4</label>
+                    <textarea name="Paragraph3">@Content.Get("Balanceability:Sections:0:TextContent:3:Paragraph")</textarea>
+
+                    <label>Image Src</label>
+                    <input type="text" name="ImageSrc" value="@Content.Get("Balanceability:Sections:0:ImageContent:0:Src")" />
+
+                    <label>Image Alt Text</label>
+                    <input type="text" name="ImageAlt" value="@Content.Get("Balanceability:Sections:0:ImageContent:0:Alt")" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+
+            <div id="successMessage" style="display:none;color:green;margin-top:10px;"></div>
         </div>
     }
 
     <a href="/StaffArea/Logout">Logout</a>
 </section>
+
+@section Scripts {
+    <script>
+        document.getElementById("balanceabilityForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('@Url.Action("SaveBalanceability", "StaffArea")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                const msgDiv = document.getElementById("successMessage");
+                msgDiv.innerText = result.message;
+                msgDiv.style.display = "block";
+
+                // Hide after 3 seconds
+                setTimeout(() => msgDiv.style.display = "none", 3000);
+            } else {
+                alert(result.message);
+            }
+        });
+    </script>
+}
