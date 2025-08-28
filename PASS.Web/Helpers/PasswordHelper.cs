@@ -1,14 +1,17 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-public static class PasswordHelper
+namespace PASS.Web.Helpers
 {
-    public static string ComputeSha256Hash(string rawData)
+    public static class PasswordHelper
     {
-        using (SHA256 sha256 = SHA256.Create())
+        public static string ComputeSha256Hash(string rawData)
         {
-            byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+                return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+            }
         }
     }
 }
