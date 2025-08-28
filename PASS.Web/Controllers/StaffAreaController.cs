@@ -173,6 +173,42 @@ namespace PASS.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UploadImage(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Json(new { success = false, message = "No file selected." });
+
+            // Upload file and get SAS URL
+            var sasUri = await _blobService.UploadFileWithSasUrlAsync("cms-content", file.FileName, file.OpenReadStream(), file.ContentType, 20);
+
+            // Update your JSON automatically (example for first image in Balanceability)
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+            var jsonText = System.IO.File.ReadAllText(path);
+            var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText);
+
+            var balanceability = dict["Balanceability"].Deserialize<BalanceabilityWrapper>() ?? new BalanceabilityWrapper();
+            if (balanceability.Sections == null || balanceability.Sections.Length == 0)
+                balanceability.Sections = new[] { new BalanceabilitySection() };
+
+            balanceability.Sections[0].ImageContent = new[]
+            {
+        new ImageContentItem
+        {
+            Src = sasUri.ToString(),
+            Alt = file.FileName
+        }
+    };
+
+            dict["Balanceability"] = JsonSerializer.SerializeToElement(balanceability);
+            System.IO.File.WriteAllText(path, JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true }));
+
+            _contentService.Reload(); // ensure front-end sees the change immediately
+
+            return Json(new { success = true, message = "File uploaded and JSON updated!", url = sasUri.ToString() });
+        }
+
+
         // Wrapper to match JSON structure with Sections array
         public class BalanceabilityWrapper
         {
