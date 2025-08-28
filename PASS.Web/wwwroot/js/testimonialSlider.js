@@ -38,7 +38,7 @@
     let currentIndex = 0;
 
     function updateQuote(index) {
-        // Set the new quote and author
+        // Set the new quote and author with fade
         quoteText.style.opacity = 0;
         quoteAuthor.style.opacity = 0;
 
@@ -46,11 +46,9 @@
             quoteText.textContent = testimonials[index].text;
             quoteAuthor.textContent = testimonials[index].author;
 
-            // Fade-in the new quote and author
             quoteText.style.opacity = 1;
             quoteAuthor.style.opacity = 1;
 
-            // Update active class on dots
             quoteBtns.forEach((btn) => btn.classList.remove("active"));
             quoteBtns[index].classList.add("active");
         }, 250);
@@ -59,9 +57,33 @@
     // Add event listeners to the buttons
     quoteBtns.forEach((btn, index) => {
         btn.addEventListener("click", () => {
-            currentIndex = index; // Update currentIndex
-            updateQuote(currentIndex); // Call the function to update quote
+            currentIndex = index;
+            updateQuote(currentIndex);
         });
+    });
+
+    // --- Swipe Functionality ---
+    let startX = 0;
+    const display = document.querySelector(".testimonial-display");
+
+    display.addEventListener("touchstart", (e) => {
+        startX = e.touches[0].clientX;
+    });
+
+    display.addEventListener("touchend", (e) => {
+        const endX = e.changedTouches[0].clientX;
+        const diff = startX - endX;
+
+        if (Math.abs(diff) > 50) { // swipe threshold
+            if (diff > 0) {
+                // Swipe left → next
+                currentIndex = (currentIndex + 1) % testimonials.length;
+            } else {
+                // Swipe right → previous
+                currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+            }
+            updateQuote(currentIndex);
+        }
     });
 
     // Initialize the first quote and active dot
