@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace PASS.Web.Views.Home
+namespace PASS.Web.Views.StaffArea
 {
-    public class MembersAreaModel : PageModel
+    public class StaffLoginModel : PageModel
     {
         public void OnGet()
         {
