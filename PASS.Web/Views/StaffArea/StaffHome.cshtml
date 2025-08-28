@@ -5,23 +5,36 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/Members.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/StaffArea.css" asp-append-version="true" />
 }
 
-<h1>Welcome, @username</h1>
+<section class="staff-home-section">
+    <h1>Welcome, @username</h1>
 
-<p>This is the staff area.</p>
-
-@if (isAdmin)
-{
-    <div class="admin-section">
-        <h2>Admin Only Section</h2>
-        <p>Here you can see admin-specific content.</p>
+    <!-- Documents Section (both Staff & Admin) -->
+    <div class="staff-section documents-section">
+        <h2>Documents</h2>
+        <p>Access all staff documents here.</p>
+        <ul>
+            <li><a href="/downloads/staff-doc-1.pdf" target="_blank">Staff Document 1</a></li>
+            <li><a href="/downloads/staff-doc-2.pdf" target="_blank">Staff Document 2</a></li>
+        </ul>
     </div>
-}
-else
-{
-    <p>You are logged in as staff. Admin content is hidden.</p>
-}
 
-<a href="/StaffArea/Logout">Logout</a>
+    <!-- Information Section (both Staff & Admin) -->
+    <div class="staff-section info-section">
+        <h2>Information</h2>
+        <p>General staff information and announcements.</p>
+    </div>
+
+    @if (isAdmin)
+    {
+        <!-- Content Section (Admin Only) -->
+        <div class="staff-section admin-content-section">
+            <h2>Content</h2>
+            <p>Admin-only content management tools and reports.</p>
+        </div>
+    }
+
+    <a href="/StaffArea/Logout">Logout</a>
+</section>

@@ -1,0 +1,84 @@
+﻿/* Main Staff Area Section */
+.staff-home-section {
+    padding: 50px 30px;
+    background: #f6faff;
+    color: #003366;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Individual Sections */
+.staff-section {
+    background: #ffffff;
+    padding: 25px 30px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+    .staff-section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+        color: #003366;
+    }
+
+    .staff-section p {
+        font-size: 1rem;
+        margin-bottom: 15px;
+        color: #555555;
+    }
+
+    .staff-section ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .staff-section ul li {
+            margin-bottom: 8px;
+        }
+
+            .staff-section ul li a {
+                text-decoration: none;
+                color: #0073cf;
+                background: #f6faff;
+                padding: 6px 10px;
+                border-radius: 5px;
+                display: inline-block;
+                transition: background 0.2s;
+            }
+
+                .staff-section ul li a:hover {
+                    background: #e6f0ff;
+                }
+
+/* Logout Link */
+.staff-home-section a.logout-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #003366;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+    .staff-home-section a.logout-btn:hover {
+        background-color: #0055aa;
+    }
+
+/* Responsive Layout */
+@media (max-width: 900px) {
+    .staff-home-section {
+        padding: 30px 15px;
+    }
+
+    .staff-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .staff-section p {
+        font-size: 0.95rem;
+    }
+}
