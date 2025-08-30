@@ -510,6 +510,7 @@
     <Folder Include="docs\wwwroot\React\" />
     <Folder Include="obj\" />
     <Folder Include="wwwroot\Assets\Icons\" />
+    <Folder Include="wwwroot\Assets\NewFolder\" />
     <Folder Include="wwwroot\React\" />
   </ItemGroup>
 
