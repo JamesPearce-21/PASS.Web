@@ -519,4 +519,10 @@
     <None Include="wwwroot\Assets\Images\PASS Logo.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\**\*.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
