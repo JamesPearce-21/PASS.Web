@@ -520,9 +520,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\**\*.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Update="Views\**\*.cshtml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
+  </PropertyGroup>
 
 </Project>
