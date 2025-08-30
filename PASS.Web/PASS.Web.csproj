@@ -518,8 +518,4 @@
     <None Include="wwwroot\Assets\Images\PASS Logo.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
-  </ItemGroup>
-
 </Project>
