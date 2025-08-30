@@ -2,16 +2,16 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-# Copy csproj and restore
-COPY *.csproj ./
-RUN dotnet restore
+# Copy the csproj and restore dependencies
+COPY PASS.Web.csproj ./
+RUN dotnet restore PASS.Web.csproj
 
-# Copy the rest of the code and publish
+# Copy the rest of the project
 COPY . ./
-RUN dotnet publish -c Release -o out
+RUN dotnet publish PASS.Web.csproj -c Release -o out
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out ./
-ENTRYPOINT ["dotnet", "Pass.Web.dll"]
+ENTRYPOINT ["dotnet", "PASS.Web.dll"]
