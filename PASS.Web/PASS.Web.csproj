@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseAppHost>false</UseAppHost>
+    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
 
   <ItemGroup>
@@ -522,9 +524,5 @@
   <ItemGroup>
     <Content Update="Views\**\*.cshtml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
-  </PropertyGroup>
 
 </Project>
