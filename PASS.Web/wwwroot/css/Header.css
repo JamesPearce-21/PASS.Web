@@ -199,6 +199,8 @@ body {
     align-items: center;
     padding: 15px 0;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative; /* or fixed if you want it sticky */
+    z-index: 1000; /* high enough to be above top-banner */
 }
 
     /* Override nav link styles for white text */
@@ -305,6 +307,11 @@ body {
     justify-content: center;
     flex-wrap: nowrap; /* prevent wrapping */
     overflow: hidden; /* avoids overflow issues */
+    top: 100%; /* right below the menu-bar */
+    left: 0;
+    width: 100%;
+    background-color: #003366;
+    z-index: 1100; /* above everything else */
 }
 
 /* Allow nav links to shrink */
@@ -328,12 +335,19 @@ body {
 /* Scrollable nav on small screens */
 @media (max-width: 768px) {
     .navbar-nav {
-        display: flex;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        justify-content: flex-start; /* ✅ align items left */
-        -webkit-overflow-scrolling: touch; /* smooth swipe */
-        scrollbar-width: none; /* hide scrollbar Firefox */
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
+        flex-direction: column;
+        align-items: center;
+    }
+
+        .navbar-nav.open {
+            max-height: 1000px; /* enough to show all links */
+        }
+
+    .nav-item {
+        margin: 10px 0;
     }
 
         .navbar-nav::-webkit-scrollbar {
@@ -346,4 +360,65 @@ body {
     }
 }
 
+/* Hamburger button */
+.burger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 28px;
+    height: 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1100; /* above nav */
+}
 
+    .burger span {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background: white;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .burger {
+        display: flex;
+    }
+
+    .navbar-nav {
+        position: absolute;
+        top: 100%; /* below menu-bar */
+        left: 0;
+        width: 100%;
+        background-color: #003366;
+        flex-direction: column;
+        align-items: center;
+        max-height: 0; /* collapsed by default */
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
+    }
+
+        .navbar-nav.open {
+            max-height: 500px; /* large enough to show all items */
+        }
+
+    .nav-item {
+        margin: 10px 0; /* vertical spacing in dropdown */
+    }
+}
+
+.burger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.burger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
