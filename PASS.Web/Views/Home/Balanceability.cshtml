@@ -6,26 +6,21 @@
     <link rel="stylesheet" href="~/css/Balanceability.css" asp-append-version="true" />
 }
 
+@inject PASS.Web.Services.ContentService Content
+
 <section class="balanceability-section">
     <div class="balanceability-grid">
         <div class="text-content">
-            <h1 class="fade-in">Balanceability</h1>
-            <p class="lead fade-in delay-1">
-                Balanceability combines the unique ergonomic balance bikes with a schedule of fun activities that build confidence, spatial awareness, and dynamic balance skills, enabling young children to learn to cycle without ever needing stabilisers.
-            </p>
-            <p class="fade-in delay-2">
-                We have helped hundreds of children across Kent learn to ride a bike over the last 12 months, often in just a few sessions! Our instructors have the insight, training, and experience to support your children and pick out the key elements they need to work on to take them from being nervous on their bike to riding confidently within weeks.
-            </p>
-            <p class="fade-in delay-3">
-                Learning to cycle is a key life skill for children to pick up, so let us help you get them started and then enjoy watching your pupils develop the confidence to ride unaided.
-            </p>
-            <p class="fade-in delay-4">
-                Balanceability courses and workshops are included in our silver and gold annual memberships, and additional bolt-on’s are available.
-            </p>
+            <h1 class="fade-in">@Content.Get("Balanceability:Sections:0:TextContent:0:Heading")</h1>
+            <p class="lead fade-in delay-1">@Content.Get("Balanceability:Sections:0:TextContent:0:Paragraph")</p>
+            <p class="fade-in delay-2">@Content.Get("Balanceability:Sections:0:TextContent:1:Paragraph")</p>
+            <p class="fade-in delay-3">@Content.Get("Balanceability:Sections:0:TextContent:2:Paragraph")</p>
+            <p class="fade-in delay-4">@Content.Get("Balanceability:Sections:0:TextContent:3:Paragraph")</p>
         </div>
         <div class="image-content fade-in delay-5">
             <div class="image-card">
-                <img src="/Assets/Images/balanceability-header.jpg" alt="Child learning to ride a balance bike">
+                <img src="@Content.Get("Balanceability:Sections:0:ImageContent:0:Src")"
+                     alt="@Content.Get("Balanceability:Sections:0:ImageContent:0:Alt")"/>
             </div>
         </div>
     </div>

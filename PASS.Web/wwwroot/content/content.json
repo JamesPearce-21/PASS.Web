@@ -1,0 +1,32 @@
+{
+  "Balanceability": {
+    "Sections": [
+      {
+        "TextContent": [
+          {
+            "Heading": "Balanceability",
+            "Paragraph": ""
+          },
+          {
+            "Heading": null,
+            "Paragraph": "Balanceability combines the unique ergonomic balance bikes with a schedule of fun activities that build confidence, spatial awareness, and dynamic balance skills, enabling young children to learn to cycle without ever needing stabilisers."
+          },
+          {
+            "Heading": null,
+            "Paragraph": "We have helped hundreds of children across Kent learn to ride a bike over the last 12 months, often in just a few sessions! Our instructors have the insight, training, and experience to support your children and pick out the key elements they need to work on to take them from being nervous on their bike to riding confidently within weeks."
+          },
+          {
+            "Heading": null,
+            "Paragraph": "Learning to cycle is a key life skill for children to pick up, so let us help you get them started and then enjoy watching your pupils develop the confidence to ride unaided."
+          }
+        ],
+        "ImageContent": [
+          {
+            "Src": "https://passweb.blob.core.windows.net/cms-content/balanceability-header.jpeg?sp=r\u0026st=2025-08-28T10:32:21Z\u0026se=2045-08-28T18:47:21Z\u0026spr=https\u0026sv=2024-11-04\u0026sr=b\u0026sig=Cut6E2nZ3VdaoXLyxsPMmjvslsY9j6CKY36lhDBYtik%3D",
+            "Alt": "Child learning to ride a balance bike"
+          }
+        ]
+      }
+    ]
+  }
+}
