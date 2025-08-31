@@ -151,6 +151,14 @@ h1, h2, h3 {
     animation-delay: 0.8s;
 }
 
+.delay-5 {
+    animation-delay: 0.9s;
+}
+
+.delay-6 {
+    animation-delay: 1.2s;
+}
+
 /* ============================ */
 /* RESPONSIVE */
 /* ============================ */
