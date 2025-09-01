@@ -2,27 +2,44 @@
 /* GENERAL STYLES */
 /* ============================ */
 .cpd-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap; /* allows stacking on small screens */
     padding: 60px 30px;
     background-color: #f6faff;
     color: #003366;
     text-align: center;
 }
 
-.cpd-intro h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
+    .cpd-section > div img {
+        width: 300px; /* smaller images */
+        height: auto;
+        border-radius: 8px; /* optional styling */
+    }
+
+.cpd-intro {
+    max-width: 600px;
 }
 
-.cpd-intro p {
-    font-size: 1.1rem;
-    color: #555;
-    margin-bottom: 25px;
-}
+    .cpd-intro h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+
+    .cpd-intro p {
+        font-size: 1.1rem;
+        color: #555;
+        margin-bottom: 25px;
+    }
 
 /* ============================ */
 /* DOWNLOAD BUTTON */
 /* ============================ */
 .cpd-download {
+    flex-basis: 100%; /* push button to full row under text/images */
+    text-align: center;
     margin-top: 40px;
 }
 
@@ -44,7 +61,11 @@
 /* ============================ */
 /* RESPONSIVE */
 /* ============================ */
-@media (max-width: 768px) {
+@media (max-width: 1324px) {
+    .cpd-section {
+        flex-direction: column; /* stack images + text vertically */
+    }
+
     .cpd-intro h1 {
         font-size: 2rem;
     }
