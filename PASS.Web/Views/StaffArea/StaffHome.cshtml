@@ -5,7 +5,7 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/StaffArea.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/StaffArea.css" asp-append-version="true" />
 }
 
 @inject PASS.Web.Services.ContentService Content
@@ -31,7 +31,7 @@
 
     @if (isAdmin)
     {
-        <!-- Admin-only Balanceability Editor -->
+        @* <!-- Admin-only Balanceability Editor -->
         <div class="staff-section admin-balanceability-section">
             <h2>Edit Balanceability Content</h2>
 
@@ -63,7 +63,7 @@
             </form>
 
             <div id="successMessage" style="display:none;color:green;margin-top:10px;"></div>
-        </div>
+        </div> *@
     }
 
     <a href="/StaffArea/Logout">Logout</a>
