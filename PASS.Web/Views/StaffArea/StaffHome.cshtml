@@ -70,30 +70,30 @@
 </section>
 
 @section Scripts {
-        <script>
-            document.getElementById("balanceabilityForm").addEventListener("submit", async function (e) {
-                e.preventDefault();
+    <script>
+        document.getElementById("balanceabilityForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
 
-                const formData = new FormData(this);
-                const data = Object.fromEntries(formData.entries());
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
 
-                const response = await fetch('@Url.Action("SaveBalanceability", "StaffArea")', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-                if (result.success) {
-                    const msgDiv = document.getElementById("successMessage");
-                    msgDiv.innerText = result.message;
-                    msgDiv.style.display = "block";
-
-                    // Hide after 3 seconds
-                    setTimeout(() => msgDiv.style.display = "none", 3000);
-                } else {
-                    alert(result.message);
-                }
+            const response = await fetch('@Url.Action("SaveBalanceability", "StaffArea")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
             });
-        </script>
+
+            const result = await response.json();
+            if (result.success) {
+                const msgDiv = document.getElementById("successMessage");
+                msgDiv.innerText = result.message;
+                msgDiv.style.display = "block";
+
+                // Hide after 3 seconds
+                setTimeout(() => msgDiv.style.display = "none", 3000);
+            } else {
+                alert(result.message);
+            }
+        });
+    </script>
 }
