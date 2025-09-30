@@ -32,103 +32,75 @@
 
     @if (isAdmin)
     {
-        <!-- Admin-only Balanceability Editor -->
-        <div class="staff-section admin-balanceability-section">
-            <h2>Edit Balanceability Content</h2>
-
-            <form id="balanceabilityForm">
-                <div class="balanceability-editor">
-                    <label>Heading</label>
-                    <input type="text" name="Heading" value="@Content.Get("Balanceability:Sections:0:TextContent:0:Heading")" />
-
-                    <label>Paragraph 1</label>
-                    <textarea name="Paragraph1">@Content.Get("Balanceability:Sections:0:TextContent:1:Paragraph")</textarea>
-
-                    <label>Paragraph 2</label>
-                    <textarea name="Paragraph2">@Content.Get("Balanceability:Sections:0:TextContent:2:Paragraph")</textarea>
-
-                    <label>Paragraph 3</label>
-                    <textarea name="Paragraph3">@Content.Get("Balanceability:Sections:0:TextContent:3:Paragraph")</textarea>
-
-                    <label>Paragraph 4</label>
-                    <textarea name="Paragraph4">@Content.Get("Balanceability:Sections:0:TextContent:4:Paragraph")</textarea>
-
-                    <label>Upload New Image</label>
-                    <input type="file" id="imageFile" name="ImageFile" accept="image/*" />
-
-                    <label>Current Image Src</label>
-                    <input type="text" id="imageSrc" name="ImageSrc"
-                           value="@Content.Get("Balanceability:Sections:0:ImageContent:0:Src")"
-                           readonly />
-
-                    <label>Image Alt Text</label>
-                    <input type="text" name="ImageAlt"
-                           value="@Content.Get("Balanceability:Sections:0:ImageContent:0:Alt")" />
-                </div>
-
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-            </form>
-
-            <div id="successMessage" style="display:none;color:green;margin-top:10px;"></div>
-        </div>
+        @Html.Partial("_SectionEditor", new SectionEditorModel
+        {
+            Title = "Balanceability",
+            SectionKey = "Balanceability",
+            ParagraphCount = 4,
+            SectionWrapper = Content.GetWrapper("Balanceability")
+        })
+        
+                @Html.Partial("_SectionEditor", new SectionEditorModel
+        {
+            Title = "Bikeability",
+            SectionKey = "Bikeability",
+            ParagraphCount = 8,
+            SectionWrapper = Content.GetWrapper("Bikeability")
+        })
     }
+
 
     <a href="/StaffArea/Logout">Logout</a>
 </section>
 
 @section Scripts {
     <script>
-        document.getElementById("balanceabilityForm").addEventListener("submit", async function (e) {
-            e.preventDefault();
+        document.querySelectorAll('.sectionForm').forEach(form => {
+            const sectionKey = form.dataset.section;
+            const msgDiv = form.closest('.admin-section-editor').querySelector('.saveMessage');
 
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData.entries());
+            form.addEventListener('submit', async e => {
+                e.preventDefault();
 
-            const response = await fetch('@Url.Action("SaveBalanceability", "StaffArea")', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
+                const wrapper = { Sections: [{ TextContent: [], ImageContent: [] }] };
 
-            const result = await response.json();
-            if (result.success) {
-                const msgDiv = document.getElementById("successMessage");
-                msgDiv.innerText = result.message;
-                msgDiv.style.display = "block";
+                // Map TextContent
+                form.querySelectorAll("input[name^='TextContent'], textarea[name^='TextContent']").forEach(input => {
+                    const match = input.name.match(/TextContent\[(\d+)\]\.(Heading|Paragraph)/);
+                    if (!match) return;
+                    const index = parseInt(match[1]);
+                    const prop = match[2];
+                    wrapper.Sections[0].TextContent[index] = wrapper.Sections[0].TextContent[index] || { Heading: "", Paragraph: "" };
+                    wrapper.Sections[0].TextContent[index][prop] = input.value;
+                });
 
-                // Hide after 3 seconds
-                setTimeout(() => msgDiv.style.display = "none", 3000);
-            } else {
-                alert(result.message);
-            }
-        });
-    </script>
-    <script>
-        document.getElementById("imageFile").addEventListener("change", async function () {
-            const file = this.files[0];
-            if (!file) return;
+                // Map ImageContent
+                form.querySelectorAll("input[name^='ImageContent']").forEach(input => {
+                    const match = input.name.match(/ImageContent\[(\d+)\]\.(Src|Alt)/);
+                    if (!match) return;
+                    const index = parseInt(match[1]);
+                    const prop = match[2];
 
-            const formData = new FormData();
-            formData.append("file", file);
+                    // Ensure the object exists
+                    wrapper.Sections[0].ImageContent[index] = wrapper.Sections[0].ImageContent[index] || {};
 
-            try {
-                const res = await fetch('/StaffArea/UploadImage', {
+                    // Only set if the value is not empty (preserve existing Src)
+                    if (input.value) {
+                        wrapper.Sections[0].ImageContent[index][prop] = input.value;
+                    }
+                });
+
+                const res = await fetch(`/StaffArea/SaveSection?sectionKey=${sectionKey}`, {
                     method: 'POST',
-                    body: formData
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(wrapper)
                 });
 
                 const data = await res.json();
-                if (data.success) {
-                    // Update the ImageSrc textbox so it gets saved later
-                    document.getElementById("imageSrc").value = data.url;
-                    alert("Image uploaded successfully!");
-                } else {
-                    alert("Upload failed: " + data.message);
-                }
-            } catch (err) {
-                console.error(err);
-                alert("An error occurred during upload.");
-            }
+                msgDiv.innerText = data.message;
+                msgDiv.style.display = 'block';
+                setTimeout(() => msgDiv.style.display = 'none', 3000);
+            });
         });
     </script>
 }

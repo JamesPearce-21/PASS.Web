@@ -1,0 +1,126 @@
+﻿@model PASS.Web.Models.SectionEditorModel
+@inject PASS.Web.Services.ContentService Content
+
+@{
+    // Get the first section (or a new one if none exists)
+    var currentSection = Model.SectionWrapper.Sections.FirstOrDefault() ?? new PASS.Web.Models.Section();
+}
+
+<div class="staff-section admin-section-editor">
+    <h2>Edit @Model.Title</h2>
+
+    <form class="sectionForm" data-section="@Model.SectionKey" enctype="multipart/form-data">
+        <label>Heading</label>
+        <input type="text" name="TextContent[0].Heading"
+               value="@currentSection.TextContent.ElementAtOrDefault(0)?.Heading" />
+
+        @for (int i = 1; i < Model.ParagraphCount; i++)
+        {
+            <label>Paragraph @i</label>
+            <textarea name="TextContent[@i].Paragraph">@currentSection.TextContent.ElementAtOrDefault(i)?.Paragraph</textarea>
+        }
+
+        <label>Upload New Image</label>
+        <input type="file" class="imageFile" accept="image/*" />
+
+        <label>Current Image</label>
+        @if (currentSection.ImageContent.ElementAtOrDefault(0)?.Src != null)
+        {
+            <img src="@currentSection.ImageContent[0].Src" alt="@currentSection.ImageContent[0].Alt" style="max-width:200px; display:block; margin-bottom:10px;" />
+        }
+
+        <label>Image Alt Text</label>
+        <input type="text" name="ImageContent[0].Alt"
+               value="@currentSection.ImageContent.ElementAtOrDefault(0)?.Alt" />
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+
+    <div class="saveMessage" style="display:none;color:green;margin-top:10px;"></div>
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.sectionForm').forEach(form => {
+            const sectionKey = form.dataset.section;
+            const msgDiv = form.closest('.admin-section-editor').querySelector('.saveMessage');
+            const imageInput = form.querySelector('.imageFile');
+
+            // --- Save handler ---
+            form.addEventListener('submit', async e => {
+                e.preventDefault();
+
+                // Grab the current section data from the Razor model
+                const currentSectionData = @Html.Raw(Json.Serialize(Model.SectionWrapper.Sections.FirstOrDefault() ?? new PASS.Web.Models.Section()));
+
+                const wrapper = { Sections: [{ TextContent: [], ImageContent: [] }] };
+
+                // --- Preserve existing image URL ---
+                if (currentSectionData.ImageContent && currentSectionData.ImageContent[0]) {
+                    wrapper.Sections[0].ImageContent[0] = {
+                        Src: currentSectionData.ImageContent[0].Src, // keep URL
+                        Alt: currentSectionData.ImageContent[0].Alt
+                    };
+                } else {
+                    wrapper.Sections[0].ImageContent[0] = {};
+                }
+
+                // --- Update Alt only ---
+                const altInput = form.querySelector("input[name='ImageContent[0].Alt']");
+                if (altInput) {
+                    wrapper.Sections[0].ImageContent[0].Alt = altInput.value;
+                }
+
+                // --- Map TextContent ---
+                form.querySelectorAll("input[name^='TextContent'], textarea[name^='TextContent']").forEach(input => {
+                    const match = input.name.match(/TextContent\[(\d+)\]\.(Heading|Paragraph)/);
+                    if (!match) return;
+                    const index = parseInt(match[1]);
+                    const prop = match[2];
+                    wrapper.Sections[0].TextContent[index] = wrapper.Sections[0].TextContent[index] || {};
+                    wrapper.Sections[0].TextContent[index][prop] = input.value;
+                });
+
+                // --- Send to backend ---
+                const res = await fetch(`/StaffArea/SaveSection?sectionKey=${sectionKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(wrapper)
+                });
+
+                const data = await res.json();
+                msgDiv.innerText = data.message;
+                msgDiv.style.display = 'block';
+                setTimeout(() => msgDiv.style.display = 'none', 3000);
+            });
+
+
+
+            // --- Image upload handler ---
+            imageInput.addEventListener('change', async () => {
+                const file = imageInput.files[0];
+                if (!file) return;
+
+                const fd = new FormData();
+                fd.append('file', file);
+
+                const res = await fetch(`/StaffArea/UploadSectionImage?sectionKey=${sectionKey}`, {
+                    method: 'POST',
+                    body: fd
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    // Update image preview and Alt input
+                    const img = form.querySelector('img');
+                    if (img) img.src = data.url;
+                    wrapper.Sections[0].ImageContent[0].Src = data.url;
+                    alert('Image uploaded!');
+                } else {
+                    alert('Upload failed: ' + data.message);
+                }
+            });
+        });
+    </script>
+}
+

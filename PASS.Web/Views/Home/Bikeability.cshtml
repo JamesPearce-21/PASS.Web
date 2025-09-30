@@ -6,29 +6,26 @@
     <link rel="stylesheet" href="~/css/Bikeability.css" asp-append-version="true" />
 }
 
+@inject PASS.Web.Services.ContentService Content
+
 <section class="bikeability-section">
     <div class="bikeability-grid">
         <div class="text-content">
-            <h1 class="fade-in">Bikeability</h1>
-            <p class="lead fade-in delay-1">
-                Bikeability is the government's flagship national cycle training programme for children in England. The programme provides practical cycling skills training at various levels, helping participants feel confident when using a cycle on England's roads.
-            </p>
-            <p class="fade-in delay-2">
-                Bikeability cycle training equips children with vital life skills. Pupils not only learn to cycle, they gain independence, social skills, and a sense of wellbeing through our courses.
-            </p>
-            <p class="fade-in delay-3">
-                Our team of experienced Bikeability instructors can deliver the following courses:
-            </p>
+            <h1 class="fade-in">@Content.Get("Bikeability:Sections:0:TextContent:0:Heading")</h1>
+            <p class="lead fade-in delay-1">@Content.Get("Bikeability:Sections:0:TextContent:1:Paragraph")</p>
+            <p class="fade-in delay-2">@Content.Get("Bikeability:Sections:0:TextContent:2:Paragraph")</p>
+            <p class="fade-in delay-3">@Content.Get("Bikeability:Sections:0:TextContent:3:Paragraph")</p>
             <ul class="fade-in delay-4">
-                <li>Level One teaches basic skills and bicycle handling</li>
-                <li>Level Two gives children the skills they need to cycle safely to school on quiet roads</li>
-                <li>Level Three covers more complicated traffic environments</li>
+                <li>@Content.Get("Bikeability:Sections:0:TextContent:4:Paragraph")</li>
+                <li>@Content.Get("Bikeability:Sections:0:TextContent:5:Paragraph")</li>
+                <li>@Content.Get("Bikeability:Sections:0:TextContent:6:Paragraph")</li>
             </ul>
-            <p class="fade-in delay-4">Please contact us to book your Bikeability course.</p>
+            <p class="fade-in delay-4">@Content.Get("Bikeability:Sections:0:TextContent:7:Paragraph")</p>
         </div>
         <div class="image-content fade-in delay-5">
             <div class="image-card">
-                <img src="/Assets/Images/Bikeability logo.png" alt="Bikeability logo">
+                <img src="@Content.Get("Bikeability:Sections:0:ImageContent:0:Src")"
+                     alt="@Content.Get("Bikeability:Sections:0:ImageContent:0:Alt")">
             </div>
         </div>
     </div>
