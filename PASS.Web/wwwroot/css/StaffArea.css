@@ -171,3 +171,57 @@
     }
 }
 
+/* Admin Panel */
+.admin-panel {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* Tab Buttons */
+.tab-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    background: #f6faff;
+    border: 1px solid #ccc;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    font-weight: 600;
+    color: #003366;
+    transition: background 0.2s, color 0.2s;
+}
+
+    .tab-btn.active {
+        background: #0073cf;
+        color: #ffffff;
+        border-color: #0073cf;
+    }
+
+/* Tab Content */
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+}
+
+    .tab-content.active {
+        display: block;
+    }
+
+/* Fade in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
