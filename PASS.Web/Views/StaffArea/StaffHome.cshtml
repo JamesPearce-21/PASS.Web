@@ -53,11 +53,17 @@
                     <label>Paragraph 4</label>
                     <textarea name="Paragraph4">@Content.Get("Balanceability:Sections:0:TextContent:4:Paragraph")</textarea>
 
-                    <label>Image Src</label>
-                    <input type="text" name="ImageSrc" value="@Content.Get("Balanceability:Sections:0:ImageContent:0:Src")" />
+                    <label>Upload New Image</label>
+                    <input type="file" id="imageFile" name="ImageFile" accept="image/*" />
+
+                    <label>Current Image Src</label>
+                    <input type="text" id="imageSrc" name="ImageSrc"
+                           value="@Content.Get("Balanceability:Sections:0:ImageContent:0:Src")"
+                           readonly />
 
                     <label>Image Alt Text</label>
-                    <input type="text" name="ImageAlt" value="@Content.Get("Balanceability:Sections:0:ImageContent:0:Alt")" />
+                    <input type="text" name="ImageAlt"
+                           value="@Content.Get("Balanceability:Sections:0:ImageContent:0:Alt")" />
                 </div>
 
                 <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -94,6 +100,34 @@
                 setTimeout(() => msgDiv.style.display = "none", 3000);
             } else {
                 alert(result.message);
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("imageFile").addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch('/StaffArea/UploadImage', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    // Update the ImageSrc textbox so it gets saved later
+                    document.getElementById("imageSrc").value = data.url;
+                    alert("Image uploaded successfully!");
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred during upload.");
             }
         });
     </script>
