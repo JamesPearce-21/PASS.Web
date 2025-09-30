@@ -30,13 +30,16 @@ namespace PASS.Web.Controllers
             var username = HttpContext.Session.GetString("Username");
             var role = HttpContext.Session.GetString("Role");
 
+            // If logged in as staff or admin
             if (!string.IsNullOrEmpty(username) && (role == "Admin" || role == "Staff"))
             {
-                ViewBag.IsAdmin = role == "Admin";
+                bool isAdmin = role == "Admin";
+                ViewBag.IsAdmin = isAdmin; // pass to view
                 ViewBag.Username = username;
                 return View("StaffHome");
             }
 
+            // Otherwise show login form
             return View("StaffLogin");
         }
 
@@ -44,17 +47,19 @@ namespace PASS.Web.Controllers
         public IActionResult Login(string username, string password)
         {
             var accounts = _configuration.GetSection("UserAccounts").Get<List<UserAccount>>();
+
             var hashedPassword = PasswordHelper.ComputeSha256Hash(password.Trim());
 
             var user = accounts.FirstOrDefault(u =>
                 u.Username.Equals(username, System.StringComparison.OrdinalIgnoreCase)
                 && u.PasswordHash == hashedPassword
-                && (u.Role == "Admin" || u.Role == "Staff"));
+                && (u.Role == "Admin" || u.Role == "Staff")); // allow both roles
 
             if (user != null)
             {
                 HttpContext.Session.SetString("Username", user.Username);
                 HttpContext.Session.SetString("Role", user.Role);
+
                 return RedirectToAction("Index");
             }
 
@@ -83,92 +88,166 @@ namespace PASS.Web.Controllers
         public async Task<IActionResult> ListFiles()
         {
             var files = await _blobService.ListFilesAsync("staff-content");
-            return View(files);
+            return View(files); // Make a view to show them
         }
 
+
         [HttpPost]
-        public IActionResult SaveSection(string sectionKey, [FromBody] SectionWrapper wrapper)
+        public IActionResult SaveBalanceability([FromBody] BalanceabilityUpdateModel model)
         {
-            if (wrapper == null) return Json(new { success = false, message = "No data to save." });
+            if (model == null)
+                return Json(new { success = false, message = "Invalid data." });
 
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
-            var jsonText = System.IO.File.ReadAllText(path);
-            var dict = JsonSerializer.Deserialize<Dictionary<string, SectionWrapper>>(jsonText) ?? new();
-
-            var oldWrapper = dict.ContainsKey(sectionKey)
-                ? dict[sectionKey]
-                : new SectionWrapper();
-
-            // Preserve existing Src if no new file uploaded
-            for (int i = 0; i < wrapper.Sections.Length; i++)
+            try
             {
-                for (int j = 0; j < wrapper.Sections[i].ImageContent.Length; j++)
-                {
-                    if (string.IsNullOrEmpty(wrapper.Sections[i].ImageContent[j].Src))
-                    {
-                        wrapper.Sections[i].ImageContent[j].Src = oldWrapper.Sections.ElementAtOrDefault(i)?
-                            .ImageContent.ElementAtOrDefault(j)?.Src;
-                    }
-                }
-            }
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
 
-            // Now safe to overwrite
-            for (int i = 0; i < wrapper.Sections.Length; i++)
+                // Load existing JSON
+                var json = System.IO.File.ReadAllText(path);
+                var contentDict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }) ?? new Dictionary<string, JsonElement>();
+
+                // Prepare updated section
+                var updatedSection = new BalanceabilitySection
+                {
+                    TextContent = new[]
+                    {
+                new TextContentItem { Heading = model.Heading, Paragraph = "" },
+                new TextContentItem { Paragraph = model.Paragraph1 },
+                new TextContentItem { Paragraph = model.Paragraph2 },
+                new TextContentItem { Paragraph = model.Paragraph3 },
+                new TextContentItem { Paragraph = model.Paragraph4 }
+            },
+                    ImageContent = new[]
+                    {
+                new ImageContentItem { Src = model.ImageSrc, Alt = model.ImageAlt }
+            }
+                };
+
+                // Check if Balanceability key exists
+                if (contentDict.ContainsKey("Balanceability"))
+                {
+                    // Deserialize existing sections
+                    var balanceability = contentDict["Balanceability"].Deserialize<BalanceabilityWrapper>() ?? new BalanceabilityWrapper();
+
+                    if (balanceability.Sections == null || balanceability.Sections.Length == 0)
+                    {
+                        // Create first section
+                        balanceability.Sections = new[] { updatedSection };
+                    }
+                    else
+                    {
+                        // Update first section
+                        balanceability.Sections[0] = updatedSection;
+                    }
+
+                    // Replace Balanceability
+                    contentDict["Balanceability"] = JsonSerializer.SerializeToElement(balanceability);
+                }
+                else
+                {
+                    // Create new Balanceability with one section
+                    var balanceability = new BalanceabilityWrapper
+                    {
+                        Sections = new[] { updatedSection }
+                    };
+                    contentDict["Balanceability"] = JsonSerializer.SerializeToElement(balanceability);
+                }
+
+                // Write back to file
+                var newJson = JsonSerializer.Serialize(contentDict, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                });
+                System.IO.File.WriteAllText(path, newJson);
+
+                _contentService.Reload(); // implement this method
+
+                return Json(new { success = true, message = "Balanceability content saved successfully!" });
+            }
+            catch (Exception ex)
             {
-                for (int j = 0; j < wrapper.Sections[i].ImageContent.Length; j++)
-                {
-                    if (string.IsNullOrEmpty(wrapper.Sections[i].ImageContent[j].Src))
-                    {
-                        wrapper.Sections[i].ImageContent[j].Src = oldWrapper.Sections.ElementAtOrDefault(i)?
-                            .ImageContent.ElementAtOrDefault(j)?.Src;
-                    }
-                }
+                return Json(new { success = false, message = "Error saving content: " + ex.Message });
             }
-            dict[sectionKey] = wrapper;
-
-            System.IO.File.WriteAllText(path, JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true }));
-
-            _contentService.Reload();
-            return Json(new { success = true, message = $"{sectionKey} saved successfully!" });
         }
 
-
-
         [HttpPost]
-        public async Task<IActionResult> UploadSectionImage(string sectionKey, IFormFile file)
+        public async Task<IActionResult> UploadImage(IFormFile file)
         {
             if (file == null || file.Length == 0)
                 return Json(new { success = false, message = "No file selected." });
 
+            // Upload file and get SAS URL
             var sasUri = await _blobService.UploadFileWithSasUrlAsync("cms-content", file.FileName, file.OpenReadStream(), file.ContentType, 20);
 
+            // Update your JSON automatically (example for first image in Balanceability)
             var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
             var jsonText = System.IO.File.ReadAllText(path);
-            var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText) ?? new();
+            var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText);
 
-            var wrapper = dict.ContainsKey(sectionKey)
-                ? JsonSerializer.Deserialize<SectionWrapper>(dict[sectionKey].GetRawText())
-                : new SectionWrapper();
+            var balanceability = dict["Balanceability"].Deserialize<BalanceabilityWrapper>() ?? new BalanceabilityWrapper();
+            if (balanceability.Sections == null || balanceability.Sections.Length == 0)
+                balanceability.Sections = new[] { new BalanceabilitySection() };
 
-            if (wrapper.Sections.Length == 0) wrapper.Sections = new Section[] { new Section() };
-            wrapper.Sections[0].ImageContent = new ImageContentItem[] { new ImageContentItem { Src = sasUri.ToString(), Alt = file.FileName } };
+            balanceability.Sections[0].ImageContent = new[]
+            {
+        new ImageContentItem
+        {
+            Src = sasUri.ToString(),
+            Alt = file.FileName
+        }
+    };
 
+            dict["Balanceability"] = JsonSerializer.SerializeToElement(balanceability);
             System.IO.File.WriteAllText(path, JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true }));
-            _contentService.Reload();
 
-            return Json(new { success = true, url = sasUri.ToString(), message = "Image uploaded!" });
+            _contentService.Reload(); // ensure front-end sees the change immediately
+
+            return Json(new { success = true, message = "File uploaded and JSON updated!", url = sasUri.ToString() });
         }
 
-        // Models
-        public class GenericWrapper
+
+        // Wrapper to match JSON structure with Sections array
+        public class BalanceabilityWrapper
         {
-            public List<GenericSection> Sections { get; set; } = new();
+            public BalanceabilitySection[] Sections { get; set; }
         }
 
-        public class GenericSection
+
+        public class BalanceabilityUpdateModel
         {
-            public List<TextContentItem> TextContent { get; set; } = new();
-            public List<ImageContentItem> ImageContent { get; set; } = new();
+            public string Heading { get; set; }
+            public string Paragraph0 { get; set; }
+            public string Paragraph1 { get; set; }
+            public string Paragraph2 { get; set; }
+            public string Paragraph3 { get; set; }
+            public string Paragraph4 { get; set; }
+            public string ImageSrc { get; set; }
+            public string ImageAlt { get; set; }
+        }
+
+
+        public class TextContentItem
+        {
+            public string? Heading { get; set; }
+            public string Paragraph { get; set; }
+        }
+
+        public class ImageContentItem
+        {
+            public string Src { get; set; }
+            public string Alt { get; set; }
+        }
+
+        public class BalanceabilitySection
+        {
+            public TextContentItem[] TextContent { get; set; }
+            public ImageContentItem[] ImageContent { get; set; }
         }
     }
+
+
 }

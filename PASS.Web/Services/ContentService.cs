@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Text.Json;
-using PASS.Web.Models;
 
 namespace PASS.Web.Services
 {
@@ -53,29 +52,7 @@ namespace PASS.Web.Services
                 }
             }
 
-            return current.GetString();
+            return current.GetString() ?? "";
         }
-
-        public SectionWrapper GetWrapper(string sectionKey)
-        {
-            try
-            {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
-                if (!System.IO.File.Exists(path)) return new SectionWrapper();
-
-                var jsonText = System.IO.File.ReadAllText(path);
-                var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText) ?? new();
-
-                if (!dict.ContainsKey(sectionKey)) return new SectionWrapper();
-
-                var wrapper = JsonSerializer.Deserialize<SectionWrapper>(dict[sectionKey].GetRawText());
-                return wrapper ?? new SectionWrapper();
-            }
-            catch
-            {
-                return new SectionWrapper();
-            }
-        }
-
     }
 }
