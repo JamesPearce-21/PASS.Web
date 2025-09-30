@@ -114,10 +114,11 @@ namespace PASS.Web.Controllers
                 {
                     TextContent = new[]
                     {
-                new TextContentItem { Heading = model.Heading, Paragraph = model.Paragraph0 },
+                new TextContentItem { Heading = model.Heading, Paragraph = "" },
                 new TextContentItem { Paragraph = model.Paragraph1 },
                 new TextContentItem { Paragraph = model.Paragraph2 },
-                new TextContentItem { Paragraph = model.Paragraph3 }
+                new TextContentItem { Paragraph = model.Paragraph3 },
+                new TextContentItem { Paragraph = model.Paragraph4 }
             },
                     ImageContent = new[]
                     {
@@ -223,6 +224,7 @@ namespace PASS.Web.Controllers
             public string Paragraph1 { get; set; }
             public string Paragraph2 { get; set; }
             public string Paragraph3 { get; set; }
+            public string Paragraph4 { get; set; }
             public string ImageSrc { get; set; }
             public string ImageAlt { get; set; }
         }
