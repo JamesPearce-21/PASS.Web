@@ -210,6 +210,134 @@ namespace PASS.Web.Controllers
         }
 
 
+        [HttpPost]
+        public IActionResult SaveBikeability([FromBody] BikeabilityUpdateModel model)
+        {
+            if (model == null)
+                return Json(new { success = false, message = "Invalid data." });
+
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+
+                // Load existing JSON
+                var json = System.IO.File.ReadAllText(path);
+                var contentDict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }) ?? new Dictionary<string, JsonElement>();
+
+                // Prepare updated section
+                var updatedSection = new BikeabilitySection
+                {
+                    TextContent = new[]
+                    {
+                new TextContentItem { Heading = model.Heading, Paragraph = "" },
+                new TextContentItem { Paragraph = model.Paragraph1 },
+                new TextContentItem { Paragraph = model.Paragraph2 },
+                new TextContentItem { Paragraph = model.Paragraph3 },
+                new TextContentItem { Paragraph = model.ListItem1 },
+                new TextContentItem { Paragraph = model.ListItem2 },
+                new TextContentItem { Paragraph = model.ListItem3 },
+                new TextContentItem { Paragraph = model.Paragraph4 }
+            },
+                    ImageContent = new[]
+                    {
+                new ImageContentItem { Src = model.ImageSrc, Alt = model.ImageAlt }
+            }
+                };
+
+                // Check if Bikeability key exists
+                if (contentDict.ContainsKey("Bikeability"))
+                {
+                    // Deserialize existing sections
+                    var bikeability = contentDict["Bikeability"].Deserialize<BikeabilityWrapper>() ?? new BikeabilityWrapper();
+
+                    if (bikeability.Sections == null || bikeability.Sections.Length == 0)
+                    {
+                        // Create first section
+                        bikeability.Sections = new[] { updatedSection };
+                    }
+                    else
+                    {
+                        // Update first section
+                        bikeability.Sections[0] = updatedSection;
+                    }
+
+                    // Replace Bikeability
+                    contentDict["Bikeability"] = JsonSerializer.SerializeToElement(bikeability);
+                }
+                else
+                {
+                    // Create new Bikeability with one section
+                    var bikeability = new BikeabilityWrapper
+                    {
+                        Sections = new[] { updatedSection }
+                    };
+                    contentDict["Bikeability"] = JsonSerializer.SerializeToElement(bikeability);
+                }
+
+                // Write back to file
+                var newJson = JsonSerializer.Serialize(contentDict, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                });
+                System.IO.File.WriteAllText(path, newJson);
+
+                _contentService.Reload(); // make sure this reloads the JSON in memory
+
+                return Json(new { success = true, message = "Bikeability content saved successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error saving content: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadBikeabilityImage(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Json(new { success = false, message = "No file selected." });
+
+            // Upload file to Blob Storage and get SAS URL
+            var sasUri = await _blobService.UploadFileWithSasUrlAsync("cms-content", file.FileName, file.OpenReadStream(), file.ContentType, 20);
+
+            // Load existing JSON
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+            var jsonText = System.IO.File.ReadAllText(path);
+            var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText);
+
+            // Get existing Bikeability data or create new
+            var bikeability = dict["Bikeability"].Deserialize<BikeabilityWrapper>() ?? new BikeabilityWrapper();
+            if (bikeability.Sections == null || bikeability.Sections.Length == 0)
+                bikeability.Sections = new[] { new BikeabilitySection() };
+
+            // Update first section's image
+            bikeability.Sections[0].ImageContent = new[]
+            {
+        new ImageContentItem
+        {
+            Src = sasUri.ToString(),
+            Alt = file.FileName
+        }
+    };
+
+            // Save back to dictionary
+            dict["Bikeability"] = JsonSerializer.SerializeToElement(bikeability);
+
+            // Write updated JSON to file
+            System.IO.File.WriteAllText(path, JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true }));
+
+            // Reload content service
+            _contentService.Reload();
+
+            return Json(new { success = true, message = "File uploaded and JSON updated!", url = sasUri.ToString() });
+        }
+
+
+
         // Wrapper to match JSON structure with Sections array
         public class BalanceabilityWrapper
         {
@@ -243,6 +371,34 @@ namespace PASS.Web.Controllers
         }
 
         public class BalanceabilitySection
+        {
+            public TextContentItem[] TextContent { get; set; }
+            public ImageContentItem[] ImageContent { get; set; }
+        }
+
+        // Wrapper for all Bikeability sections
+        public class BikeabilityWrapper
+        {
+            public BikeabilitySection[] Sections { get; set; }
+        }
+
+        // Model used when posting updates from the admin panel
+        public class BikeabilityUpdateModel
+        {
+            public string Heading { get; set; }
+            public string Paragraph1 { get; set; }
+            public string Paragraph2 { get; set; }
+            public string Paragraph3 { get; set; }
+            public string ListItem1 { get; set; }
+            public string ListItem2 { get; set; }
+            public string ListItem3 { get; set; }
+            public string Paragraph4 { get; set; }
+            public string ImageSrc { get; set; }
+            public string ImageAlt { get; set; }
+        }
+
+        // Single section in Bikeability JSON
+        public class BikeabilitySection
         {
             public TextContentItem[] TextContent { get; set; }
             public ImageContentItem[] ImageContent { get; set; }

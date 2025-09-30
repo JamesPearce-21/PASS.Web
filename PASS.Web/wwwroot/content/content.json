@@ -32,5 +32,51 @@
         ]
       }
     ]
+  },
+  "Bikeability": {
+    "Sections": [
+      {
+        "TextContent": [
+          {
+            "Heading": "Bikeability",
+            "Paragraph": ""
+          },
+          {
+            "Heading": null,
+            "Paragraph": "TESTING Bikeability is the government\u0027s flagship national cycle training programme for children in England. The programme provides practical cycling skills training at various levels, helping participants feel confident when using a cycle on England\u0027s roads."
+          },
+          {
+            "Heading": null,
+            "Paragraph": "Bikeability cycle training equips children with vital life skills. Pupils not only learn to cycle, they gain independence, social skills, and a sense of wellbeing through our courses."
+          },
+          {
+            "Heading": null,
+            "Paragraph": "Our team of experienced Bikeability instructors can deliver the following courses:"
+          },
+          {
+            "Heading": null,
+            "Paragraph": "Level One teaches basic skills and bicycle handling"
+          },
+          {
+            "Heading": null,
+            "Paragraph": "Level Two gives children the skills they need to cycle safely to school on quiet roads"
+          },
+          {
+            "Heading": null,
+            "Paragraph": "Level Three covers more complicated traffic environments"
+          },
+          {
+            "Heading": null,
+            "Paragraph": "Please contact us to book your Bikeability course."
+          }
+        ],
+        "ImageContent": [
+          {
+            "Src": "https://passweb.blob.core.windows.net/cms-content/Bikeability logo.png?sv=2025-07-05\u0026se=2045-09-30T16%3A33%3A23Z\u0026sr=b\u0026sp=r\u0026sig=CZvIITEOnjXFjeqIroLBtlcD69%2FiOPyv%2BwCHcyYty0Q%3D",
+            "Alt": "Bikeability logo.png"
+          }
+        ]
+      }
+    ]
   }
 }
