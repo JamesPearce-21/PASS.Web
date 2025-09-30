@@ -38,35 +38,51 @@
 
             <form id="balanceabilityForm">
                 <div class="balanceability-editor">
-                    <label>Heading</label>
-                    <input type="text" name="Heading" value="@Content.Get("Balanceability:Sections:0:TextContent:0:Heading")" />
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="Heading" value="@Content.Get("Balanceability:Sections:0:TextContent:0:Heading")" />
+                    </div>
 
-                    <label>Paragraph 1</label>
-                    <textarea name="Paragraph1">@Content.Get("Balanceability:Sections:0:TextContent:1:Paragraph")</textarea>
+                    <div class="form-group">
+                        <label>Paragraph 1</label>
+                        <textarea name="Paragraph1">@Content.Get("Balanceability:Sections:0:TextContent:1:Paragraph")</textarea>
+                    </div>
 
-                    <label>Paragraph 2</label>
-                    <textarea name="Paragraph2">@Content.Get("Balanceability:Sections:0:TextContent:2:Paragraph")</textarea>
+                    <div class="form-group">
+                        <label>Paragraph 2</label>
+                        <textarea name="Paragraph2">@Content.Get("Balanceability:Sections:0:TextContent:2:Paragraph")</textarea>
+                    </div>
 
-                    <label>Paragraph 3</label>
-                    <textarea name="Paragraph3">@Content.Get("Balanceability:Sections:0:TextContent:3:Paragraph")</textarea>
+                    <div class="form-group">
+                        <label>Paragraph 3</label>
+                        <textarea name="Paragraph3">@Content.Get("Balanceability:Sections:0:TextContent:3:Paragraph")</textarea>
+                    </div>
 
-                    <label>Paragraph 4</label>
-                    <textarea name="Paragraph4">@Content.Get("Balanceability:Sections:0:TextContent:4:Paragraph")</textarea>
+                    <div class="form-group">
+                        <label>Paragraph 4</label>
+                        <textarea name="Paragraph4">@Content.Get("Balanceability:Sections:0:TextContent:4:Paragraph")</textarea>
+                    </div>
 
-                    <label>Upload New Image</label>
-                    <input type="file" id="imageFile" name="ImageFile" accept="image/*" />
+                    <div class="form-group" style="display: none;">
+                        <label>Current Image Src</label>
+                        <input type="text" id="imageSrc" name="ImageSrc" value="@Content.Get("Balanceability:Sections:0:ImageContent:0:Src")" readonly />
+                    </div>
 
-                    <label>Current Image Src</label>
-                    <input type="text" id="imageSrc" name="ImageSrc"
-                           value="@Content.Get("Balanceability:Sections:0:ImageContent:0:Src")"
-                           readonly />
+                    <div class="form-group">
+                        <label>Current Image Preview</label>
+                        <img id="imagePreview" src="@Content.Get("Balanceability:Sections:0:ImageContent:0:Src")"
+                             alt="@Content.Get("Balanceability:Sections:0:ImageContent:0:Alt")" />
+                    </div>
 
-                    <label>Image Alt Text</label>
-                    <input type="text" name="ImageAlt"
-                           value="@Content.Get("Balanceability:Sections:0:ImageContent:0:Alt")" />
+
+                    <div class="form-group">
+                        <label>Upload New Image</label>
+                        <input type="file" id="imageFile" name="ImageFile" accept="image/*" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Save Changes</button>
             </form>
 
             <div id="successMessage" style="display:none;color:green;margin-top:10px;"></div>
@@ -121,6 +137,11 @@
                 if (data.success) {
                     // Update the ImageSrc textbox so it gets saved later
                     document.getElementById("imageSrc").value = data.url;
+
+                    // Update the image preview
+                    const preview = document.getElementById("imagePreview");
+                    preview.src = data.url;
+
                     alert("Image uploaded successfully!");
                 } else {
                     alert("Upload failed: " + data.message);

@@ -82,3 +82,92 @@
         font-size: 0.95rem;
     }
 }
+
+/* Admin Balanceability Editor */
+.admin-balanceability-section {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+    .admin-balanceability-section h2 {
+        font-size: 2rem;
+        color: #003366;
+        margin-bottom: 25px;
+    }
+
+.balanceability-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+    .balanceability-editor .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .balanceability-editor label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #003366;
+    }
+
+    .balanceability-editor input[type="text"],
+    .balanceability-editor input[type="file"],
+    .balanceability-editor textarea {
+        padding: 10px 12px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+        .balanceability-editor input[type="text"]:focus,
+        .balanceability-editor textarea:focus {
+            border-color: #0073cf;
+            box-shadow: 0 0 4px rgba(0, 115, 207, 0.3);
+            outline: none;
+        }
+
+    .balanceability-editor textarea {
+        min-height: 80px;
+        resize: vertical;
+    }
+
+    .balanceability-editor img#imagePreview {
+        max-width: 300px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        object-fit: contain;
+    }
+
+    .balanceability-editor button.btn-primary {
+        align-self: flex-start;
+        padding: 12px 25px;
+        font-size: 1rem;
+        background-color: #0073cf;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+        .balanceability-editor button.btn-primary:hover {
+            background-color: #005bb5;
+        }
+
+/* Success message */
+#successMessage {
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .balanceability-editor img#imagePreview {
+        max-width: 100%;
+    }
+}
+
