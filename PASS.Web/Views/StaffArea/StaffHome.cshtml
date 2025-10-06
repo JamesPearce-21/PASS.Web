@@ -188,6 +188,11 @@
                         <textarea name="Paragraph4">@Content.Get("ContactUs:Sections:0:TextContent:4:Paragraph")</textarea>
                     </div>
 
+                    <div class="form-group">
+                        <label>Paragraph 5</label>
+                        <textarea name="Paragraph4">@Content.Get("ContactUs:Sections:0:TextContent:5:Paragraph")</textarea>
+                    </div>
+
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                 </div>
             </form>
@@ -218,10 +223,100 @@
             <div id="successMessagePrivacyPolicy" style="display:none;color:green;margin-top:10px;"></div>
         </div>
 
+        <!-- Admin-only Training Editor -->
+        <div class="staff-section admin-section">
+            <h2>Edit Training Content</h2>
+
+            <form id="trainingForm">
+                <div class="admin-editor">
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="Heading" value="@Content.Get("Training:Sections:0:TextContent:0:Heading")" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 1</label>
+                        <textarea name="Paragraph1">@Content.Get("Training:Sections:0:TextContent:1:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 2</label>
+                        <textarea name="Paragraph2">@Content.Get("Training:Sections:0:TextContent:2:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 3</label>
+                        <textarea name="Paragraph3">@Content.Get("Training:Sections:0:TextContent:3:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 4</label>
+                        <textarea name="Paragraph4">@Content.Get("Training:Sections:0:TextContent:4:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group" style="display: none;">
+                        <label>Current Image Src 1</label>
+                        <input type="text" id="imageSrcTraining1" name="ImageSrc" value="@Content.Get("Training:Sections:0:ImageContent:0:Src")" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Image Preview</label>
+                        <img id="imagePreviewTraining1" src="@Content.Get("Training:Sections:0:ImageContent:0:Src")"
+                             alt="@Content.Get("Training:Sections:0:ImageContent:0:Alt")" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload New Image</label>
+                        <input type="file" id="imageFileTraining1" name="ImageFile" accept="image/*" />
+                    </div>
+
+                    <div class="form-group" style="display: none;">
+                        <label>Current Image Src 2</label>
+                        <input type="text" id="imageSrcTraining2" name="ImageSrc" value="@Content.Get("Training:Sections:0:ImageContent:1:Src")" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Image Preview</label>
+                        <img id="imagePreviewTraining2" src="@Content.Get("Training:Sections:0:ImageContent:1:Src")"
+                             alt="@Content.Get("Training:Sections:0:ImageContent:1:Alt")" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload New Image</label>
+                        <input type="file" id="imageFileTraining2" name="ImageFile" accept="image/*" />
+                    </div>
+
+                    <div class="form-group" style="display: none;">
+                        <label>Current Document Src</label>
+                        <input type="text" id="documentSrcTraining" name="ImageSrc" value="@Content.Get("Training:Sections:0:DownloadableContent:0:Src")" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Document:</label>
+                            <p id="documentPreviewTraining">@Content.Get("Training:Sections:0:DownloadableContent:0:Src")</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload New Document</label>
+                        <input type="file" id="documentFileTraining" name="ImageFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+
+            <div id="successMessageTraining" style="display:none;color:green;margin-top:10px;"></div>
+        </div>
+
     }
 
     <a href="/StaffArea/Logout">Logout</a>
 </section>
+
+
+
+
+
 
 @section Scripts {
     <script>
@@ -328,6 +423,32 @@
             }
         });
     </script>
+    <script>
+        document.getElementById("trainingForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('@Url.Action("SaveTraining", "StaffArea")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                const msgDiv = document.getElementById("successMessageTraining");
+                msgDiv.innerText = result.message;
+                msgDiv.style.display = "block";
+
+                // Hide after 3 seconds
+                setTimeout(() => msgDiv.style.display = "none", 3000);
+            } else {
+                alert(result.message);
+            }
+        });
+    </script>
 
     <script>
         document.getElementById("imageFile").addEventListener("change", async function () {
@@ -395,5 +516,105 @@
             }
         });
     </script>
+    <script>
+        document.getElementById("imageFileTraining1").addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch('/StaffArea/UploadTrainingImage', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    // Update the hidden ImageSrc textbox
+                    document.getElementById("imageSrcTraining1").value = data.url;
+
+                    // Update the image preview
+                    const preview = document.getElementById("imagePreviewTraining1");
+                    preview.src = data.url;
+
+                    alert("Training images uploaded successfully!");
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred during upload.");
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("imageFileTraining2").addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch('/StaffArea/UploadTrainingImage1', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    // Update the hidden ImageSrc textbox
+                    document.getElementById("imageSrcTraining2").value = data.url;
+
+                    // Update the image preview
+                    const preview = document.getElementById("imagePreviewTraining2");
+                    preview.src = data.url;
+
+                    alert("Training images uploaded successfully!");
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred during upload.");
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("documentFileTraining").addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch('/StaffArea/UploadTrainingDocument', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    // Update the hidden ImageSrc textbox
+                    document.getElementById("documentSrcTraining").value = data.url;
+
+                    // Update the image preview
+                    const preview = document.getElementById("documentPreviewTraining");
+                    preview.src = data.url;
+
+                    alert("Training document uploaded successfully!");
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred during upload.");
+            }
+        });
+    </script>
+
 
 }

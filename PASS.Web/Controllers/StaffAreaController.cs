@@ -363,7 +363,8 @@ namespace PASS.Web.Controllers
                 new TextContentItem { Paragraph = model.Paragraph1 },
                 new TextContentItem { Paragraph = model.Paragraph2 },
                 new TextContentItem { Paragraph = model.Paragraph3 },
-                new TextContentItem { Paragraph = model.Paragraph4 }
+                new TextContentItem { Paragraph = model.Paragraph4 },
+                new TextContentItem { Paragraph = model.Paragraph5 }
             },
                     ImageContent = new[]
                     {
@@ -542,7 +543,272 @@ namespace PASS.Web.Controllers
             }
         }
 
+        // Training:
 
+        [HttpPost]
+        public IActionResult SaveTraining([FromBody] TrainingUpdateModel model)
+        {
+            if (model == null)
+                return Json(new { success = false, message = "Invalid data." });
+
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+
+                // Load existing JSON
+                var json = System.IO.File.ReadAllText(path);
+                var contentDict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }) ?? new Dictionary<string, JsonElement>();
+
+                // Prepare updated section
+                var updatedSection = new TrainingSection
+                {
+                    TextContent = new[]
+                    {
+                new TextContentItem { Heading = model.Heading, Paragraph = "" },
+                new TextContentItem { Paragraph = model.Paragraph1 },
+                new TextContentItem { Paragraph = model.Paragraph2 },
+                new TextContentItem { Paragraph = model.Paragraph3 },
+                new TextContentItem { Paragraph = model.Paragraph4 }
+            },
+                    ImageContent = new[]
+                    {
+                new ImageContentItem { Src = model.ImageSrc, Alt = model.ImageAlt },
+                new ImageContentItem { Src = model.ImageSrc1, Alt = model.ImageAlt1 }
+            },
+                    DownloadableContent = new[]
+                    {
+                new DownloadableContentItem { Src = model.DownloadableSrc, Alt = model.DownloadableAlt }
+            }
+                };
+
+                // Check if Training key exists
+                if (contentDict.ContainsKey("Training"))
+                {
+                    // Deserialize existing sections
+                    var training = contentDict["Training"].Deserialize<TrainingWrapper>() ?? new TrainingWrapper();
+
+                    if (training.Sections == null || training.Sections.Length == 0)
+                    {
+                        // Create first section
+                        training.Sections = new[] { updatedSection };
+                    }
+                    else
+                    {
+                        // Update first section
+                        training.Sections[0] = updatedSection;
+                    }
+
+                    // Replace Training
+                    contentDict["Training"] = JsonSerializer.SerializeToElement(training);
+                }
+                else
+                {
+                    // Create new Training with one section
+                    var training = new TrainingWrapper
+                    {
+                        Sections = new[] { updatedSection }
+                    };
+                    contentDict["Training"] = JsonSerializer.SerializeToElement(training);
+                }
+
+                // Write back to file
+                var newJson = JsonSerializer.Serialize(contentDict, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                });
+                System.IO.File.WriteAllText(path, newJson);
+
+                _contentService.Reload(); // make sure this reloads the JSON in memory
+
+                return Json(new { success = true, message = "Training content saved successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error saving content: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadTrainingImage(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Json(new { success = false, message = "No file selected." });
+
+            // Upload file to Blob Storage and get SAS URL
+            var sasUri = await _blobService.UploadFileWithSasUrlAsync(
+                "cms-content",
+                file.FileName,
+                file.OpenReadStream(),
+                file.ContentType,
+                20
+            );
+
+            // Load existing JSON
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+            var jsonText = System.IO.File.ReadAllText(path);
+            var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText);
+
+            // Get existing Training data or create new
+            var training = dict.ContainsKey("Training")
+                ? dict["Training"].Deserialize<TrainingWrapper>() ?? new TrainingWrapper()
+                : new TrainingWrapper();
+
+            if (training.Sections == null || training.Sections.Length == 0)
+                training.Sections = new[] { new TrainingSection() };
+
+            // Update first section's image
+            training.Sections[0].ImageContent = new[]
+            {
+        new ImageContentItem
+        {
+            Src = sasUri.ToString(),
+            Alt = file.FileName
+        }
+    };
+
+            // Save back to dictionary
+            dict["Training"] = JsonSerializer.SerializeToElement(training);
+
+            // Write updated JSON to file
+            System.IO.File.WriteAllText(
+                path,
+                JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true })
+            );
+
+            // Reload content service
+            _contentService.Reload();
+
+            return Json(new { success = true, message = "File uploaded and JSON updated!", url = sasUri.ToString() });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadTrainingImage1(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Json(new { success = false, message = "No file selected." });
+
+            // Upload file to Blob Storage and get SAS URL
+            var sasUri = await _blobService.UploadFileWithSasUrlAsync(
+                "cms-content",
+                file.FileName,
+                file.OpenReadStream(),
+                file.ContentType,
+                20
+            );
+
+            // Load existing JSON
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+            var jsonText = System.IO.File.ReadAllText(path);
+            var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText);
+
+            // Get existing Training data or create new
+            var training = dict.ContainsKey("Training")
+                ? dict["Training"].Deserialize<TrainingWrapper>() ?? new TrainingWrapper()
+                : new TrainingWrapper();
+
+            if (training.Sections == null || training.Sections.Length == 0)
+                training.Sections = new[] { new TrainingSection() };
+
+            // Update first section's image
+            training.Sections[0].ImageContent[1] = new ImageContentItem
+            {
+                Src = sasUri.ToString(),
+                Alt = file.FileName
+            };
+
+            // Save back to dictionary
+            dict["Training"] = JsonSerializer.SerializeToElement(training);
+
+            // Write updated JSON to file
+            System.IO.File.WriteAllText(
+                path,
+                JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true })
+            );
+
+            // Reload content service
+            _contentService.Reload();
+
+            return Json(new { success = true, message = "File uploaded and JSON updated!", url = sasUri.ToString() });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadTrainingDocument(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Json(new { success = false, message = "No file selected." });
+
+            // Upload file to Blob Storage and get SAS URL
+            var sasUri = await _blobService.UploadFileWithSasUrlAsync(
+                "cms-content",
+                file.FileName,
+                file.OpenReadStream(),
+                file.ContentType,
+                20
+            );
+
+            // Load existing JSON
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+            var jsonText = System.IO.File.ReadAllText(path);
+            var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText);
+
+            // Get existing Training data or create new
+            var training = dict.ContainsKey("Training")
+                ? dict["Training"].Deserialize<TrainingWrapper>() ?? new TrainingWrapper()
+                : new TrainingWrapper();
+
+            if (training.Sections == null || training.Sections.Length == 0)
+                training.Sections = new[] { new TrainingSection() };
+
+            // Update first section's image
+            training.Sections[0].DownloadableContent = new[]
+            {
+        new DownloadableContentItem
+        {
+            Src = sasUri.ToString(),
+            Alt = file.FileName
+        }
+    };
+
+
+            // Save back to dictionary
+            dict["Training"] = JsonSerializer.SerializeToElement(training);
+
+            // Write updated JSON to file
+            System.IO.File.WriteAllText(
+                path,
+                JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true })
+            );
+
+            // Reload content service
+            _contentService.Reload();
+
+            return Json(new { success = true, message = "File uploaded and JSON updated!", url = sasUri.ToString() });
+        }
+
+
+        // Models:
+
+        public class TextContentItem
+        {
+            public string? Heading { get; set; }
+            public string Paragraph { get; set; }
+        }
+
+        public class ImageContentItem
+        {
+            public string Src { get; set; }
+            public string Alt { get; set; }
+        }
+
+        public class DownloadableContentItem
+        {
+            public string Src { get; set; }
+            public string Alt { get; set; }
+        }
 
         // Wrapper to match JSON structure with Sections array
         public class BalanceabilityWrapper
@@ -556,7 +822,6 @@ namespace PASS.Web.Controllers
             public ImageContentItem[] ImageContent { get; set; }
         }
 
-
         public class BalanceabilityUpdateModel
         {
             public string Heading { get; set; }
@@ -567,19 +832,6 @@ namespace PASS.Web.Controllers
             public string Paragraph4 { get; set; }
             public string ImageSrc { get; set; }
             public string ImageAlt { get; set; }
-        }
-
-
-        public class TextContentItem
-        {
-            public string? Heading { get; set; }
-            public string Paragraph { get; set; }
-        }
-
-        public class ImageContentItem
-        {
-            public string Src { get; set; }
-            public string Alt { get; set; }
         }
 
         // Wrapper for all Bikeability sections
@@ -629,6 +881,7 @@ namespace PASS.Web.Controllers
             public string Paragraph2 { get; set; }
             public string Paragraph3 { get; set; }
             public string Paragraph4 { get; set; }
+            public string Paragraph5 { get; set; }
             public string ImageSrc { get; set; }
             public string ImageAlt { get; set; }
         }
@@ -653,5 +906,35 @@ namespace PASS.Web.Controllers
             public string ImageSrc { get; set; }
             public string ImageAlt { get; set; }
         }
+
+        // Training
+
+        public class TrainingWrapper
+        {
+            public TrainingSection[] Sections { get; set; }
+        }
+
+        public class TrainingSection
+        {
+            public TextContentItem[] TextContent { get; set; }
+            public ImageContentItem[] ImageContent { get; set; }
+            public DownloadableContentItem[] DownloadableContent { get; set; }
+        }
+
+        public class TrainingUpdateModel
+        {
+            public string Heading { get; set; }
+            public string Paragraph1 { get; set; }
+            public string Paragraph2 { get; set; }
+            public string Paragraph3 { get; set; }
+            public string Paragraph4 { get; set; }
+            public string ImageSrc { get; set; }
+            public string ImageAlt { get; set; }
+            public string ImageSrc1 { get; set; }
+            public string ImageAlt1 { get; set; }
+            public string DownloadableSrc { get; set; }
+            public string DownloadableAlt { get; set; }
+        }
+
     }
 }

@@ -102,6 +102,10 @@
           {
             "Heading": null,
             "Paragraph": "info@passltd.org"
+          },
+          {
+            "Heading": null,
+            "Paragraph": "mailto:info@passltd.org"
           }
         ],
         "ImageContent": [
@@ -130,6 +134,50 @@
           {
             "Src": null,
             "Alt": null
+          }
+        ]
+      }
+    ]
+  },
+  "Training": {
+    "Sections": [
+      {
+        "TextContent": [
+          {
+            "Heading": "CPD \u0026 Training",
+            "Paragraph": ""
+          },
+          {
+            "Heading": null,
+            "Paragraph": "PASS offers a wide range of continuous professional development (CPD) courses and workshops designed to upskill staff and build confidence in delivering high-quality PE lessons."
+          },
+          {
+            "Heading": null,
+            "Paragraph": "Our training programmes cater to a variety of roles, including specific courses for PE subject leads, school governors, and staff involved in playtime activities and extracurricular opportunities. These sessions ensure that all staff are equipped to enhance the PE experience and contribute to the physical development of pupils."
+          },
+          {
+            "Heading": null,
+            "Paragraph": "Along with central venues and virtual workshops, PASS also offers a bespoke service whereby schools can receive tailored support through full day, half day, or twilight staff sessions\u2014delivered in the comfort of your own school hall."
+          },
+          {
+            "Heading": null,
+            "Paragraph": "Get in touch with us today to discuss your school\u2019s needs and how we can create a programme that works best for you."
+          }
+        ],
+        "ImageContent": [
+          {
+            "Src": "/Assets/Images/217.JPG",
+            "Alt": "217.JPG"
+          },
+          {
+            "Src": "/Assets/Images/219.JPG",
+            "Alt": "219.JPG"
+          }
+        ],
+        "DownloadableContent": [
+          {
+            "Src": "https://passweb.blob.core.windows.net/cms-content/KS1 OAA - Follow My Route Resource.pdf?sv=2025-07-05\u0026se=2045-10-06T11%3A00%3A26Z\u0026sr=b\u0026sp=r\u0026sig=w3qpyzdhMxmldLEaQ1F91AtoCSr61u4YO0A%2FFCXKpLo%3D",
+            "Alt": "KS1 OAA - Follow My Route Resource.pdf"
           }
         ]
       }
