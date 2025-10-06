@@ -7,6 +7,7 @@ using PASS.Web.Models;
 using PASS.Web.Helpers;
 using PASS.Web.Services;
 using System.Text.Json;
+using static PASS.Web.Controllers.StaffAreaController;
 
 namespace PASS.Web.Controllers
 {
@@ -1218,6 +1219,68 @@ namespace PASS.Web.Controllers
         }
 
 
+        // Events:
+
+        [HttpPost]
+        public IActionResult SaveEvents([FromBody] EventsUpdateModel model)
+        {
+            if (model == null || model.Events == null)
+                return Json(new { success = false, message = "Invalid data." });
+
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+                if (!System.IO.File.Exists(path))
+                    return Json(new { success = false, message = "Content file not found." });
+
+                // Read full JSON file
+                var jsonText = System.IO.File.ReadAllText(path);
+                var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText)
+                            ?? new Dictionary<string, JsonElement>();
+
+                // Check if Events already exists, otherwise create placeholder
+                JsonElement eventsElement;
+                if (!dict.TryGetValue("Events", out eventsElement))
+                {
+                    dict["Events"] = JsonSerializer.SerializeToElement(new { Sections = new object[] { new { TextContent = new object[] { } } } });
+                }
+
+                // Deserialize existing Events section to preserve intro
+                var existingEvents = dict["Events"].Deserialize<EventsWrapper>()
+                                     ?? new EventsWrapper { Sections = new List<EventSection> { new EventSection { TextContent = new List<EventItem>() } } };
+
+                // Keep intro (first 4 items) and append/replace user-added events
+                var introItems = existingEvents.Sections[0].TextContent
+                                  .Take(4) // first 4 items are intro paragraphs
+                                  .ToList();
+
+                var newEventItems = model.Events.Select(e => new EventItem
+                {
+                    Heading = e.Heading,
+                    Paragraph = e.Paragraph,
+                    Status = e.Status,
+                    BookingUrl = e.BookingUrl
+                }).ToList();
+
+                existingEvents.Sections[0].TextContent = introItems.Concat(newEventItems).ToList();
+
+                // Serialize back into JSON element
+                dict["Events"] = JsonSerializer.SerializeToElement(existingEvents);
+
+                // Write updated JSON
+                var newJson = JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true });
+                System.IO.File.WriteAllText(path, newJson);
+
+                _contentService.Reload(); // reload in-memory content
+
+                return Json(new { success = true, message = "Events saved successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error saving events: " + ex.Message });
+            }
+        }
+
 
 
 
@@ -1520,6 +1583,36 @@ namespace PASS.Web.Controllers
             public TextContentItem[] TextContent { get; set; }
         }
 
+        // Events
 
+        public class EventItemModel
+        {
+            public string Heading { get; set; }
+            public string Paragraph { get; set; }
+            public string Status { get; set; }    // e.g., "Coming Soon", "Open", "Closed"
+            public string BookingUrl { get; set; }
+        }
+
+        public class EventsUpdateModel
+        {
+            public List<EventItemModel> Events { get; set; } = new();
+        }
+        public class EventItem
+        {
+            public string Heading { get; set; }
+            public string Paragraph { get; set; }
+            public string Status { get; set; }
+            public string BookingUrl { get; set; }
+        }
+
+        public class EventSection
+        {
+            public List<EventItem> TextContent { get; set; }
+        }
+
+        public class EventsWrapper
+        {
+            public List<EventSection> Sections { get; set; }
+        }
     }
 }

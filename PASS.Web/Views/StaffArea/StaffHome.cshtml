@@ -531,6 +531,84 @@
             <div id="successMessageMemberships" style="display:none;color:green;margin-top:10px;"></div>
         </div>
 
+        // Events:
+
+        <!-- Admin-only Events Editor -->
+<div class="staff-section admin-section">
+    <h2>Edit Events</h2>
+
+    <form id="eventsForm">
+        <div class="admin-editor">
+            <!-- Intro Section -->
+            <div class="form-group">
+                <label>Intro Heading</label>
+                <input type="text" name="IntroHeading" value="@Content.Get("Events:Sections:0:TextContent:0:Heading")" />
+            </div>
+
+            <div class="form-group">
+                <label>Intro Paragraph 1</label>
+                <textarea name="IntroParagraph1">@Content.Get("Events:Sections:0:TextContent:1:Paragraph")</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Intro Paragraph 2</label>
+                <textarea name="IntroParagraph2">@Content.Get("Events:Sections:0:TextContent:2:Paragraph")</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Intro Paragraph 3</label>
+                <textarea name="IntroParagraph3">@Content.Get("Events:Sections:0:TextContent:3:Paragraph")</textarea>
+            </div>
+
+            <!-- Dynamic Events -->
+            <div id="eventsContainer">
+                @{
+                    int c = 4; // events start at index 4
+                    while (true)
+                    {
+                        var heading = Content.Get($"Events:Sections:0:TextContent:{c}:Heading");
+                        var paragraph = Content.Get($"Events:Sections:0:TextContent:{c}:Paragraph");
+                        var status = Content.Get($"Events:Sections:0:TextContent:{c}:Status");
+                        var bookingUrl = Content.Get($"Events:Sections:0:TextContent:{c}:BookingUrl");
+
+                        if (string.IsNullOrWhiteSpace(heading) && string.IsNullOrWhiteSpace(paragraph))
+                        {
+                            break; // stop if there are no more events
+                        }
+
+                        <text>
+                            <div class="form-group event-group">
+                                <label>Event Heading</label>
+                                <input type="text" name="Events[@c].Heading" value="@heading" />
+
+                                <label>Event Description</label>
+                                <textarea name="Events[@c].Paragraph">@paragraph</textarea>
+
+                                <label>Status</label>
+                                        <select name="Events[@c].Status">
+                                            <option value="Coming Soon" selected="@(status == "Coming Soon")">Coming Soon</option>
+                                            <option value="Open" selected="@(status == "Open")">Open</option>
+                                            <option value="Closed" selected="@(status == "Closed")">Closed</option>
+                                        </select>
+
+                                <label>Booking URL</label>
+                                <input type="text" name="Events[@c].BookingUrl" value="@bookingUrl" />
+
+                                <button type="button" class="btn btn-danger remove-event" style="margin-top:5px;">Remove Event</button>
+                            </div>
+                        </text>
+                        c++;
+                    }
+                }
+            </div>
+
+            <button type="button" id="addEvent" class="btn btn-secondary" style="margin-top:10px;">Add Event</button>
+            <button type="submit" class="btn btn-primary" style="margin-top:10px;">Save Changes</button>
+        </div>
+    </form>
+
+    <div id="successMessageEvents" style="display:none;color:green;margin-top:10px;"></div>
+</div>
 
 
     }
@@ -628,6 +706,102 @@
             });
         });
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const container = document.getElementById("eventsContainer");
+            const addBtn = document.getElementById("addEvent");
+            const form = document.getElementById("eventsForm");
+
+            function updateIndices() {
+                container.querySelectorAll(".event-group").forEach((div, index) => {
+                    div.querySelector('input[name^="Events"][name$=".Heading"]').name = `Events[${index}].Heading`;
+                    div.querySelector('textarea[name^="Events"][name$=".Paragraph"]').name = `Events[${index}].Paragraph`;
+                    div.querySelector('select[name^="Events"][name$=".Status"]').name = `Events[${index}].Status`;
+                    div.querySelector('input[name^="Events"][name$=".BookingURL"]').name = `Events[${index}].BookingUrl`;
+                });
+            }
+
+            addBtn.addEventListener("click", () => {
+                const div = document.createElement("div");
+                div.className = "form-group event-group";
+                div.innerHTML = `
+                    <label>Event Name & Date</label>
+                    <input type="text" name="Events[].Heading" value="" />
+
+                    <label>Description</label>
+                    <textarea name="Events[].Paragraph"></textarea>
+
+        <div class="form-group event-group">
+            <label>Status</label>
+            <select name="Events[].Status">
+                <option value="coming-soon">Coming Soon</option>
+                <option value="open">Open</option>
+                <option value="closed">Closed</option>
+            </select>
+        </div>
+
+                    <label>Booking URL</label>
+                    <input type="text" name="Events[].BookingURL" value="" />
+
+                    <button type="button" class="btn btn-danger remove-event">Remove</button>
+                    <hr />
+                `;
+                container.appendChild(div);
+                updateIndices();
+            });
+
+            container.addEventListener("click", (e) => {
+                if (e.target.classList.contains("remove-event")) {
+                    e.target.closest(".event-group").remove();
+                    updateIndices();
+                }
+            });
+
+            // Only bind to this specific form
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const events = [];
+                container.querySelectorAll(".event-group").forEach(div => {
+                    const headingInput = div.querySelector('input[name$=".Heading"]');
+                    const paragraphInput = div.querySelector('textarea[name$=".Paragraph"]');
+                    const statusSelect = div.querySelector('select[name$=".Status"]');
+                    const bookingInput = div.querySelector('input[name$=".BookingURL"]');
+
+                    const heading = headingInput ? headingInput.value.trim() : "";
+                    const paragraph = paragraphInput ? paragraphInput.value.trim() : "";
+                    const status = statusSelect ? statusSelect.value : "";
+                    const bookingUrl = bookingInput ? bookingInput.value.trim() : "";
+
+                    events.push({ Heading: heading, Paragraph: paragraph, Status: status, BookingUrl: bookingUrl });
+                });
+
+                try {
+                    const response = await fetch('@Url.Action("SaveEvents", "StaffArea")', {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ Events: events })
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        const msgDiv = document.getElementById("successMessageEvents");
+                        msgDiv.innerText = result.message;
+                        msgDiv.style.display = "block";
+                        setTimeout(() => (msgDiv.style.display = "none"), 3000);
+                    } else {
+                        alert(result.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("An error occurred during submission.");
+                }
+            });
+
+        });
+    </script>
+
+
 
     <script>
         document.getElementById("balanceabilityForm").addEventListener("submit", async function (e) {
