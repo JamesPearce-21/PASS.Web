@@ -182,5 +182,47 @@
         ]
       }
     ]
+  },
+  "TheTeam": {
+    "Sections": [
+      {
+        "TextContent": [
+          {
+            "Heading": "Meet Our Team",
+            "Paragraph": "We\u2019re a passionate group dedicated to helping children thrive through physical activity and fun."
+          },
+          {
+            "Heading": "Laura Rookard",
+            "Paragraph": "Director \u2014 Laura is one of the directors, leading the team to deliver high-quality PE and school sport services."
+          },
+          {
+            "Heading": "Sarah Hopkins",
+            "Paragraph": "Director \u2014 Sarah is passionate about providing impactful physical education services and leading various initiatives."
+          },
+          {
+            "Heading": "Demi Piper",
+            "Paragraph": "PASS Consultant \u2014 Demi provides consultancy for physical activity programs and works closely with schools across the region."
+          },
+          {
+            "Heading": "Tom Gear",
+            "Paragraph": "PASS Consultant \u2014 Tom works with schools to implement successful and engaging PE programs with measurable impact."
+          },
+          {
+            "Heading": "Hayley Tyler",
+            "Paragraph": "PASS Consultant (part-time) \u2014 Hayley supports schools with bespoke PE training and part-time consultancy for ongoing development."
+          },
+          {
+            "Heading": "Claire Garforth",
+            "Paragraph": "PASS Consultant (part-time) \u2014 Claire contributes her expertise in physical education, supporting schools with innovative approaches to PE."
+          }
+        ],
+        "ImageContent": [
+          {
+            "Src": null,
+            "Alt": null
+          }
+        ]
+      }
+    ]
   }
 }

@@ -308,6 +308,50 @@
             <div id="successMessageTraining" style="display:none;color:green;margin-top:10px;"></div>
         </div>
 
+        //The Team:
+
+        <!-- Admin-only TheTeam Editor -->
+        <div class="staff-section admin-section">
+            <h2>Edit Team Members</h2>
+
+            <form id="teamForm">
+                <div id="teamMembersContainer" class="admin-editor">
+                    @{
+                        int i = 1; // start after the intro
+                        while (true)
+                        {
+                            var heading = Content.Get($"TheTeam:Sections:0:TextContent:{i}:Heading");
+                            var paragraph = Content.Get($"TheTeam:Sections:0:TextContent:{i}:Paragraph");
+
+                            if (string.IsNullOrWhiteSpace(paragraph))
+                            {
+                                break; // stop if no more members
+                            }
+
+                            <text>
+                                <div class="form-group team-member-group">
+                                    <label>Team Member Name</label>
+                                    <input type="text" name="Members[@i].Heading" value="@heading" />
+
+                                    <label>Job Title & Description</label>
+                                    <textarea name="Members[@i].Paragraph">@paragraph</textarea>
+
+                                    <button type="button" class="btn btn-danger remove-member">Remove</button>
+                                </div>
+                            </text>
+
+                            i++;
+                        }
+                    }
+                </div>
+
+                <button type="button" id="addTeamMember" class="btn btn-secondary" style="margin-top:10px;">Add Team Member</button>
+                <button type="submit" class="btn btn-primary" style="margin-top:10px;">Save Changes</button>
+            </form>
+
+            <div id="successMessageTeam" style="display:none;color:green;margin-top:10px;"></div>
+        </div>
+
     }
 
     <a href="/StaffArea/Logout">Logout</a>
@@ -319,6 +363,92 @@
 
 
 @section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const container = document.getElementById("teamMembersContainer");
+            const addBtn = document.getElementById("addTeamMember");
+            const form = document.getElementById("teamForm");
+
+            // Function to update input names after add/remove
+            function updateMemberIndices() {
+                container.querySelectorAll(".team-member-group").forEach((div, index) => {
+                    div.querySelector('input[name^="Members"]').name = `Members[${index}].Heading`;
+                    div.querySelector('textarea[name^="Members"]').name = `Members[${index}].Paragraph`;
+                });
+            }
+
+            // Add new team member dynamically
+            addBtn.addEventListener("click", () => {
+                const div = document.createElement("div");
+                div.className = "form-group team-member-group";
+                div.innerHTML = `
+                    <label>Team Member Name</label>
+                    <input type="text" name="Members[].Heading" value="" />
+
+                    <label>Job Title & Description</label>
+                    <textarea name="Members[].Paragraph"></textarea>
+
+                    <button type="button" class="btn btn-danger remove-member">Remove</button>
+                `;
+
+                container.appendChild(div);
+                updateMemberIndices();
+            });
+
+            // Remove team member
+            container.addEventListener("click", (e) => {
+                if (e.target.classList.contains("remove-member")) {
+                    e.target.closest(".team-member-group").remove();
+                    updateMemberIndices();
+                }
+            });
+
+            // Handle form submission
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const members = [];
+                container.querySelectorAll(".team-member-group").forEach((div) => {
+                    const headingInput = div.querySelector('input[name^="Members"]');
+                    const paragraphInput = div.querySelector('textarea[name^="Members"]');
+                    if (!headingInput || !paragraphInput) return;
+
+                    members.push({
+                        Heading: headingInput.value.trim(),
+                        Paragraph: paragraphInput.value.trim()
+                    });
+                });
+
+                if (!members.length) {
+                    alert("Please add at least one team member before saving.");
+                    return;
+                }
+
+                try {
+                    const response = await fetch('@Url.Action("SaveTheTeam", "StaffArea")', {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ Members: members })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        const msgDiv = document.getElementById("successMessageTeam");
+                        msgDiv.innerText = result.message;
+                        msgDiv.style.display = "block";
+                        setTimeout(() => (msgDiv.style.display = "none"), 3000);
+                    } else {
+                        alert(result.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("An error occurred during submission.");
+                }
+            });
+        });
+    </script>
+
     <script>
         document.getElementById("balanceabilityForm").addEventListener("submit", async function (e) {
             e.preventDefault();

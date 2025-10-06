@@ -6,57 +6,45 @@
     <link rel="stylesheet" href="~/css/Team.css" asp-append-version="true" />
 }
 
+@inject PASS.Web.Services.ContentService Content
+
 @section Scripts {
     <script src="~/js/team.js" asp-append-version="true"></script>
 }
 
 <section class="team-section">
     <div class="team-intro">
-        <h1>Meet Our Team</h1>
-        <p>We’re a passionate group dedicated to helping children thrive through physical activity and fun.</p>
+        <h1>@Content.Get("TheTeam:Sections:0:TextContent:0:Heading")</h1>
+        <p>@Content.Get("TheTeam:Sections:0:TextContent:0:Paragraph")</p>
     </div>
 
     <div class="team-card-grid">
-        <!-- Team Member 1 -->
-        <div class="team-card">
-            <h3>Laura Rookard</h3>
-            <p class="job-title">Director</p>
-            <p>Laura is one of the directors, leading the team to deliver high-quality PE and school sport services.</p>
-        </div>
+        @{
+            int i = 1; // start after the intro
+            while (true)
+            {
+                var heading = Content.Get($"TheTeam:Sections:0:TextContent:{i}:Heading");
+                var paragraph = Content.Get($"TheTeam:Sections:0:TextContent:{i}:Paragraph");
 
-        <!-- Team Member 2 -->
-        <div class="team-card">
-            <h3>Sarah Hopkins</h3>
-            <p class="job-title">Director</p>
-            <p>Sarah is passionate about providing impactful physical education services and leading various initiatives.</p>
-        </div>
+                if (string.IsNullOrWhiteSpace(paragraph))
+                {
+                    break; // stop loop if no more team members
+                }
 
-        <!-- Team Member 3 -->
-        <div class="team-card">
-            <h3>Demi Piper</h3>
-            <p class="job-title">PASS Consultant</p>
-            <p>Demi provides consultancy for physical activity programs and works closely with schools across the region.</p>
-        </div>
+                // Split job title from description
+                var parts = paragraph.Split(" — ", 2);
+                var jobTitle = parts.Length > 1 ? parts[0] : "";
+                var description = parts.Length > 1 ? parts[1] : paragraph;
 
-        <!-- Team Member 4 -->
-        <div class="team-card">
-            <h3>Tom Gear</h3>
-            <p class="job-title">PASS Consultant</p>
-            <p>Tom works with schools to implement successful and engaging PE programs with measurable impact.</p>
-        </div>
+                // Output HTML inside the code block
+                <div class="team-card">
+                    <h3>@heading</h3>
+                    <p class="job-title">@jobTitle</p>
+                    <p>@description</p>
+                </div>
 
-        <!-- Team Member 5 -->
-        <div class="team-card">
-            <h3>Hayley Tyler</h3>
-            <p class="job-title">PASS Consultant (part-time)</p>
-            <p>Hayley supports schools with bespoke PE training and part-time consultancy for ongoing development.</p>
-        </div>
-
-        <!-- Team Member 6 -->
-        <div class="team-card">
-            <h3>Claire Garforth</h3>
-            <p class="job-title">PASS Consultant (part-time)</p>
-            <p>Claire contributes her expertise in physical education, supporting schools with innovative approaches to PE.</p>
-        </div>
+                i++; // move to next member
+            }
+        }
     </div>
 </section>

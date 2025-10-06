@@ -790,6 +790,86 @@ namespace PASS.Web.Controllers
         }
 
 
+        // The Team:
+
+        [HttpPost]
+        public IActionResult SaveTheTeam([FromBody] TheTeamUpdateModel model)
+        {
+            if (model == null || model.Members == null || !model.Members.Any())
+                return Json(new { success = false, message = "Invalid data." });
+
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+
+                // Load existing JSON
+                var json = System.IO.File.ReadAllText(path);
+                var contentDict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json)
+                                  ?? new Dictionary<string, JsonElement>();
+
+                // Get existing TheTeam wrapper or create new
+                var theTeam = contentDict.ContainsKey("TheTeam")
+                    ? contentDict["TheTeam"].Deserialize<TheTeamWrapper>() ?? new TheTeamWrapper()
+                    : new TheTeamWrapper();
+
+                if (theTeam.Sections == null || theTeam.Sections.Length == 0)
+                {
+                    theTeam.Sections = new[]
+                    {
+        new TheTeamSection
+        {
+            TextContent = Array.Empty<TextContentItem>(),  // initialize as empty array
+            ImageContent = Array.Empty<ImageContentItem>() // initialize as empty array
+        }
+    };
+                }
+
+                var section = theTeam.Sections[0];
+
+                // Preserve the first "intro" item if it exists
+                TextContentItem intro = section.TextContent?.FirstOrDefault();
+                var newMembers = model.Members
+    .Select(m => new TextContentItem
+    {
+        Heading = m.Heading,
+        Paragraph = m.Paragraph?.Replace(" - ", " — ") // <-- replace dash with em dash
+    })
+    .ToList();
+
+                if (intro != null)
+                {
+                    section.TextContent = new List<TextContentItem> { intro }
+                        .Concat(newMembers)
+                        .ToArray();  // convert to array
+                }
+                else
+                {
+                    section.TextContent = newMembers.ToArray();
+                }
+
+                // Save back
+                contentDict["TheTeam"] = JsonSerializer.SerializeToElement(theTeam);
+
+                var newJson = JsonSerializer.Serialize(contentDict, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                });
+                System.IO.File.WriteAllText(path, newJson);
+
+                _contentService.Reload();
+
+                return Json(new { success = true, message = "Team members saved successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error saving content: " + ex.Message });
+            }
+        }
+
+
+
+
         // Models:
 
         public class TextContentItem
@@ -935,6 +1015,31 @@ namespace PASS.Web.Controllers
             public string DownloadableSrc { get; set; }
             public string DownloadableAlt { get; set; }
         }
+
+        //The Team:
+
+        public class TheTeamWrapper
+        {
+            public TheTeamSection[] Sections { get; set; }
+        }
+
+        public class TheTeamSection
+        {
+            public TextContentItem[] TextContent { get; set; }
+            public ImageContentItem[] ImageContent { get; set; }
+        }
+        public class TheTeamUpdateModel
+        {
+            public List<TeamMember> Members { get; set; }
+            public List<ImageContentItem>? Images { get; set; }
+        }
+
+        public class TeamMember
+        {
+            public string Heading { get; set; }   // Team member name
+            public string Paragraph { get; set; } // Job title + description
+        }
+
 
     }
 }
