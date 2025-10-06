@@ -1,0 +1,19 @@
+﻿
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding: 30px;
+    color: #003366;
+    text-align: center;
+}
+
+p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    text-align: center; /* Center the paragraph text */
+    margin-left: 20px;
+    margin-right: 20px;
+}

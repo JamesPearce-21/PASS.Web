@@ -195,6 +195,29 @@
             <div id="successMessageContactUs" style="display:none;color:green;margin-top:10px;"></div>
         </div>
 
+        <!-- Admin-only Privacy Policy Editor -->
+        <div class="staff-section admin-section">
+            <h2>Edit Privacy Policy Content</h2>
+
+            <form id="privacyPolicyForm">
+                <div class="admin-editor">
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="Heading" value="@Content.Get("PrivacyPolicy:Sections:0:TextContent:0:Heading")" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 1</label>
+                        <textarea name="Paragraph1">@Content.Get("PrivacyPolicy:Sections:0:TextContent:1:Paragraph")</textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+
+            <div id="successMessagePrivacyPolicy" style="display:none;color:green;margin-top:10px;"></div>
+        </div>
+
     }
 
     <a href="/StaffArea/Logout">Logout</a>
@@ -269,6 +292,32 @@
             const result = await response.json();
             if (result.success) {
                 const msgDiv = document.getElementById("successMessageContactUs");
+                msgDiv.innerText = result.message;
+                msgDiv.style.display = "block";
+
+                // Hide after 3 seconds
+                setTimeout(() => msgDiv.style.display = "none", 3000);
+            } else {
+                alert(result.message);
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("privacyPolicyForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('@Url.Action("SavePrivacyPolicy", "StaffArea")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                const msgDiv = document.getElementById("successMessagePrivacyPolicy");
                 msgDiv.innerText = result.message;
                 msgDiv.style.display = "block";
 

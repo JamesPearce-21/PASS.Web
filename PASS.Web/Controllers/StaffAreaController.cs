@@ -463,6 +463,84 @@ namespace PASS.Web.Controllers
             return Json(new { success = true, message = "File uploaded and JSON updated!", url = sasUri.ToString() });
         }
 
+        [HttpPost]
+        public IActionResult SavePrivacyPolicy([FromBody] PrivacyPolicyUpdateModel model)
+        {
+            if (model == null)
+                return Json(new { success = false, message = "Invalid data." });
+
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+
+                // Load existing JSON
+                var json = System.IO.File.ReadAllText(path);
+                var contentDict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }) ?? new Dictionary<string, JsonElement>();
+
+                // Prepare updated section
+                var updatedSection = new PrivacyPolicySection
+                {
+                    TextContent = new[]
+                    {
+                new TextContentItem { Heading = model.Heading, Paragraph = "" },
+                new TextContentItem { Paragraph = model.Paragraph1 }
+            },
+                    ImageContent = new[]
+                    {
+                new ImageContentItem { Src = model.ImageSrc, Alt = model.ImageAlt }
+            }
+                };
+
+                // Check if PrivacyPolicy key exists
+                if (contentDict.ContainsKey("PrivacyPolicy"))
+                {
+                    // Deserialize existing sections
+                    var privacyPolicy = contentDict["PrivacyPolicy"].Deserialize<PrivacyPolicyWrapper>() ?? new PrivacyPolicyWrapper();
+
+                    if (privacyPolicy.Sections == null || privacyPolicy.Sections.Length == 0)
+                    {
+                        // Create first section
+                        privacyPolicy.Sections = new[] { updatedSection };
+                    }
+                    else
+                    {
+                        // Update first section
+                        privacyPolicy.Sections[0] = updatedSection;
+                    }
+
+                    // Replace PrivacyPolicy
+                    contentDict["PrivacyPolicy"] = JsonSerializer.SerializeToElement(privacyPolicy);
+                }
+                else
+                {
+                    // Create new PrivacyPolicy with one section
+                    var privacyPolicy = new PrivacyPolicyWrapper
+                    {
+                        Sections = new[] { updatedSection }
+                    };
+                    contentDict["PrivacyPolicy"] = JsonSerializer.SerializeToElement(privacyPolicy);
+                }
+
+                // Write back to file
+                var newJson = JsonSerializer.Serialize(contentDict, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                });
+                System.IO.File.WriteAllText(path, newJson);
+
+                _contentService.Reload(); // make sure this reloads the JSON in memory
+
+                return Json(new { success = true, message = "PrivacyPolicy content saved successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error saving content: " + ex.Message });
+            }
+        }
 
 
 
@@ -551,6 +629,27 @@ namespace PASS.Web.Controllers
             public string Paragraph2 { get; set; }
             public string Paragraph3 { get; set; }
             public string Paragraph4 { get; set; }
+            public string ImageSrc { get; set; }
+            public string ImageAlt { get; set; }
+        }
+
+        // Privacy Policy
+
+        public class PrivacyPolicyWrapper
+        {
+            public PrivacyPolicySection[] Sections { get; set; }
+        }
+
+        public class PrivacyPolicySection
+        {
+            public TextContentItem[] TextContent { get; set; }
+            public ImageContentItem[] ImageContent { get; set; }
+        }
+
+        public class PrivacyPolicyUpdateModel
+        {
+            public string Heading { get; set; }
+            public string Paragraph1 { get; set; }
             public string ImageSrc { get; set; }
             public string ImageAlt { get; set; }
         }
