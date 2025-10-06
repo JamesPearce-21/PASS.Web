@@ -1043,6 +1043,182 @@ namespace PASS.Web.Controllers
             return Json(new { success = true, message = "File uploaded and JSON updated!", url = sasUri.ToString() });
         }
 
+        //Staff Information:
+
+        [HttpPost]
+        public async Task<IActionResult> UploadStaffDocument(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Json(new { success = false, message = "No file selected." });
+
+            try
+            {
+                // Upload file to blob storage
+                var sasUri = await _blobService.UploadFileWithSasUrlAsync(
+                    "cms-content",
+                    file.FileName,
+                    file.OpenReadStream(),
+                    file.ContentType,
+                    20
+                );
+
+                // Load JSON
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+                var json = System.IO.File.ReadAllText(path);
+                var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json)
+                           ?? new Dictionary<string, JsonElement>();
+
+                // Get StaffDocs section
+                var staffWrapper = dict.ContainsKey("StaffDocs")
+                    ? dict["StaffDocs"].Deserialize<StaffWrapper>() ?? new StaffWrapper()
+                    : new StaffWrapper();
+
+                if (staffWrapper.Sections == null || staffWrapper.Sections.Length == 0)
+                    staffWrapper.Sections = new[] { new StaffSection() };
+
+                // Add new document
+                staffWrapper.Sections[0].Documents.Add(new StaffDocumentItem
+                {
+                    Src = sasUri.ToString(),
+                    Alt = file.FileName
+                });
+
+                // Save back
+                dict["StaffDocs"] = JsonSerializer.SerializeToElement(staffWrapper);
+                System.IO.File.WriteAllText(path, JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true }));
+
+                _contentService.Reload();
+
+                return Json(new { success = true, message = "Document uploaded successfully!", url = sasUri.ToString() });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Error uploading document: {ex.Message}" });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult SaveStaffDocuments([FromBody] StaffDocumentsUpdateModel model)
+        {
+            if (model == null)
+                return Json(new { success = false, message = "Invalid data." });
+
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+
+                // Load existing JSON
+                var jsonText = System.IO.File.ReadAllText(path);
+                var contentDict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText)
+                                  ?? new Dictionary<string, JsonElement>();
+
+                // Build new section from posted model
+                var updatedSection = new StaffDocsSection
+                {
+                    Documents = model.Documents?.Select(d => new DownloadableContentItem
+                    {
+                        Src = d.Src,
+                        Alt = d.Alt
+                    }).ToArray() ?? Array.Empty<DownloadableContentItem>()
+                };
+
+                // Wrap it
+                var wrapper = new StaffDocsWrapper
+                {
+                    Sections = new[] { updatedSection }
+                };
+
+                // Replace or add the StaffDocs key
+                contentDict["StaffDocs"] = JsonSerializer.SerializeToElement(wrapper);
+
+                // Write back to disk
+                var newJson = JsonSerializer.Serialize(contentDict, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                });
+
+                System.IO.File.WriteAllText(path, newJson);
+
+                // Refresh in-memory copy
+                _contentService.Reload();
+
+                return Json(new { success = true, message = "Staff documents saved successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error saving documents: " + ex.Message });
+            }
+        }
+
+
+
+
+        [HttpPost]
+        public IActionResult SaveStaffInfo([FromBody] StaffInfoUpdateModel model)
+        {
+            if (model == null)
+                return Json(new { success = false, message = "Invalid data." });
+
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+
+                // Load existing JSON
+                var json = System.IO.File.ReadAllText(path);
+                var contentDict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+                    ?? new Dictionary<string, JsonElement>();
+
+                // Prepare updated section
+                var updatedSection = new StaffInfoSection
+                {
+                    TextContent = new[]
+                    {
+                new TextContentItem { Heading = "Staff Information", Paragraph = model.Paragraph }
+            }
+                };
+
+                // Check if StaffInfo key exists
+                if (contentDict.ContainsKey("StaffInfo"))
+                {
+                    var staffInfo = contentDict["StaffInfo"].Deserialize<StaffInfoWrapper>() ?? new StaffInfoWrapper();
+
+                    if (staffInfo.Sections == null || staffInfo.Sections.Length == 0)
+                    {
+                        staffInfo.Sections = new[] { updatedSection };
+                    }
+                    else
+                    {
+                        staffInfo.Sections[0] = updatedSection;
+                    }
+
+                    contentDict["StaffInfo"] = JsonSerializer.SerializeToElement(staffInfo);
+                }
+                else
+                {
+                    var staffInfo = new StaffInfoWrapper { Sections = new[] { updatedSection } };
+                    contentDict["StaffInfo"] = JsonSerializer.SerializeToElement(staffInfo);
+                }
+
+                // Write back to file
+                var newJson = JsonSerializer.Serialize(contentDict, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                });
+                System.IO.File.WriteAllText(path, newJson);
+
+                return Json(new { success = true, message = "Staff information saved successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error saving content: " + ex.Message });
+            }
+        }
+
+
+
 
 
 
@@ -1273,6 +1449,77 @@ namespace PASS.Web.Controllers
             public string PackagesDocumentSrc { get; set; }
             public string PackagesDocumentAlt { get; set; }
         }
+
+        //Staff Area:
+        public class StaffDocumentItem
+        {
+            public string Src { get; set; }
+            public string Alt { get; set; }
+        }
+
+        public class StaffSection
+        {
+            public List<StaffDocumentItem> Documents { get; set; } = new List<StaffDocumentItem>();
+            public string Heading { get; set; }
+            public string Paragraph { get; set; }
+            public string ImageSrc { get; set; }
+            public string ImageAlt { get; set; }
+        }
+
+        public class StaffWrapper
+        {
+            public StaffSection[] Sections { get; set; } = new StaffSection[0];
+        }
+
+        public class SaveStaffDocumentsModel
+        {
+            public List<StaffDocumentItem> Documents { get; set; }
+        }
+
+        public class SaveStaffInfoModel
+        {
+            public string Heading { get; set; }
+            public string Paragraph { get; set; }
+            public string ImageSrc { get; set; }
+            public string ImageAlt { get; set; }
+        }
+
+        public class StaffDocumentsUpdateModel
+        {
+            public List<DocumentItem> Documents { get; set; } = new List<DocumentItem>();
+        }
+
+        public class DocumentItem
+        {
+            public string Src { get; set; }      // The document URL
+            public string Alt { get; set; }      // Display name / label
+        }
+
+        public class StaffInfoUpdateModel
+        {
+            public string Paragraph { get; set; }   // The single editable info paragraph
+        }
+
+        public class StaffDocsWrapper
+        {
+            public StaffDocsSection[] Sections { get; set; }
+        }
+
+        public class StaffDocsSection
+        {
+            public DownloadableContentItem[] Documents { get; set; }
+        }
+
+        public class StaffInfoWrapper
+        {
+            public StaffInfoSection[] Sections { get; set; }
+        }
+
+        public class StaffInfoSection
+        {
+            public TextContentItem[] TextContent { get; set; }
+        }
+
 
     }
 }

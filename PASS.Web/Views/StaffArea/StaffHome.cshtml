@@ -11,23 +11,66 @@
 @inject PASS.Web.Services.ContentService Content
 
 <section class="staff-home-section">
-    <h1>Welcome, @username</h1>
 
     <!-- Documents Section (both Staff & Admin) -->
+    <h1>Welcome, @username</h1>
+
+    <!-- Documents Section -->
     <div class="staff-section documents-section">
         <h2>Documents</h2>
-        <p>Access all staff documents here.</p>
-        <ul>
-            <li><a href="/Assets/Documents/PASS Staff Audit 25-26.docx" target="_blank">PASS Staff Audit 25-26</a></li>
-            <li><a href="/Assets/Documents/PASS STAFF INFORMATION 2025-26.docx" target="_blank">PASS STAFF INFORMATION 2025-26</a></li>
-            <li><a href="/Assets/Documents/PASS UKS2 - Play Leadership.pdf" target="_blank">PASS UKS2 - Play Leadership</a></li>
-        </ul>
-    </div>
 
-    <!-- Information Section (both Staff & Admin) -->
-    <div class="staff-section info-section">
-        <h2>Information</h2>
-        <p>General staff information and announcements.</p>
+        @if (isAdmin)
+        {
+            <form id="documentsForm">
+                <div id="documentsList">
+                    @{
+                        var d = 0;
+                        // Loop until we hit an empty/null Src
+                        while (!string.IsNullOrEmpty(Content.Get($"StaffDocs:Sections:0:Documents:{d}:Src")))
+                        {
+                            <div class="document-item" data-index="@d">
+                                <input type="text" name="DocSrc_@d"
+                                       value="@Content.Get($"StaffDocs:Sections:0:Documents:{d}:Src")" readonly />
+
+                                <input type="text" name="DocAlt_@d"
+                                       value="@Content.Get($"StaffDocs:Sections:0:Documents:{d}:Alt")" />
+
+                                <button type="button" class="remove-document-btn">Remove</button>
+                            </div>
+                            ;
+
+                            d++;
+                        }
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label>Upload New Document</label>
+                    <input type="file" id="documentFileStaff" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Documents</button>
+            </form>
+        }
+        else
+        {
+            <ul>
+                @{
+                    var d = 0;
+                    while (!string.IsNullOrEmpty(Content.Get($"StaffDocs:Sections:0:Documents:{d}:Src")))
+                    {
+                        <li>
+                            <a href="@Content.Get($"StaffDocs:Sections:0:Documents:{d}:Src")" target="_blank">
+                                @Content.Get($"StaffDocs:Sections:0:Documents:{d}:Alt")
+                            </a>
+                        </li>
+                        ;
+
+                        d++;
+                    }
+                }
+            </ul>
+        }
     </div>
 
     @if (isAdmin)
@@ -979,6 +1022,97 @@
                 alert(result.message);
             }
         });
+    </script>
+
+    <script>
+        // Upload new document
+        document.getElementById("documentFileStaff")?.addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch('/StaffArea/UploadStaffDocument', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    const list = document.getElementById("documentsList");
+                    const index = list.children.length;
+                    const div = document.createElement("div");
+                    div.className = "document-item";
+                    div.dataset.index = index;
+                    div.innerHTML = `
+                            <input type="text" name="DocSrc_${index}" value="${data.url}" readonly />
+                            <input type="text" name="DocAlt_${index}" value="${file.name}" />
+                            <button type="button" class="remove-document-btn">Remove</button>
+                        `;
+                    list.appendChild(div);
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Error uploading document.");
+            }
+        });
+
+        // Remove document
+        document.getElementById("documentsList")?.addEventListener("click", function (e) {
+            if (e.target.classList.contains("remove-document-btn")) {
+                e.target.parentElement.remove();
+            }
+        });
+
+        // Save documents
+        document.getElementById("documentsForm")?.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('@Url.Action("SaveStaffDocuments", "StaffArea")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert(result.message);
+            } else {
+                alert(result.message);
+            }
+        });
+
+        // Save info paragraph
+        document.getElementById("staffInfoForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const paragraph = document.getElementById("staffInfoParagraph").value;
+
+            try {
+                const response = await fetch('/StaffArea/SaveStaffInfo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ paragraph })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert(result.message);
+                } else {
+                    alert(result.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred while saving.");
+            }
+        });
+
+
     </script>
 
 
