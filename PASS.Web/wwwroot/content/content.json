@@ -78,5 +78,39 @@
         ]
       }
     ]
+  },
+  "ContactUs": {
+    "Sections": [
+      {
+        "TextContent": [
+          {
+            "Heading": "ContactUs",
+            "Paragraph": ""
+          },
+          {
+            "Heading": null,
+            "Paragraph": "If you\u0027d like to learn more about how we can support your school, we\u0027d love to hear from you!"
+          },
+          {
+            "Heading": null,
+            "Paragraph": "Get in touch with our team today to discover how PASS can help enhance your PE, sport \u0026 physical activity provision and support the development of your staff and pupils."
+          },
+          {
+            "Heading": null,
+            "Paragraph": "Email Us:"
+          },
+          {
+            "Heading": null,
+            "Paragraph": "info@passltd.org"
+          }
+        ],
+        "ImageContent": [
+          {
+            "Src": null,
+            "Alt": null
+          }
+        ]
+      }
+    ]
   }
 }

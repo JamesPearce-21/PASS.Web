@@ -1,17 +1,17 @@
 ﻿@{
     ViewData["Title"] = "Contact";
 }
-
+@inject PASS.Web.Services.ContentService Content
 
 <div class="contact-container-main">
-    <h1>Contact Us</h1>
+    <h1>@Content.Get("ContactUs:Sections:0:TextContent:0:Heading")</h1>
     <div class="contact-container">
-        <p>If you'd like to learn more about how we can support your school, we'd love to hear from you!</p>
-        <p>Get in touch with our team today to discover how PASS can help enhance your PE, sport & physical activity provision and support the development of your staff and pupils.</p>
+        <p>@Content.Get("ContactUs:Sections:0:TextContent:1:Paragraph")</p>
+        <p>@Content.Get("ContactUs:Sections:0:TextContent:2:Paragraph")</p>
 
         <div class="contact-email">
-            <p><strong>Email Us:</strong></p>
-            <a href="mailto:info@passltd.org">info@passltd.org</a>
+            <p><strong>@Content.Get("ContactUs:Sections:0:TextContent:3:Paragraph")</strong></p>
+            <a href="mailto:info@passltd.org">@Content.Get("ContactUs:Sections:0:TextContent:4:Paragraph")</a>
         </div>
     </div>
 </div>

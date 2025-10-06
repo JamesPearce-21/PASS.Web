@@ -337,11 +337,145 @@ namespace PASS.Web.Controllers
         }
 
 
+        [HttpPost]
+        public IActionResult SaveContactUs([FromBody] ContactUsUpdateModel model)
+        {
+            if (model == null)
+                return Json(new { success = false, message = "Invalid data." });
+
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+
+                // Load existing JSON
+                var json = System.IO.File.ReadAllText(path);
+                var contentDict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }) ?? new Dictionary<string, JsonElement>();
+
+                // Prepare updated section
+                var updatedSection = new ContactUsSection
+                {
+                    TextContent = new[]
+                    {
+                new TextContentItem { Heading = model.Heading, Paragraph = "" },
+                new TextContentItem { Paragraph = model.Paragraph1 },
+                new TextContentItem { Paragraph = model.Paragraph2 },
+                new TextContentItem { Paragraph = model.Paragraph3 },
+                new TextContentItem { Paragraph = model.Paragraph4 }
+            },
+                    ImageContent = new[]
+                    {
+                new ImageContentItem { Src = model.ImageSrc, Alt = model.ImageAlt }
+            }
+                };
+
+                // Check if ContactUs key exists
+                if (contentDict.ContainsKey("ContactUs"))
+                {
+                    // Deserialize existing sections
+                    var contactUs = contentDict["ContactUs"].Deserialize<ContactUsWrapper>() ?? new ContactUsWrapper();
+
+                    if (contactUs.Sections == null || contactUs.Sections.Length == 0)
+                    {
+                        // Create first section
+                        contactUs.Sections = new[] { updatedSection };
+                    }
+                    else
+                    {
+                        // Update first section
+                        contactUs.Sections[0] = updatedSection;
+                    }
+
+                    // Replace ContactUs
+                    contentDict["ContactUs"] = JsonSerializer.SerializeToElement(contactUs);
+                }
+                else
+                {
+                    // Create new ContactUs with one section
+                    var contactUs = new ContactUsWrapper
+                    {
+                        Sections = new[] { updatedSection }
+                    };
+                    contentDict["ContactUs"] = JsonSerializer.SerializeToElement(contactUs);
+                }
+
+                // Write back to file
+                var newJson = JsonSerializer.Serialize(contentDict, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                });
+                System.IO.File.WriteAllText(path, newJson);
+
+                _contentService.Reload(); // make sure this reloads the JSON in memory
+
+                return Json(new { success = true, message = "ContactUs content saved successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error saving content: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadContactUsImage(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Json(new { success = false, message = "No file selected." });
+
+            // Upload file to Blob Storage and get SAS URL
+            var sasUri = await _blobService.UploadFileWithSasUrlAsync("cms-content", file.FileName, file.OpenReadStream(), file.ContentType, 20);
+
+            // Load existing JSON
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+            var jsonText = System.IO.File.ReadAllText(path);
+            var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText);
+
+            // Get existing ContactUs data or create new
+            var contactUs = dict.ContainsKey("ContactUs")
+                ? dict["ContactUs"].Deserialize<ContactUsWrapper>() ?? new ContactUsWrapper()
+                : new ContactUsWrapper();
+
+            if (contactUs.Sections == null || contactUs.Sections.Length == 0)
+                contactUs.Sections = new[] { new ContactUsSection() };
+
+            // Update first section's image
+            contactUs.Sections[0].ImageContent = new[]
+            {
+        new ImageContentItem
+        {
+            Src = sasUri.ToString(),
+            Alt = file.FileName
+        }
+    };
+
+            // Save back to dictionary
+            dict["ContactUs"] = JsonSerializer.SerializeToElement(contactUs);
+
+            // Write updated JSON to file
+            System.IO.File.WriteAllText(path, JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true }));
+
+            // Reload content service
+            _contentService.Reload();
+
+            return Json(new { success = true, message = "File uploaded and JSON updated!", url = sasUri.ToString() });
+        }
+
+
+
 
         // Wrapper to match JSON structure with Sections array
         public class BalanceabilityWrapper
         {
             public BalanceabilitySection[] Sections { get; set; }
+        }
+
+        public class BalanceabilitySection
+        {
+            public TextContentItem[] TextContent { get; set; }
+            public ImageContentItem[] ImageContent { get; set; }
         }
 
 
@@ -368,12 +502,6 @@ namespace PASS.Web.Controllers
         {
             public string Src { get; set; }
             public string Alt { get; set; }
-        }
-
-        public class BalanceabilitySection
-        {
-            public TextContentItem[] TextContent { get; set; }
-            public ImageContentItem[] ImageContent { get; set; }
         }
 
         // Wrapper for all Bikeability sections
@@ -403,7 +531,28 @@ namespace PASS.Web.Controllers
             public TextContentItem[] TextContent { get; set; }
             public ImageContentItem[] ImageContent { get; set; }
         }
+
+
+        public class ContactUsWrapper
+        {
+            public ContactUsSection[] Sections { get; set; }
+        }
+
+        public class ContactUsSection
+        {
+            public TextContentItem[] TextContent { get; set; }
+            public ImageContentItem[] ImageContent { get; set; }
+        }
+
+        public class ContactUsUpdateModel
+        {
+            public string Heading { get; set; }
+            public string Paragraph1 { get; set; }
+            public string Paragraph2 { get; set; }
+            public string Paragraph3 { get; set; }
+            public string Paragraph4 { get; set; }
+            public string ImageSrc { get; set; }
+            public string ImageAlt { get; set; }
+        }
     }
-
-
 }
