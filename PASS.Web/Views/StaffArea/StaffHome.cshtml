@@ -71,7 +71,7 @@
                     <div class="form-group">
                         <label>Current Image Preview</label>
                         <img id="imagePreview" src="@Content.Get("Balanceability:Sections:0:ImageContent:0:Src")"
-                             alt="@Content.Get("Balanceability:Sections:0:ImageContent:0:Alt")" />
+                             alt="@Content.Get("Balanceability:Sections:0:ImageContent:0:Alt")" style="max-width:200px;" />
                     </div>
 
 
@@ -142,7 +142,7 @@
                     <div class="form-group">
                         <label>Current Image Preview</label>
                         <img id="imagePreviewBike" src="@Content.Get("Bikeability:Sections:0:ImageContent:0:Src")"
-                             alt="@Content.Get("Bikeability:Sections:0:ImageContent:0:Alt")" />
+                             alt="@Content.Get("Bikeability:Sections:0:ImageContent:0:Alt")" style="max-width:200px;" />
                     </div>
 
                     <div class="form-group">
@@ -262,7 +262,7 @@
                     <div class="form-group">
                         <label>Current Image Preview</label>
                         <img id="imagePreviewTraining1" src="@Content.Get("Training:Sections:0:ImageContent:0:Src")"
-                             alt="@Content.Get("Training:Sections:0:ImageContent:0:Alt")" />
+                             alt="@Content.Get("Training:Sections:0:ImageContent:0:Alt")" style="max-width:200px;" />
                     </div>
 
                     <div class="form-group">
@@ -278,7 +278,7 @@
                     <div class="form-group">
                         <label>Current Image Preview</label>
                         <img id="imagePreviewTraining2" src="@Content.Get("Training:Sections:0:ImageContent:1:Src")"
-                             alt="@Content.Get("Training:Sections:0:ImageContent:1:Alt")" />
+                             alt="@Content.Get("Training:Sections:0:ImageContent:1:Alt")" style="max-width:200px;" />
                     </div>
 
                     <div class="form-group">
@@ -352,8 +352,145 @@
             <div id="successMessageTeam" style="display:none;color:green;margin-top:10px;"></div>
         </div>
 
-    }
+        //Memberships:
 
+        <!-- Admin-only Memberships Editor -->
+        <div class="staff-section admin-section">
+            <h2>Edit Memberships Content</h2>
+
+            <form id="membershipsForm">
+                <div class="admin-editor">
+
+                    <!-- Intro -->
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="Heading" value="@Content.Get("Memberships:Sections:0:TextContent:0:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph 1</label>
+                        <textarea name="Paragraph1">@Content.Get("Memberships:Sections:0:TextContent:1:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph 2</label>
+                        <textarea name="Paragraph2">@Content.Get("Memberships:Sections:0:TextContent:2:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph 3</label>
+                        <textarea name="Paragraph3">@Content.Get("Memberships:Sections:0:TextContent:3:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph 4</label>
+                        <textarea name="Paragraph4">@Content.Get("Memberships:Sections:0:TextContent:4:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph 5</label>
+                        <textarea name="Paragraph5">@Content.Get("Memberships:Sections:0:TextContent:5:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph 6</label>
+                        <textarea name="Paragraph6">@Content.Get("Memberships:Sections:0:TextContent:6:Paragraph")</textarea>
+                    </div>
+
+                    <!-- Packages -->
+                    <div class="form-group">
+                        <label>Bronze Heading</label>
+                        <input type="text" name="BronzeHeading" value="@Content.Get("Memberships:Sections:0:TextContent:6:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bronze Paragraph</label>
+                        <textarea name="BronzeParagraph">@Content.Get("Memberships:Sections:0:TextContent:6:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Silver Heading</label>
+                        <input type="text" name="SilverHeading" value="@Content.Get("Memberships:Sections:0:TextContent:7:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Silver Paragraph</label>
+                        <textarea name="SilverParagraph">@Content.Get("Memberships:Sections:0:TextContent:7:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Gold Heading</label>
+                        <input type="text" name="GoldHeading" value="@Content.Get("Memberships:Sections:0:TextContent:8:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Gold Paragraph</label>
+                        <textarea name="GoldParagraph">@Content.Get("Memberships:Sections:0:TextContent:8:Paragraph")</textarea>
+                    </div>
+
+                    <!-- CPD / Competitions / Contact -->
+                    <div class="form-group">
+                        <label>CPD Heading</label>
+                        <input type="text" name="CPDHeading" value="@Content.Get("Memberships:Sections:0:TextContent:9:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>CPD Paragraph</label>
+                        <textarea name="CPDParagraph">@Content.Get("Memberships:Sections:0:TextContent:9:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Competitions Heading</label>
+                        <input type="text" name="CompetitionsHeading" value="@Content.Get("Memberships:Sections:0:TextContent:10:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Competitions Paragraph</label>
+                        <textarea name="CompetitionsParagraph">@Content.Get("Memberships:Sections:0:TextContent:10:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Get in Touch Heading</label>
+                        <input type="text" name="GetInTouchHeading" value="@Content.Get("Memberships:Sections:0:TextContent:11:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Get in Touch Paragraph</label>
+                        <textarea name="GetInTouchParagraph">@Content.Get("Memberships:Sections:0:TextContent:11:Paragraph")</textarea>
+                    </div>
+
+                    <!-- Images -->
+                    @for (int b = 0; b < 5; b++)
+                    {
+                        <div class="form-group" style="display:none;">
+                            <label>Current Image @(b + 1) Src</label>
+                            <input type="text" id="imageSrcMembership@(b + 1)" name="ImageSrc@(b + 1)" value="@Content.Get($"Memberships:Sections:0:ImageContent:{b}:Src")" readonly />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Current Image @(b + 1) Preview</label>
+                            <img id="imagePreviewMembership@(b + 1)" src="@Content.Get($"Memberships:Sections:0:ImageContent:{b}:Src")"
+                                 alt="@Content.Get($"Memberships:Sections:0:ImageContent:{b}:Alt")" style="max-width:200px;" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Upload New Image @(b + 1)</label>
+                            <input type="file" id="imageFileMembership@(b + 1)" accept="image/*" />
+                        </div>
+                    }
+
+
+
+                    <!-- Document -->
+                    <div class="form-group" style="display: none;">
+                        <label>Current Packages Document Src</label>
+                        <input type="text" id="documentSrcMemberships" name="PackagesDocumentSrc" value="@Content.Get("Memberships:Sections:0:DownloadableContent:0:Src")" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Packages Document:</label>
+                        <p id="documentPreviewMemberships">@Content.Get("Memberships:Sections:0:DownloadableContent:0:Src")</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload New Packages Document</label>
+                        <input type="file" id="documentFileMemberships" name="PackagesDocumentFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+
+            <div id="successMessageMemberships" style="display:none;color:green;margin-top:10px;"></div>
+        </div>
+
+
+
+    }
     <a href="/StaffArea/Logout">Logout</a>
 </section>
 
@@ -742,6 +879,104 @@
             } catch (err) {
                 console.error(err);
                 alert("An error occurred during upload.");
+            }
+        });
+    </script>
+    <script>
+        for (let i = 1; i <= 5; i++) {
+            const fileInput = document.getElementById(`imageFileMembership${i}`);
+            fileInput.addEventListener("change", async function () {
+                const file = this.files[0];
+                if (!file) return;
+
+                const formData = new FormData();
+                formData.append("file", file);
+
+                try {
+                    const res = await fetch(`/StaffArea/UploadMembershipImage?index=${i - 1}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await res.json();
+                    if (data.success) {
+                        // Update the hidden ImageSrc textbox
+                        document.getElementById(`imageSrcMembership${i}`).value = data.url;
+
+                        // Update the image preview
+                        document.getElementById(`imagePreviewMembership${i}`).src = data.url;
+
+                        alert(`Membership image ${i} uploaded successfully!`);
+                    } else {
+                        alert("Upload failed: " + data.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("An error occurred during upload.");
+                }
+            });
+        }
+    </script>
+
+
+    <script>
+        // Handle memberships document upload
+        document.getElementById("documentFileMemberships").addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch('/StaffArea/UploadMembershipDocument', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    // Update hidden DocumentSrc textbox
+                    document.getElementById("documentSrcMemberships").value = data.url;
+
+                    // Update document preview
+                    const preview = document.getElementById("documentPreviewMemberships");
+                    preview.textContent = data.url;
+
+                    alert("Memberships document uploaded successfully!");
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred during upload.");
+            }
+        });
+    </script>
+
+    <script>
+        // Handle form submission
+        document.getElementById("membershipsForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('@Url.Action("SaveMemberships", "StaffArea")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                const msgDiv = document.getElementById("successMessageMemberships");
+                msgDiv.innerText = result.message;
+                msgDiv.style.display = "block";
+
+                setTimeout(() => msgDiv.style.display = "none", 3000);
+            } else {
+                alert(result.message);
             }
         });
     </script>

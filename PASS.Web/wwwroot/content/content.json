@@ -224,5 +224,90 @@
         ]
       }
     ]
+  },
+  "Memberships": {
+    "Sections": [
+      {
+        "TextContent": [
+          {
+            "Heading": "Memberships",
+            "Paragraph": ""
+          },
+          {
+            "Heading": null,
+            "Paragraph": "Welcome to the Memberships page."
+          },
+          {
+            "Heading": null,
+            "Paragraph": "PASS offer a range of flexible membership options (Bronze, Silver, and Gold), each designed to meet different needs and budgets. Every membership includes:"
+          },
+          {
+            "Heading": null,
+            "Paragraph": "✔ Access to high-quality competitions and festivals\n✔ CPD opportunities to support teacher development\n✔ Bespoke support tailored to your school’s priorities\n✔ Optional bolt-ons including Experience Days and specialist workshops"
+          },
+          {
+            "Heading": null,
+            "Paragraph": "All of our work is grounded in national priorities for PE and school sport, and we’re proud to be trusted by schools across the region for our reliable, friendly, and impactful service."
+          },
+          {
+            "Heading": null,
+            "Paragraph": "If you’d like to find out more, discuss how we can support your school, or arrange a face-to-face or virtual meeting, we’d love to hear from you."
+          },
+          {
+            "Heading": "Bronze Package",
+            "Paragraph": "A basic package offering core support and access to competitions and CPD training."
+          },
+          {
+            "Heading": "Silver Package",
+            "Paragraph": "A more comprehensive package with additional competitions, events, and priority support."
+          },
+          {
+            "Heading": "Gold Package",
+            "Paragraph": "Our premium package, including dedicated account support and customised workshops."
+          },
+          {
+            "Heading": "CPD Package",
+            "Paragraph": "Unlock the full potential of your staff with our CPD and Training Membership! Gain access to a wide variety of inspiring PE, school sport, and physical activity workshops. Membership includes unlimited access to all PASS CPD events for two staff per session—helping your team grow, refresh skills, and deliver the very best for your pupils."
+          },
+          {
+            "Heading": "Competitions and Events Package",
+            "Paragraph": "Bring the spirit of sport to life with our Competition and Events Package! Schools gain year-round access to a full programme of exciting competitions and festivals, giving every young person the chance to represent their school, showcase their talents, and create unforgettable memories."
+          },
+          {
+            "Heading": "Get in Touch",
+            "Paragraph": "If you'd like more information, discuss how we can support your school, or arrange a meeting, don't hesitate to reach out!"
+          }
+        ],
+        "ImageContent": [
+          {
+            "Src": "/Assets/Images/bronze PASS.png",
+            "Alt": "Bronze Package Logo"
+          },
+          {
+            "Src": "/Assets/Images/silver PASS.png",
+            "Alt": "Silver Package Logo"
+          },
+          {
+            "Src": "/Assets/Images/gold PASS.png",
+            "Alt": "Gold Package Logo"
+          },
+          {
+            "Src": "/Assets/Images/Blue PASS.png",
+            "Alt": "CPD Package Logo"
+          },
+          {
+            "Src": "/Assets/Images/green PASS.png",
+            "Alt": "Competitions and Events Logo"
+          }
+        ],
+        "DownloadableContent": [
+          {
+            "Src": "/Assets/Documents/202526 Packages.pdf",
+            "Alt": "Packages"
+          }
+        ]
+      }
+    ]
   }
+
 }

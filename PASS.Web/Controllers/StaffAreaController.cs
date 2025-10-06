@@ -867,6 +867,183 @@ namespace PASS.Web.Controllers
             }
         }
 
+        //Memberships:
+
+        [HttpPost]
+        public IActionResult SaveMemberships([FromBody] MembershipsUpdateModel model)
+        {
+            if (model == null)
+                return Json(new { success = false, message = "Invalid data." });
+
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+                var jsonText = System.IO.File.ReadAllText(path);
+                var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText)
+                           ?? new Dictionary<string, JsonElement>();
+
+                // Get existing or create new
+                var memberships = dict.ContainsKey("Memberships")
+                    ? dict["Memberships"].Deserialize<MembershipsWrapper>() ?? new MembershipsWrapper()
+                    : new MembershipsWrapper();
+
+                if (memberships.Sections == null || memberships.Sections.Length == 0)
+                    memberships.Sections = new[] { new MembershipsSection() };
+
+                var section = memberships.Sections[0];
+
+                // Initialize arrays if null
+                section.TextContent ??= new TextContentItem[12];
+                section.ImageContent ??= new ImageContentItem[5];
+                section.DownloadableContent ??= new DownloadableContentItem[1];
+
+                // TextContent by index
+                section.TextContent[0] = new TextContentItem { Heading = model.Heading, Paragraph = "" };
+                section.TextContent[1] = new TextContentItem { Paragraph = model.Paragraph1 };
+                section.TextContent[2] = new TextContentItem { Paragraph = model.Paragraph2 };
+                section.TextContent[3] = new TextContentItem { Paragraph = model.Paragraph3 };
+                section.TextContent[4] = new TextContentItem { Paragraph = model.Paragraph4 };
+                section.TextContent[5] = new TextContentItem { Paragraph = model.Paragraph5 };
+                section.TextContent[6] = new TextContentItem { Heading = model.BronzeHeading, Paragraph = model.BronzeParagraph };
+                section.TextContent[7] = new TextContentItem { Heading = model.SilverHeading, Paragraph = model.SilverParagraph };
+                section.TextContent[8] = new TextContentItem { Heading = model.GoldHeading, Paragraph = model.GoldParagraph };
+                section.TextContent[9] = new TextContentItem { Heading = model.CPDHeading, Paragraph = model.CPDParagraph };
+                section.TextContent[10] = new TextContentItem { Heading = model.CompetitionsHeading, Paragraph = model.CompetitionsParagraph };
+                section.TextContent[11] = new TextContentItem { Heading = model.GetInTouchHeading, Paragraph = model.GetInTouchParagraph };
+
+                // ImageContent
+                section.ImageContent[0] = new ImageContentItem { Src = model.BronzeImageSrc, Alt = model.BronzeImageAlt };
+                section.ImageContent[1] = new ImageContentItem { Src = model.SilverImageSrc, Alt = model.SilverImageAlt };
+                section.ImageContent[2] = new ImageContentItem { Src = model.GoldImageSrc, Alt = model.GoldImageAlt };
+                section.ImageContent[3] = new ImageContentItem { Src = model.CPDImageSrc, Alt = model.CPDImageAlt };
+                section.ImageContent[4] = new ImageContentItem { Src = model.CompetitionsImageSrc, Alt = model.CompetitionsImageAlt };
+
+                // DownloadableContent
+                section.DownloadableContent[0] = new DownloadableContentItem
+                {
+                    Src = model.PackagesDocumentSrc,
+                    Alt = model.PackagesDocumentAlt
+                };
+
+                dict["Memberships"] = JsonSerializer.SerializeToElement(memberships);
+
+                var newJson = JsonSerializer.Serialize(dict, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                });
+
+                System.IO.File.WriteAllText(path, newJson);
+                _contentService.Reload();
+
+                return Json(new { success = true, message = "Memberships content saved successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error saving content: " + ex.Message });
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> UploadMembershipImage(IFormFile file, int packageIndex)
+        {
+            if (file == null || file.Length == 0)
+                return Json(new { success = false, message = "No file selected." });
+
+            var sasUri = await _blobService.UploadFileWithSasUrlAsync(
+                "cms-content",
+                file.FileName,
+                file.OpenReadStream(),
+                file.ContentType,
+                20
+            );
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+            var jsonText = System.IO.File.ReadAllText(path);
+            var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText);
+
+            var memberships = dict.ContainsKey("Memberships")
+                ? dict["Memberships"].Deserialize<MembershipsWrapper>() ?? new MembershipsWrapper()
+                : new MembershipsWrapper();
+
+            if (memberships.Sections == null || memberships.Sections.Length == 0)
+                memberships.Sections = new[] { new MembershipsSection() };
+
+            // Update the specific package image
+            if (memberships.Sections[0].ImageContent.Length <= packageIndex)
+            {
+                var images = memberships.Sections[0].ImageContent.ToList();
+                while (images.Count <= packageIndex)
+                    images.Add(new ImageContentItem());
+                memberships.Sections[0].ImageContent = images.ToArray();
+            }
+
+            memberships.Sections[0].ImageContent[packageIndex] = new ImageContentItem
+            {
+                Src = sasUri.ToString(),
+                Alt = file.FileName
+            };
+
+            dict["Memberships"] = JsonSerializer.SerializeToElement(memberships);
+
+            System.IO.File.WriteAllText(
+                path,
+                JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true })
+            );
+
+            _contentService.Reload();
+
+            return Json(new { success = true, message = "File uploaded and JSON updated!", url = sasUri.ToString() });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadMembershipsDocument(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Json(new { success = false, message = "No file selected." });
+
+            var sasUri = await _blobService.UploadFileWithSasUrlAsync(
+                "cms-content",
+                file.FileName,
+                file.OpenReadStream(),
+                file.ContentType,
+                20
+            );
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+            var jsonText = System.IO.File.ReadAllText(path);
+            var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText);
+
+            var memberships = dict.ContainsKey("Memberships")
+                ? dict["Memberships"].Deserialize<MembershipsWrapper>() ?? new MembershipsWrapper()
+                : new MembershipsWrapper();
+
+            if (memberships.Sections == null || memberships.Sections.Length == 0)
+                memberships.Sections = new[] { new MembershipsSection() };
+
+            memberships.Sections[0].DownloadableContent = new[]
+            {
+        new DownloadableContentItem
+        {
+            Src = sasUri.ToString(),
+            Alt = file.FileName
+        }
+    };
+
+            dict["Memberships"] = JsonSerializer.SerializeToElement(memberships);
+
+            System.IO.File.WriteAllText(
+                path,
+                JsonSerializer.Serialize(dict, new JsonSerializerOptions { WriteIndented = true })
+            );
+
+            _contentService.Reload();
+
+            return Json(new { success = true, message = "File uploaded and JSON updated!", url = sasUri.ToString() });
+        }
+
+
 
 
 
@@ -1040,6 +1217,62 @@ namespace PASS.Web.Controllers
             public string Paragraph { get; set; } // Job title + description
         }
 
+
+        // Memberships:
+
+        public class MembershipsWrapper
+        {
+            public MembershipsSection[] Sections { get; set; }
+        }
+
+        public class MembershipsSection
+        {
+            public TextContentItem[] TextContent { get; set; }
+            public ImageContentItem[] ImageContent { get; set; }
+            public DownloadableContentItem[] DownloadableContent { get; set; }
+        }
+
+        public class MembershipsUpdateModel
+        {
+            // Intro
+            public string Heading { get; set; }
+            public string Paragraph1 { get; set; }
+            public string Paragraph2 { get; set; }
+            public string Paragraph3 { get; set; }
+            public string Paragraph4 { get; set; }
+            public string Paragraph5 { get; set; }
+            public string Paragraph6 { get; set; }
+
+            // Packages
+            public string BronzeHeading { get; set; }
+            public string BronzeParagraph { get; set; }
+            public string SilverHeading { get; set; }
+            public string SilverParagraph { get; set; }
+            public string GoldHeading { get; set; }
+            public string GoldParagraph { get; set; }
+            public string CPDHeading { get; set; }
+            public string CPDParagraph { get; set; }
+            public string CompetitionsHeading { get; set; }
+            public string CompetitionsParagraph { get; set; }
+            public string GetInTouchHeading { get; set; }
+            public string GetInTouchParagraph { get; set; }
+
+            // Images
+            public string BronzeImageSrc { get; set; }
+            public string BronzeImageAlt { get; set; }
+            public string SilverImageSrc { get; set; }
+            public string SilverImageAlt { get; set; }
+            public string GoldImageSrc { get; set; }
+            public string GoldImageAlt { get; set; }
+            public string CPDImageSrc { get; set; }
+            public string CPDImageAlt { get; set; }
+            public string CompetitionsImageSrc { get; set; }
+            public string CompetitionsImageAlt { get; set; }
+
+            // Downloadable
+            public string PackagesDocumentSrc { get; set; }
+            public string PackagesDocumentAlt { get; set; }
+        }
 
     }
 }
