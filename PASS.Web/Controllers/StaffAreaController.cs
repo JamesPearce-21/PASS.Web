@@ -1281,6 +1281,117 @@ namespace PASS.Web.Controllers
             }
         }
 
+        // Members Area:
+
+        [HttpPost]
+        public async Task<IActionResult> UploadMembersDocument(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Json(new { success = false, message = "No file selected." });
+
+            try
+            {
+                // Upload file to Blob Storage and get SAS URL
+                var sasUri = await _blobService.UploadFileWithSasUrlAsync(
+                    "cms-content",
+                    file.FileName,
+                    file.OpenReadStream(),
+                    file.ContentType,
+                    20
+                );
+
+                return Json(new { success = true, message = "File uploaded!", url = sasUri.ToString() });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error uploading file: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult SaveMembersArea([FromBody] MembersAreaUpdateModel model)
+        {
+            if (model == null)
+                return Json(new { success = false, message = "Invalid data." });
+
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+
+                // Load full JSON
+                var json = System.IO.File.ReadAllText(path);
+                var contentDict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                if (contentDict == null || !contentDict.ContainsKey("MembersArea"))
+                    return Json(new { success = false, message = "MembersArea section not found in JSON." });
+
+                // Deserialize MembersArea as a modifiable object
+                var membersAreaNode = contentDict["MembersArea"].Deserialize<Dictionary<string, object>>()
+                    ?? new Dictionary<string, object>();
+
+                // Get existing Sections array
+                if (!membersAreaNode.TryGetValue("Sections", out var sectionsObj))
+                    return Json(new { success = false, message = "MembersArea.Sections not found." });
+
+                var sections = JsonSerializer.Deserialize<List<JsonElement>>(sectionsObj.ToString() ?? "[]")
+                    ?? new List<JsonElement>();
+
+                // Ensure Sections has at least 3 elements
+                while (sections.Count < 3)
+                    sections.Add(JsonDocument.Parse("{}").RootElement);
+
+                // Build the new third section (MembersContent)
+                var newMembersContent = new
+                {
+                    Key = "MembersContent",
+                    TextContent = new[]
+                    {
+                new
+                {
+                    Heading = model.Intro?.Heading ?? "",
+                    Paragraph = model.Intro?.Paragraph ?? ""
+                }
+            },
+                    Schemes = model.Schemes?.Select(s => new
+                    {
+                        YearGroup = s.YearGroup ?? "",
+                        Documents = (s.Documents ?? new List<DocumentDto>())
+    .Select(d => new
+    {
+        Title = d.Title ?? "",
+        Url = d.Url ?? ""
+    })
+    .ToList()
+
+                    }).ToList()
+                };
+
+                // Replace Sections[2]
+                sections[2] = JsonSerializer.SerializeToElement(newMembersContent);
+
+                // Put back into MembersArea
+                membersAreaNode["Sections"] = sections;
+
+                // Replace MembersArea in root dict
+                contentDict["MembersArea"] = JsonSerializer.SerializeToElement(membersAreaNode);
+
+                // Save back to disk
+                var newJson = JsonSerializer.Serialize(contentDict, new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                });
+                System.IO.File.WriteAllText(path, newJson);
+
+                _contentService.Reload();
+                return Json(new { success = true, message = "Members area updated." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error saving MembersArea: " + ex.Message });
+            }
+        }
+
 
 
 
@@ -1614,5 +1725,31 @@ namespace PASS.Web.Controllers
         {
             public List<EventSection> Sections { get; set; }
         }
+
+        public class MembersAreaUpdateModel
+        {
+            public IntroDto Intro { get; set; }
+            public List<SchemeDto> Schemes { get; set; } = new();
+        }
+
+        public class IntroDto
+        {
+            public string Heading { get; set; }
+            public string Paragraph { get; set; }
+        }
+
+        public class SchemeDto
+        {
+            public string YearGroup { get; set; }
+            public List<DocumentDto> Documents { get; set; } = new();
+        }
+
+        public class DocumentDto
+        {
+            public string Title { get; set; }
+            public string Url { get; set; }
+        }
+
+
     }
 }

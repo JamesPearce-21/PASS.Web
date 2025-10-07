@@ -534,82 +534,173 @@
         // Events:
 
         <!-- Admin-only Events Editor -->
-<div class="staff-section admin-section">
-    <h2>Edit Events</h2>
-
-    <form id="eventsForm">
-        <div class="admin-editor">
-            <!-- Intro Section -->
-            <div class="form-group">
-                <label>Intro Heading</label>
-                <input type="text" name="IntroHeading" value="@Content.Get("Events:Sections:0:TextContent:0:Heading")" />
-            </div>
-
-            <div class="form-group">
-                <label>Intro Paragraph 1</label>
-                <textarea name="IntroParagraph1">@Content.Get("Events:Sections:0:TextContent:1:Paragraph")</textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Intro Paragraph 2</label>
-                <textarea name="IntroParagraph2">@Content.Get("Events:Sections:0:TextContent:2:Paragraph")</textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Intro Paragraph 3</label>
-                <textarea name="IntroParagraph3">@Content.Get("Events:Sections:0:TextContent:3:Paragraph")</textarea>
-            </div>
-
-            <!-- Dynamic Events -->
-            <div id="eventsContainer">
-                @{
-                    int c = 4; // events start at index 4
-                    while (true)
-                    {
-                        var heading = Content.Get($"Events:Sections:0:TextContent:{c}:Heading");
-                        var paragraph = Content.Get($"Events:Sections:0:TextContent:{c}:Paragraph");
-                        var status = Content.Get($"Events:Sections:0:TextContent:{c}:Status");
-                        var bookingUrl = Content.Get($"Events:Sections:0:TextContent:{c}:BookingUrl");
-
-                        if (string.IsNullOrWhiteSpace(heading) && string.IsNullOrWhiteSpace(paragraph))
-                        {
-                            break; // stop if there are no more events
+        <div class="staff-section admin-section">
+            <h2>Edit Events</h2>
+        
+            <form id="eventsForm">
+                <div class="admin-editor">
+                    <!-- Intro Section -->
+                    <div class="form-group">
+                        <label>Intro Heading</label>
+                        <input type="text" name="IntroHeading" value="@Content.Get("Events:Sections:0:TextContent:0:Heading")" />
+                    </div>
+        
+                    <div class="form-group">
+                        <label>Intro Paragraph 1</label>
+                        <textarea name="IntroParagraph1">@Content.Get("Events:Sections:0:TextContent:1:Paragraph")</textarea>
+                    </div>
+        
+                    <div class="form-group">
+                        <label>Intro Paragraph 2</label>
+                        <textarea name="IntroParagraph2">@Content.Get("Events:Sections:0:TextContent:2:Paragraph")</textarea>
+                    </div>
+        
+                    <div class="form-group">
+                        <label>Intro Paragraph 3</label>
+                        <textarea name="IntroParagraph3">@Content.Get("Events:Sections:0:TextContent:3:Paragraph")</textarea>
+                    </div>
+        
+                    <!-- Dynamic Events -->
+                    <div id="eventsContainer">
+                        @{
+                            int c = 4; // events start at index 4
+                            while (true)
+                            {
+                                var heading = Content.Get($"Events:Sections:0:TextContent:{c}:Heading");
+                                var paragraph = Content.Get($"Events:Sections:0:TextContent:{c}:Paragraph");
+                                var status = Content.Get($"Events:Sections:0:TextContent:{c}:Status");
+                                var bookingUrl = Content.Get($"Events:Sections:0:TextContent:{c}:BookingUrl");
+        
+                                if (string.IsNullOrWhiteSpace(heading) && string.IsNullOrWhiteSpace(paragraph))
+                                {
+                                    break; // stop if there are no more events
+                                }
+        
+                                <text>
+                                    <div class="form-group event-group">
+                                        <label>Event Heading</label>
+                                        <input type="text" name="Events[@c].Heading" value="@heading" />
+        
+                                        <label>Event Description</label>
+                                        <textarea name="Events[@c].Paragraph">@paragraph</textarea>
+        
+                                        <label>Status</label>
+                                                <select name="Events[@c].Status">
+                                                    <option value="Coming Soon" selected="@(status == "Coming Soon")">Coming Soon</option>
+                                                    <option value="Open" selected="@(status == "Open")">Open</option>
+                                                    <option value="Closed" selected="@(status == "Closed")">Closed</option>
+                                                </select>
+        
+                                        <label>Booking URL</label>
+                                        <input type="text" name="Events[@c].BookingUrl" value="@bookingUrl" />
+        
+                                        <button type="button" class="btn btn-danger remove-event" style="margin-top:5px;">Remove Event</button>
+                                    </div>
+                                </text>
+                                c++;
+                            }
                         }
-
-                        <text>
-                            <div class="form-group event-group">
-                                <label>Event Heading</label>
-                                <input type="text" name="Events[@c].Heading" value="@heading" />
-
-                                <label>Event Description</label>
-                                <textarea name="Events[@c].Paragraph">@paragraph</textarea>
-
-                                <label>Status</label>
-                                        <select name="Events[@c].Status">
-                                            <option value="Coming Soon" selected="@(status == "Coming Soon")">Coming Soon</option>
-                                            <option value="Open" selected="@(status == "Open")">Open</option>
-                                            <option value="Closed" selected="@(status == "Closed")">Closed</option>
-                                        </select>
-
-                                <label>Booking URL</label>
-                                <input type="text" name="Events[@c].BookingUrl" value="@bookingUrl" />
-
-                                <button type="button" class="btn btn-danger remove-event" style="margin-top:5px;">Remove Event</button>
-                            </div>
-                        </text>
-                        c++;
-                    }
-                }
-            </div>
-
-            <button type="button" id="addEvent" class="btn btn-secondary" style="margin-top:10px;">Add Event</button>
-            <button type="submit" class="btn btn-primary" style="margin-top:10px;">Save Changes</button>
+                    </div>
+        
+                    <button type="button" id="addEvent" class="btn btn-secondary" style="margin-top:10px;">Add Event</button>
+                    <button type="submit" class="btn btn-primary" style="margin-top:10px;">Save Changes</button>
+                </div>
+            </form>
+        
+            <div id="successMessageEvents" style="display:none;color:green;margin-top:10px;"></div>
         </div>
-    </form>
 
-    <div id="successMessageEvents" style="display:none;color:green;margin-top:10px;"></div>
-</div>
+        // MEmbers Area:
+        <!-- Admin-only Members Area Editor -->
+        <div class="staff-section admin-section">
+            <h2>Edit Members Area Content</h2>
 
+            <form id="membersAreaForm" novalidate>
+                <div class="admin-editor">
+
+                    <!-- Intro Section -->
+                    <h3>Intro Section</h3>
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="IntroHeading" value="@Content.Get("MembersArea:Sections:2:TextContent:0:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph</label>
+                        <textarea name="IntroParagraph">@Content.Get("MembersArea:Sections:2:TextContent:0:Paragraph")</textarea>
+                    </div>
+
+                    <hr />
+
+                    <!-- Loop through each Year Group -->
+                    @{
+                        int yearIndex = 0;
+                        while (true)
+                        {
+                            var yearGroupName = Content.Get($"MembersArea:Sections:2:Schemes:{yearIndex}:YearGroup");
+                            if (string.IsNullOrWhiteSpace(yearGroupName)) break;
+                        
+                        <div class="year-group-admin" data-year="@yearIndex">
+                            <h4>Year Group: @yearGroupName</h4>
+
+                            <div class="form-group">
+                                <label>Year Group Name</label>
+                                <input type="text" class="yeargroup-name" value="@yearGroupName" />
+                            </div>
+
+                            <div class="documents-container">
+                                <h5>Documents</h5>
+
+                                <div id="documentsContainer_@yearIndex">
+                                    @{
+                                        int docIndex = 0;
+                                        while (true)
+                                        {
+                                            var docTitle = Content.Get($"MembersArea:Sections:2:Schemes:{yearIndex}:Documents:{docIndex}:Title");
+                                            var docUrl = Content.Get($"MembersArea:Sections:2:Schemes:{yearIndex}:Documents:{docIndex}:Url");
+                                            if (string.IsNullOrWhiteSpace(docTitle)) break;
+                                        
+                                        <div class="form-group document-group">
+                                            <label>Document Title</label>
+                                            <input type="text" class="doc-title" value="@docTitle" />
+
+                                            <label>Current Document</label>
+                                            <p class="doc-link">
+                                                @if (!string.IsNullOrWhiteSpace(docUrl))
+                                                {
+                                                    <a href="@docUrl" target="_blank">@docUrl</a>
+                                                    ;
+                                                }
+                                            </p>
+                                            <input type="hidden" class="doc-url" value="@docUrl" />
+
+                                            <label>Upload / Replace Document</label>
+                                            <input type="file" class="upload-doc" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" />
+
+                                            <button type="button" class="btn btn-danger remove-document">Remove</button>
+                                        </div>
+                                        docIndex++;
+                                        
+                                    }
+                                    }
+                                    
+                                </div>
+
+                                <button type="button" class="btn btn-secondary add-document" data-year="@yearIndex" style="margin-bottom:10px;">Add Document</button>
+                            </div>
+
+                            <hr />
+                        </div>
+
+                        yearIndex++;
+                    }
+                    }
+                </div>
+
+                <button type="button" id="saveMembersArea" class="btn btn-primary" style="margin-top:20px;">Save Changes</button>
+            </form>
+
+            <div id="successMessageMembers" style="display:none;color:green;margin-top:10px;"></div>
+        </div>
 
     }
     <a href="/StaffArea/Logout">Logout</a>
@@ -621,6 +712,150 @@
 
 
 @section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // --- Helpers ---
+            function createDocumentNode(yearIndex, title = "", url = "") {
+                const wrapper = document.createElement("div");
+                wrapper.className = "form-group document-group";
+                wrapper.innerHTML = `
+                    <label>Document Title</label>
+                    <input type="text" class="doc-title" value="${escapeHtml(title)}" />
+
+                    <label>Current Document</label>
+                    <p class="doc-link">${url ? `<a href="${escapeAttr(url)}" target="_blank">${escapeHtml(url)}</a>` : ""}</p>
+                    <input type="hidden" class="doc-url" value="${escapeAttr(url)}" />
+
+                    <label>Upload / Replace Document</label>
+                    <input type="file" class="upload-doc" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" />
+
+                    <button type="button" class="btn btn-danger remove-document">Remove</button>
+                `;
+                return wrapper;
+            }
+
+            function escapeHtml(s) {
+                if (!s) return "";
+                return s.replace(/[&<>"']/g, function (m) {
+                    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m];
+                });
+            }
+            function escapeAttr(s) { return escapeHtml(s); }
+
+            // Attach add-document handlers
+            document.querySelectorAll(".add-document").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const yearIndex = btn.getAttribute("data-year");
+                    const container = document.getElementById("documentsContainer_" + yearIndex);
+                    const node = createDocumentNode(yearIndex, "", "");
+                    container.appendChild(node);
+
+                    // wire up upload handler for this new node
+                    const uploadInput = node.querySelector(".upload-doc");
+                    uploadInput.addEventListener("change", handleUploadChange);
+
+                    // remove button is delegated globally (see below)
+                });
+            });
+
+            // Delegated remove-document handler
+            document.addEventListener("click", (e) => {
+                if (e.target.classList.contains("remove-document")) {
+                    const node = e.target.closest(".document-group");
+                    if (node) node.remove();
+                }
+            });
+
+            // Upload-on-change handler (for existing and dynamically added inputs)
+            async function handleUploadChange(e) {
+                const input = e.target;
+                const file = input.files[0];
+                if (!file) return;
+
+                // Small UI feedback
+                const container = input.closest(".document-group");
+                const linkP = container.querySelector(".doc-link");
+                const urlHidden = container.querySelector(".doc-url");
+
+                try {
+                    const fd = new FormData();
+                    fd.append("file", file);
+
+                    const res = await fetch('/StaffArea/UploadMembersDocument', {
+                        method: 'POST',
+                        body: fd
+                    });
+
+                    const data = await res.json();
+                    if (data.success && data.url) {
+                        urlHidden.value = data.url;
+                        linkP.innerHTML = `<a href="${escapeAttr(data.url)}" target="_blank">${escapeHtml(data.url)}</a>`;
+                        alert("File uploaded successfully");
+                    } else {
+                        alert("Upload failed: " + (data.message || "unknown error"));
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("An error occurred during upload");
+                }
+            }
+
+            // Attach upload handler to existing file inputs
+            document.querySelectorAll(".upload-doc").forEach(input => {
+                input.addEventListener("change", handleUploadChange);
+            });
+
+            // Build JSON from DOM and POST to SaveMembersArea
+            document.getElementById("saveMembersArea").addEventListener("click", async () => {
+                const payload = {
+                    Intro: {
+                        Heading: document.querySelector('[name="IntroHeading"]').value || "",
+                        Paragraph: document.querySelector('[name="IntroParagraph"]').value || ""
+                    },
+                    Schemes: []
+                };
+
+                document.querySelectorAll(".year-group-admin").forEach((yg) => {
+                    const yearGroup = (yg.querySelector(".yeargroup-name") || {}).value || "";
+                    const scheme = { YearGroup: yearGroup, Documents: [] };
+
+                    yg.querySelectorAll(".document-group").forEach((doc) => {
+                        const title = (doc.querySelector(".doc-title") || {}).value || "";
+                        const url = (doc.querySelector(".doc-url") || {}).value || "";
+                        // Only include documents that have a title OR a URL (you can adjust)
+                        if (title.trim() || url.trim()) {
+                            scheme.Documents.push({ Title: title.trim(), Url: url.trim() });
+                        }
+                    });
+
+                    payload.Schemes.push(scheme);
+                });
+
+                // send JSON to server
+                try {
+                    const res = await fetch('/StaffArea/SaveMembersArea', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const data = await res.json();
+                    if (data.success) {
+                        const msg = document.getElementById("successMessageMembers");
+                        msg.innerText = data.message || "Saved";
+                        msg.style.display = "block";
+                        setTimeout(() => msg.style.display = "none", 3000);
+                    } else {
+                        alert("Save failed: " + (data.message || "unknown"));
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("An error occurred while saving.");
+                }
+            });
+        });
+
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const container = document.getElementById("teamMembersContainer");

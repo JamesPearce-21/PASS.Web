@@ -404,5 +404,562 @@
         ]
       }
     ]
+  },
+  "MembersArea": {
+    "Sections": [
+      {
+        "Key": "LoginContact",
+        "TextContent": [
+          {
+            "Heading": "Member Login",
+            "Paragraph": "Enter your login credentials to access PASS member resources."
+          },
+          {
+            "Heading": "Not a Member?",
+            "Paragraph": "If you\u0027re interested in accessing our high-quality PE resources, please get in touch with us.",
+            "LinkText": "Contact Us",
+            "LinkUrl": "/contact"
+          }
+        ]
+      },
+      {
+        "Key": "PublicSamples",
+        "TextContent": [
+          {
+            "Heading": "Free Sample Lesson Plans",
+            "Paragraph": "Try a couple of example lessons\u2014no login required.",
+            "Documents": [
+              {
+                "Title": "PASS Year 2 Athletics",
+                "Url": "/Assets/Documents/PASS Year 2 - Athletics - SAMPLE"
+              },
+              {
+                "Title": "PASS Year 5 - Basketball",
+                "Url": "/Assets/Documents/PASS Year 5 - Basketball - SAMPLE.pdf"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Key": "MembersContent",
+        "TextContent": [
+          {
+            "Heading": "Our Events",
+            "Paragraph": "As a PASS member school, you gain access to high-quality PE schemes of work from EYFS to Year 6. These comprehensive resources are built to support inclusive, progressive, and exciting PE delivery."
+          }
+        ],
+        "Schemes": [
+          {
+            "YearGroup": "Reception / EYFS",
+            "Documents": [
+              {
+                "Title": "PASS Year R - Tennis",
+                "Url": "/Assets/Documents/PASS Year R - Tennis.pdf"
+              },
+              {
+                "Title": "PASS Year R - Manipulative Skills",
+                "Url": "/Assets/Documents/PASS Year R - Manipulative Skills.pdf"
+              },
+              {
+                "Title": "PASS Year R - Gymnastics",
+                "Url": "/Assets/Documents/PASS Year R - Gymnastics.pdf"
+              },
+              {
+                "Title": "PASS Year R - Athletics",
+                "Url": "/Assets/Documents/PASS Year R - Athletics.pdf"
+              },
+              {
+                "Title": "PASS Year R Dance - Minibeasts",
+                "Url": "/Assets/Documents/PASS Year R Dance - Minibeasts.pdf"
+              },
+              {
+                "Title": "PASS Year R Dance - Animals",
+                "Url": "/Assets/Documents/PASS Year R Dance - Animals.pdf"
+              },
+              {
+                "Title": "PASS Year R - Striking and Fielding",
+                "Url": "/Assets/Documents/PASS Year R - Striking and Fielding.pdf"
+              },
+              {
+                "Title": "PASS Year R - Travelling Skills",
+                "Url": "/Assets/Documents/PASS Year R - Travelling Skills.pdf"
+              },
+              {
+                "Title": "PASS KS1 - Multi Skills Infant Agility",
+                "Url": "/Assets/Documents/PASS KS1 - Multi Skills Infant Agility.pdf"
+              }
+            ]
+          },
+          {
+            "YearGroup": "Year 1",
+            "Documents": [
+              {
+                "Title": "PASS Year 1 Dance - Toys",
+                "Url": "/Assets/Documents/PASS Year 1 Dance - Toys.pdf"
+              },
+              {
+                "Title": "PASS Year 1 Dance - Superworm",
+                "Url": "/Assets/Documents/PASS Year 1 Dance - Superworm.pdf"
+              },
+              {
+                "Title": "PASS Year 1 - Fitness",
+                "Url": "/Assets/Documents/PASS Year 1 - Fitness.pdf"
+              },
+              {
+                "Title": "PASS Year 1 - Striking and Fielding",
+                "Url": "/Assets/Documents/PASS Year 1 - Striking and Fielding.pdf"
+              },
+              {
+                "Title": "PASS Year 1 - Travelling with Equipment - Unit 1",
+                "Url": "/Assets/Documents/PASS Year 1 - Travelling with Equipment - Unit 1.pdf"
+              },
+              {
+                "Title": "PASS Year 1 - Sending and Receiving with Hands Unit 2",
+                "Url": "/Assets/Documents/PASS Year 1 - Sending and Receiving with Hands Unit 2.pdf"
+              },
+              {
+                "Title": "PASS Year 1 - Sending and Receiving with Feet and Stick - Unit 3",
+                "Url": "/Assets/Documents/PASS Year 1 - Sending and Recieving with Feet and Stick - Unit 3.pdf"
+              },
+              {
+                "Title": "PASS Year 1 Gymnastics - Unit 1",
+                "Url": "/Assets/Documents/PASS Year 1 Gymnastics - Unit 1.pdf"
+              },
+              {
+                "Title": "PASS Year 1 Gymnastics - Unit 2",
+                "Url": "/Assets/Documents/PASS Year 1 Gymnastics - Unit 2.pdf"
+              },
+              {
+                "Title": "PASS Year 1 - Athletics",
+                "Url": "/Assets/Documents/PASS Year 1 - Athletics.pdf"
+              },
+              {
+                "Title": "PASS - KS1 Badminton",
+                "Url": "/Assets/Documents/PASS - KS1 Badminton.pdf"
+              },
+              {
+                "Title": "PASS KS1 - Multi Skills Infant Agility",
+                "Url": "/Assets/Documents/PASS KS1 - Multi Skills Infant Agility.pdf"
+              },
+              {
+                "Title": "Year 1 - SuperWorm Video",
+                "Url": "/Assets/Documents/Year 1 - SuperWorm.mp4"
+              },
+              {
+                "Title": "PASS KS1 - OAA",
+                "Url": "/Assets/Documents/PASS KS1 - OAA.pdf"
+              },
+              {
+                "Title": "KS1 OAA SNAP Resource",
+                "Url": "/Assets/Documents/KS1 OAA SNAP Resource.pdf"
+              },
+              {
+                "Title": "KS1 OAA - Follow My Route Resource",
+                "Url": "/Assets/Documents/KS1 OAA - Follow My Route Resource.pdf"
+              }
+            ]
+          },
+          {
+            "YearGroup": "Year 2",
+            "Documents": [
+              {
+                "Title": "PASS Year 2 Gymnastics - Unit 2",
+                "Url": "/Assets/Documents/PASS Year 2 Gymnastics - Unit 2.pdf"
+              },
+              {
+                "Title": "PASS Year 2 Gymnastics - Unit 1",
+                "Url": "/Assets/Documents/PASS Year 2 Gymnastics - Unit 1.pdf"
+              },
+              {
+                "Title": "PASS - Year 2 Dance Frozen",
+                "Url": "/Assets/Documents/PASS - Year 2 Dance Frozen.pdf"
+              },
+              {
+                "Title": "PASS - Year 2 Dance - Superheroes",
+                "Url": "/Assets/Documents/PASS - Year 2 Dance - Superheroes.pdf"
+              },
+              {
+                "Title": "PASS Year 2 Dance - BFG",
+                "Url": "/Assets/Documents/PASS Year 2 Dance - BFG.pdf"
+              },
+              {
+                "Title": "PASS Year 2 - Tennis",
+                "Url": "/Assets/Documents/PASS Year 2 - Tennis.pdf"
+              },
+              {
+                "Title": "PASS Year 2 - Striking \u0026 Fielding",
+                "Url": "/Assets/Documents/PASS Year 2 - Striking \u0026 Fielding.pdf"
+              },
+              {
+                "Title": "PASS Year 2 - Fitness",
+                "Url": "/Assets/Documents/PASS Year 2 - Fitness.pdf"
+              },
+              {
+                "Title": "PASS Year 2 - Athletics",
+                "Url": "/Assets/Documents/PASS Year 2 - Athletics.pdf"
+              },
+              {
+                "Title": "PASS Year 2 Dance - The Moon Landing",
+                "Url": "/Assets/Documents/PASS Year 2  Dance - The Moon Landing.pdf"
+              },
+              {
+                "Title": "PASS Year 2 - Travelling with Equipment Games - Unit 1",
+                "Url": "/Assets/Documents/PASS Year 2 - Travelling with Equipment Games - Unit 1.pdf"
+              },
+              {
+                "Title": "PASS Year 2 - Sending \u0026 Receiving with Hands - Games Unit 2",
+                "Url": "/Assets/Documents/PASS Year 2 - Sending \u0026 Receiving with Hands - Games Unit 2.pdf"
+              },
+              {
+                "Title": "PASS Year 2 - Sending and Receiving with Feet \u0026 Stick - Unit 3",
+                "Url": "/Assets/Documents/PASS Year 2 - Sending and Receiving with Feet \u0026 Stick - Unit 3.pdf"
+              },
+              {
+                "Title": "PASS - KS1 Badminton",
+                "Url": "/Assets/Documents/PASS - KS1 Badminton.pdf"
+              },
+              {
+                "Title": "PASS KS1 - Multi Skills Infant Agility",
+                "Url": "/Assets/Documents/PASS KS1 - Multi Skills Infant Agility.pdf"
+              },
+              {
+                "Title": "PASS KS1 - OAA",
+                "Url": "/Assets/Documents/PASS KS1 - OAA.pdf"
+              },
+              {
+                "Title": "KS1 OAA SNAP Resource",
+                "Url": "/Assets/Documents/KS1 OAA SNAP Resource.pdf"
+              },
+              {
+                "Title": "KS1 OAA - Follow My Route Resource",
+                "Url": "/Assets/Documents/KS1 OAA - Follow My Route Resource.pdf"
+              }
+            ]
+          },
+          {
+            "YearGroup": "Year 3",
+            "Documents": [
+              {
+                "Title": "PASS Year 3 Unit 2 - Gymnastics Resources",
+                "Url": "/Assets/Documents/PASS Year 3 Unit 2 - Gymnastics Resources.pdf"
+              },
+              {
+                "Title": "PASS Year 3 Gymnastics - Unit 2",
+                "Url": "/Assets/Documents/PASS Year 3 Gymnastics - Unit 2.pdf"
+              },
+              {
+                "Title": "PASS Year 3 Gymnastics - Unit 1",
+                "Url": "/Assets/Documents/PASS Year 3 Gymnastics - Unit 1.pdf"
+              },
+              {
+                "Title": "PASS Year 3 - Fitness",
+                "Url": "/Assets/Documents/PASS Year 3 - Fitness.pdf"
+              },
+              {
+                "Title": "PASS Year 3 - Basketball",
+                "Url": "/Assets/Documents/PASS Year 3 - Basketball.pdf"
+              },
+              {
+                "Title": "PASS Year 3 Dance - Space",
+                "Url": "/Assets/Documents/PASS Year 3 Dance - Space.pdf"
+              },
+              {
+                "Title": "Y3 Swashbuckle Pirate cards",
+                "Url": "/Assets/Documents/Y3 Swashbuckle Pirate cards.pdf"
+              },
+              {
+                "Title": "PASS Year 3 - Hockey",
+                "Url": "/Assets/Documents/PASS Year 3 - Hockey.pdf"
+              },
+              {
+                "Title": "PASS Year 3 - Netball",
+                "Url": "/Assets/Documents/PASS Year 3 - Netball.pdf"
+              },
+              {
+                "Title": "PASS Year 3 - Dance Pirates",
+                "Url": "/Assets/Documents/PASS Year 3 - Dance Pirates.pdf"
+              },
+              {
+                "Title": "PASS Year 3 - OAA",
+                "Url": "/Assets/Documents/PASS Year 3 - OAA.pdf"
+              },
+              {
+                "Title": "PASS OAA YEAR 3 WHICH WAY TASK SHEET",
+                "Url": "/Assets/Documents/PASS OAA YEAR 3 WHICH WAY TASK SHEET.pdf"
+              },
+              {
+                "Title": "PASS Year 3 - Football",
+                "Url": "/Assets/Documents/PASS Year 3 - Football.pdf"
+              },
+              {
+                "Title": "PASS Year 3 - Dance Pirates Video",
+                "Url": "/Assets/Documents/Pirates.mp4"
+              }
+            ]
+          },
+          {
+            "YearGroup": "Year 4",
+            "Documents": [
+              {
+                "Title": "PASS Year 4 - Netball",
+                "Url": "/Assets/Documents/PASS Year 4 - Netball.pdf"
+              },
+              {
+                "Title": "PASS Y4 Dance - Electricity",
+                "Url": "/Assets/Documents/PASS Y4 Dance - Electricity.pdf"
+              },
+              {
+                "Title": "PASS Year 4 Gymnastics - Unit 1",
+                "Url": "/Assets/Documents/PASS Year 4 Gymnastics - Unit 1.pdf"
+              },
+              {
+                "Title": "PASS Year 4 Gymnastics - Unit 2",
+                "Url": "/Assets/Documents/PASS Year 4 Gymnastics - Unit 2.pdf"
+              },
+              {
+                "Title": "PASS Year 4 - Gymnastics Resources",
+                "Url": "/Assets/Documents/PASS Year 4 - Gymnastics Resources.pdf"
+              },
+              {
+                "Title": "PASS Year 4 Dance - Charlie \u0026 the Chocolate Factory",
+                "Url": "/Assets/Documents/PASS Year 4 Dance - Charlie \u0026 the Chocolate Factory.pdf"
+              },
+              {
+                "Title": "PASS Year 4 - Tennis",
+                "Url": "/Assets/Documents/PASS Year 4 - Tennis.pdf"
+              },
+              {
+                "Title": "PASS Year 4 - Tag Rugby",
+                "Url": "/Assets/Documents/PASS Year 4 - Tag Rugby.pdf"
+              },
+              {
+                "Title": "PASS Year 4 - Striking \u0026 Fielding",
+                "Url": "/Assets/Documents/PASS Year 4 - Striking \u0026 Fielding.pdf"
+              },
+              {
+                "Title": "PASS Year 4 - OAA",
+                "Url": "/Assets/Documents/PASS Year 4 - OAA.pdf"
+              },
+              {
+                "Title": "PASS Year 4 - Hockey",
+                "Url": "/Assets/Documents/PASS Year 4 - Hockey.pdf"
+              },
+              {
+                "Title": "PASS Year 4 - Football",
+                "Url": "/Assets/Documents/PASS Year 4 - Football.pdf"
+              },
+              {
+                "Title": "PASS Year 4 - Fitness",
+                "Url": "/Assets/Documents/PASS Year 4 - Fitness.pdf"
+              },
+              {
+                "Title": "PASS Year 4 - Dance Haka",
+                "Url": "/Assets/Documents/PASS Year 4 - Dance Haka.pdf"
+              },
+              {
+                "Title": "PASS Year 4 - Basketball",
+                "Url": "/Assets/Documents/PASS Year 4 - Basketball.pdf"
+              },
+              {
+                "Title": "PASS Year 4 - Athletics",
+                "Url": "/Assets/Documents/PASS Year 4 - Athletics.pdf"
+              },
+              {
+                "Title": "PASS LKS2 - Badminton",
+                "Url": "/Assets/Documents/PASS LKS2 - Badminton.pdf"
+              },
+              {
+                "Title": "PASS LKS2 - Tri Golf",
+                "Url": "/Assets/Documents/PASS LKS2 - Tri Golf.pdf"
+              }
+            ]
+          },
+          {
+            "YearGroup": "Year 5",
+            "Documents": [
+              {
+                "Title": "PASS Year 5 - Gymnastics Unit 1",
+                "Url": "/Assets/Documents/PASS Year 5 - Gymnastics Unit 1.pdf"
+              },
+              {
+                "Title": "PASS Year 5 - Gymnastics Unit 2",
+                "Url": "/Assets/Documents/PASS Year 5 Gymnastics - Unit 2.pdf"
+              },
+              {
+                "Title": "PASS Year 5 - Netball",
+                "Url": "/Assets/Documents/PASS Year 5 - Netball.pdf"
+              },
+              {
+                "Title": "PASS Year 5 - Hockey",
+                "Url": "/Assets/Documents/PASS Year 5 - Hockey.pdf"
+              },
+              {
+                "Title": "PASS Year 5 - Dance Natural Disasters",
+                "Url": "/Assets/Documents/PASS Year 5 - Dance Natural Disasters.pdf"
+              },
+              {
+                "Title": "PASS Year 5 - Dance - Mad Hatters Tea Party",
+                "Url": "/Assets/Documents/PASS Year 5 - Dance - Mad Hatters Tea Party.pdf"
+              },
+              {
+                "Title": "PASS Year 5 - Basketball",
+                "Url": "/Assets/Documents/PASS Year 5 - Basketball.pdf"
+              },
+              {
+                "Title": "PASS Y5 Dance - Street Dance",
+                "Url": "/Assets/Documents/PASS Y5 Dance - Street Dance.pdf"
+              },
+              {
+                "Title": "PASS Year 5 - Tag Rugby",
+                "Url": "/Assets/Documents/PASS Year 5 - Tag Rugby.pdf"
+              },
+              {
+                "Title": "PASS OAA YEAR 5 CONE ORIENTEERING SHEET",
+                "Url": "/Assets/Documents/PASS OAA YEAR 5 CONE ORIENTEERING SHEET.pdf"
+              },
+              {
+                "Title": "PASS Year 5 - OAA",
+                "Url": "/Assets/Documents/PASS Year 5 - OAA.pdf"
+              },
+              {
+                "Title": "PASS LKS2 - Badminton",
+                "Url": "/Assets/Documents/PASS LKS2 - Badminton.pdf"
+              },
+              {
+                "Title": "PASS UKS2 - Handball",
+                "Url": "/Assets/Documents/PASS UKS2 - Handball.pdf"
+              },
+              {
+                "Title": "PASS UKS2 - Lacrosse",
+                "Url": "/Assets/Documents/PASS UKS2 - Lacrosse.pdf"
+              },
+              {
+                "Title": "Year 5 - Break Dancing Video",
+                "Url": "/Assets/Documents/Year 5 - Break Dancing.mp4"
+              },
+              {
+                "Title": "Year 5 - Beggin Break Dance Video",
+                "Url": "/Assets/Documents/Year 5 - Beggin Break Dance.mp4"
+              },
+              {
+                "Title": "Year 5 - Mad Hatters Tea Party Video",
+                "Url": "/Assets/Documents/Year 5 - Mad Hatters Tea Party.mp4"
+              }
+            ]
+          },
+          {
+            "YearGroup": "Year 6",
+            "Documents": [
+              {
+                "Title": "PASS Year 6 - Athletics",
+                "Url": "/Assets/Documents/PASS Year 6 - Athletics.pdf"
+              },
+              {
+                "Title": "PASS Year 6 Gymnastics - Unit 1",
+                "Url": "/Assets/Documents/PASS Year 6 Gymnastics - Unit 1.pdf"
+              },
+              {
+                "Title": "PASS Year 6 Gymnastics - Unit 2",
+                "Url": "/Assets/Documents/PASS Year 6 Gymnastics - Unit 2.pdf"
+              },
+              {
+                "Title": "PASS Year 6 Gymnastics - Unit 3",
+                "Url": "/Assets/Documents/PASS Year 6 Gymnastics - Unit 3.pdf"
+              },
+              {
+                "Title": "PASS Gymnastics Resources Year 5 \u0026 6",
+                "Url": "/Assets/Documents/PASS Gymnastics Resources Year 5 \u0026 6.pdf"
+              },
+              {
+                "Title": "PASS Year 6 Dance - Mission Impossible",
+                "Url": "/Assets/Documents/PASS Year 6 - Dance - Mission Impossible.pdf"
+              },
+              {
+                "Title": "PASS Year 6 Dance - Grease is the word!",
+                "Url": "/Assets/Documents/PASS Year 6 Dance - Grease is the word!.pdf"
+              },
+              {
+                "Title": "PASS Year 6 - Tennis",
+                "Url": "/Assets/Documents/PASS Year 6 - Tennis.pdf"
+              },
+              {
+                "Title": "PASS Year 6 - Tag Rugby",
+                "Url": "/Assets/Documents/PASS Year 6 - Tag Rugby.pdf"
+              },
+              {
+                "Title": "PASS Year 6 - Rounders",
+                "Url": "/Assets/Documents/PASS Year 6 - Rounders.pdf"
+              },
+              {
+                "Title": "PASS Year 6 - OAA",
+                "Url": "/Assets/Documents/PASS Year 6 - OAA.pdf"
+              },
+              {
+                "Title": "PASS Year 6 - Netball",
+                "Url": "/Assets/Documents/PASS Year 6 - Netball.pdf"
+              },
+              {
+                "Title": "PASS Year 6 - Hockey",
+                "Url": "/Assets/Documents/PASS Year 6 - Hockey.pdf"
+              },
+              {
+                "Title": "PASS Year 6 - Football",
+                "Url": "/Assets/Documents/PASS Year 6 - Football.pdf"
+              },
+              {
+                "Title": "PASS Year 6 - Fitness",
+                "Url": "/Assets/Documents/PASS Year 6 - Fitness.pdf"
+              },
+              {
+                "Title": "PASS Year 6 - Cricket",
+                "Url": "/Assets/Documents/PASS Year 6 - Cricket.pdf"
+              },
+              {
+                "Title": "PASS Year 6 - Basketball",
+                "Url": "/Assets/Documents/PASS Year 6 - Basketball.pdf"
+              },
+              {
+                "Title": "PASS LKS2 - Badminton",
+                "Url": "/Assets/Documents/PASS LKS2 - Badminton.pdf"
+              },
+              {
+                "Title": "PASS UKS2 - Handball",
+                "Url": "/Assets/Documents/PASS UKS2 - Handball.pdf"
+              },
+              {
+                "Title": "PASS UKS2 - Lacrosse",
+                "Url": "/Assets/Documents/PASS UKS2 - Lacrosse.pdf"
+              },
+              {
+                "Title": "Year 6 - Greased Lightening Video",
+                "Url": "/Assets/Documents/Year 6 - Greased Lightening.mp4"
+              },
+              {
+                "Title": "Year 6 - Mission Impossible Video",
+                "Url": "/Assets/Documents/Year 6 - Mission Impossible.mp4"
+              }
+            ]
+          },
+          {
+            "YearGroup": "UKS2 / LKS2",
+            "Documents": [
+              {
+                "Title": "PASS LKS2 - Tri Golf",
+                "Url": "/Assets/Documents/PASS LKS2 - Tri Golf.pdf"
+              },
+              {
+                "Title": "PASS UKS2 - Handball",
+                "Url": "/Assets/Documents/PASS UKS2 - Handball.pdf"
+              },
+              {
+                "Title": "PASS LKS2 - Badminton",
+                "Url": "/Assets/Documents/PASS LKS2 - Badminton.pdf"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 }
