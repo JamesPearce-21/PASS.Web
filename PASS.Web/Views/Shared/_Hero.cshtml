@@ -1,110 +1,134 @@
-﻿<section class="hero-section">
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Hero.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/hero.js" asp-append-version="true"></script>
+}
+
+@inject PASS.Web.Services.ContentService Content
+
+<!-- Hero Section -->
+<section class="hero-section">
     <div class="hero-content">
         <div class="form-container">
-            <h1><b>PASS (Physical Activity & Sports Specialists)</b></h1>
-            <p>We are a passionate and experienced team of professional teachers, coaches, and educators who have been delivering high-quality PE, school sport, and physical activity services to schools since 2013.</p>
+            <h1>@Content.Get("Hero:Sections:0:TextContent:0:Heading")</h1>
+            <p>@Content.Get("Hero:Sections:0:TextContent:0:Paragraph")</p>
         </div>
     </div>
     <div class="hero-image">
-        <img src="/Assets/Images/IMG_1075.jpg" alt="Activity Image" />
+        <img src="@Content.Get("Hero:Sections:0:ImageContent:0:Src")"
+             alt="@Content.Get("Hero:Sections:0:ImageContent:0:Alt")" />
     </div>
 </section>
+
+<!-- Course Grid -->
 <section class="course-grid">
-    <div class="course-box">
-        <div class="course-icon">🎯</div>
-        <h3>Memberships</h3>
-        <p>View the memberships we offer here</p>
-        <a href="/memberships" class="course-btn">View Memberships</a>
-    </div>
-    <div class="course-box">
-        <div class="course-icon">📘</div>
-        <h3>Member's Area</h3>
-        <p>Access our Member's Area here</p>
-        <a href="/membersarea" class="course-btn">View Member's Area</a>
-    </div>
-    <div class="course-box">
-        <div class="course-icon">🏃</div>
-        <h3>Training</h3>
-        <p>View our Training resources here</p>
-        <a href="/training" class="course-btn">View Training</a>
-    </div>
-    <div class="course-box">
-        <div class="course-icon">🗓️</div>
-        <h3>Events</h3>
-        <p>View our current Events here</p>
-        <a href="/events" class="course-btn">View Events</a>
-    </div>
-    <div class="course-box">
-        <div class="course-icon">🚲</div>
-        <h3>Bikeability</h3>
-        <p>View information about Bikeability here</p>
-        <a href="/bikeability" class="course-btn">View Bikeability</a>
-    </div>
-    <div class="course-box">
-        <div class="course-icon">🚲</div>
-        <h3>Balanceability</h3>
-        <p>View information about Balanceability here</p>
-        <a href="/balanceability" class="course-btn">View Balanceability</a>
-    </div>
+    @{
+        int i = 0;
+        while(true)
+        {
+            var icon = Content.Get($"Hero:Sections:1:CourseGrid:{i}:Icon");
+            var heading = Content.Get($"Hero:Sections:1:CourseGrid:{i}:Heading");
+            if(string.IsNullOrWhiteSpace(heading)) break; // stop if no more courses
+            var paragraph = Content.Get($"Hero:Sections:1:CourseGrid:{i}:Paragraph");
+            var linkUrl = Content.Get($"Hero:Sections:1:CourseGrid:{i}:LinkUrl");
+            var linkText = Content.Get($"Hero:Sections:1:CourseGrid:{i}:LinkText");
+
+        <div class="course-box">
+            <div class="course-icon">@icon</div>
+            <h3>@heading</h3>
+            <p>@paragraph</p>
+            <a href="@linkUrl" class="course-btn">@linkText</a>
+        </div>
+            i++;
+        }
+    }
 </section>
+
+<!-- Mission Section -->
 <section class="mission-section">
     <div class="mission-container">
-        <h2>Our Mission</h2>
-        <h3 class="intent-label">INTENT</h3>
-        <p>
-            Our mission is simple: to support schools in delivering inclusive, engaging, and high-impact physical activity experiences that enhance both the physical and mental wellbeing of their pupils. Whether you're looking to strengthen your PE curriculum, expand extra-curricular sport, upskill staff through CPD, or provide pupils with unforgettable activity experiences – we're here to help through a person-centered approach.
-        </p>
+        <h2>@Content.Get("Hero:Sections:2:Mission:Heading")</h2>
+        <h3 class="intent-label">@Content.Get("Hero:Sections:2:Mission:SubHeading")</h3>
+        <p>@Content.Get("Hero:Sections:2:Mission:Paragraph")</p>
     </div>
 </section>
+
+<!-- Impact Stats Section -->
 <section class="logos impact-carousel">
     <div class="logos-slide">
-        <div class="impact-stat"><span>80+</span><p>PE lessons per week</p></div>
-        <div class="impact-stat"><span>2,400+</span><p>Children engaged weekly</p></div>
-        <div class="impact-stat"><span>124+</span><p>Staff supported per week</p></div>
-        <div class="impact-stat"><span>25+</span><p>After school clubs weekly</p></div>
-        <div class="impact-stat"><span>35+</span><p>Competitions held</p></div>
-        <div class="impact-stat"><span>40+</span><p>Schools at events</p></div>
-        <div class="impact-stat"><span>2,670+</span><p>Children participating</p></div>
-        <div class="impact-stat"><span>1,260+</span><p>Girls participating</p></div>
-        <div class="impact-stat"><span>1,400+</span><p>Boys participating</p></div>
-        <div class="impact-stat"><span>310+</span><p>SEND participants</p></div>
-        <div class="impact-stat"><span>480+</span><p>Pupil premium children</p></div>
+        @{
+            int b = 0;
+            while(true)
+            {
+                var value = Content.Get($"Hero:Sections:3:ImpactStats:{b}:Value");
+                var label = Content.Get($"Hero:Sections:3:ImpactStats:{b}:Label");
+                if(string.IsNullOrWhiteSpace(value) && string.IsNullOrWhiteSpace(label)) break;
 
-        <!-- Clone to loop seamlessly -->
-        <div class="impact-stat"><span>80+</span><p>PE lessons per week</p></div>
-        <div class="impact-stat"><span>2,400+</span><p>Children engaged weekly</p></div>
-        <div class="impact-stat"><span>124+</span><p>Staff supported per week</p></div>
-        <div class="impact-stat"><span>25+</span><p>After school clubs weekly</p></div>
-        <div class="impact-stat"><span>35+</span><p>Competitions held</p></div>
-        <div class="impact-stat"><span>40+</span><p>Schools at events</p></div>
-        <div class="impact-stat"><span>2,670+</span><p>Children participating</p></div>
-        <div class="impact-stat"><span>1,260+</span><p>Girls participating</p></div>
-        <div class="impact-stat"><span>1,400+</span><p>Boys participating</p></div>
-        <div class="impact-stat"><span>310+</span><p>SEND participants</p></div>
-        <div class="impact-stat"><span>480+</span><p>Pupil premium children</p></div>
+        <div class="impact-stat">
+            <span>@value</span>
+            <p>@label</p>
+        </div>
+
+                b++;
+            }
+        }
+        <!-- Clone for seamless looping -->
+        @{
+           b = 0;
+            while(true)
+            {
+                var value = Content.Get($"Hero:Sections:3:ImpactStats:{b}:Value");
+                var label = Content.Get($"Hero:Sections:3:ImpactStats:{b}:Label");
+                if(string.IsNullOrWhiteSpace(value) && string.IsNullOrWhiteSpace(label)) break;
+
+        <div class="impact-stat">
+            <span>@value</span>
+            <p>@label</p>
+        </div>
+
+                b++;
+            }
+        }
     </div>
 </section>
+
+<!-- Testimonials Section -->
 <section class="testimonial-slider">
     <h2>Here’s what our schools have to say…</h2>
-
     <div class="testimonial-display">
-        <p id="quote-text">“I feel more confident in knowing how to pace the lesson and link skills together for the whole lesson. Also to tailor lessons to suit all abilities using different equipment.”</p>
-        <span id="quote-author">Year 2 Teacher, St Katherine’s School & Nursery</span>
+        @{
+            var firstQuote = Content.Get("Hero:Sections:4:Testimonials:0:Quote");
+            var firstAuthor = Content.Get("Hero:Sections:4:Testimonials:0:Author");
+        }
+        <p id="quote-text">@firstQuote</p>
+        <span id="quote-author">@firstAuthor</span>
     </div>
-
     <div class="testimonial-nav">
-        <button class="quote-btn active" data-index="0"></button>
-        <button class="quote-btn" data-index="1"></button>
-        <button class="quote-btn" data-index="2"></button>
-        <button class="quote-btn" data-index="3"></button>
-        <button class="quote-btn" data-index="4"></button>
-        <button class="quote-btn" data-index="5"></button>
-        <button class="quote-btn" data-index="6"></button>
+        @{
+            int c = 0;
+            while(true)
+            {
+                var quote = Content.Get($"Hero:Sections:4:Testimonials:{c}:Quote");
+                var author = Content.Get($"Hero:Sections:4:Testimonials:{c}:Author");
+                if(string.IsNullOrWhiteSpace(quote) && string.IsNullOrWhiteSpace(author)) break;
+
+            <button class="quote-btn @(c == 0 ? "active" : "")" data-index="@c"></button>
+
+                c++;
+            }
+        }
     </div>
 </section>
-<section class="membership-accordion-section">
-    <h2>PASS Membership Schools & Credentials</h2>
 
+<!-- Membership Accordion Section -->
+<section class="membership-accordion-section">
+    <h2>@Content.Get("Hero:Sections:5:MembershipAccordion:Heading")</h2>
     <div class="accordion">
         <button class="accordion-toggle" aria-expanded="false" aria-controls="schoolsPanel" id="schoolsToggle">
             <span>PASS Membership Schools</span>
@@ -112,26 +136,18 @@
         </button>
         <div class="accordion-panel" id="schoolsPanel" role="region" aria-labelledby="schoolsToggle" hidden>
             <ul class="schools-list">
-                <li>Borough Green Primary School</li>
-                <li>Ditton Infants</li>
-                <li>Five Acre Wood School</li>
-                <li>Four Elms Primary School</li>
-                <li>Holy Family Catholic Primary School</li>
-                <li>Kings Hill Primary School and Nursery</li>
-                <li>Laddingford Church of England Primary School</li>
-                <li>Loose Primary School</li>
-                <li>Meopham Community Academy Primary School</li>
-                <li>More Park Catholic Primary School</li>
-                <li>Offham Primary School</li>
-                <li>Park Way Primary School</li>
-                <li>Platt Church of England Primary School</li>
-                <li>Roseacre Junior School</li>
-                <li>Ryarsh Primary School</li>
-                <li>Sandling Primary School</li>
-                <li>St Katherine’s School and Nursery</li>
-                <li>St Margaret's Collier Street Church of England Primary School</li>
-                <li>Trottiscliffe Church of England Primary School</li>
-                <li>West Malling Church of England Primary School</li>
+                @{
+                    int d = 0;
+                    while(true)
+                    {
+                        var school = Content.Get($"Hero:Sections:5:MembershipAccordion:Schools:{d}");
+                        if(string.IsNullOrWhiteSpace(school)) break;
+
+                <li>@school</li>
+
+                        d++;
+                    }
+                }
             </ul>
         </div>
 
@@ -141,17 +157,18 @@
         </button>
         <div class="accordion-panel" id="credentialsPanel" role="region" aria-labelledby="credentialsToggle" hidden>
             <ul class="credentials-list">
-                <li>Operating in Kent since 2013</li>
-                <li>Currently partnered with 80+ schools across the county</li>
-                <li>Hold full Public Liability Insurance up to 10 million</li>
-                <li>Expert educators minimum QTS or NGB Level 2 Qualified</li>
-                <li>All staff hold enhanced DBS</li>
-                <li>Staff first aid trained</li>
-                <li>Up to date safeguarding training undertaken by all staff</li>
-                <li>Designated staff for continuity</li>
-                <li>Lesson planning provided for all activities delivered</li>
-                <li>Wide range of sports delivery and resources</li>
-                <li>Termly impact reports provided</li>
+                @{
+                    int e = 0;
+                    while(true)
+                    {
+                        var cred = Content.Get($"Hero:Sections:5:MembershipAccordion:Credentials:{e}");
+                        if(string.IsNullOrWhiteSpace(cred)) break;
+
+                <li>@cred</li>
+
+                        e++;
+                    }
+                }
             </ul>
         </div>
     </div>
@@ -164,21 +181,8 @@
             const expanded = button.getAttribute('aria-expanded') === 'true';
             button.setAttribute('aria-expanded', !expanded);
             const panel = document.getElementById(button.getAttribute('aria-controls'));
-
-            if (!expanded) {
-                panel.removeAttribute('hidden');
-            } else {
-                panel.setAttribute('hidden', '');
-            }
+            if (!expanded) panel.removeAttribute('hidden');
+            else panel.setAttribute('hidden', '');
         });
     });
 </script>
-
-
-
-
-
-
-
-
-

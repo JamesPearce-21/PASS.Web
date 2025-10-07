@@ -1393,11 +1393,263 @@ namespace PASS.Web.Controllers
         }
 
 
+        // Hero:
+        [HttpPost]
+        public IActionResult SaveHero([FromBody] HeroUpdateModel model)
+        {
+            if (model == null)
+                return Json(new { success = false, message = "Invalid data." });
+
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+
+                // Load existing JSON
+                var jsonText = System.IO.File.ReadAllText(path);
+                var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText)
+                           ?? new Dictionary<string, JsonElement>();
+
+                // Load or create Hero wrapper
+                var heroWrapper = dict.ContainsKey("Hero")
+                    ? dict["Hero"].Deserialize<HeroWrapper>() ?? new HeroWrapper()
+                    : new HeroWrapper();
+
+                // Ensure all sections exist (0-5)
+                if (heroWrapper.Sections == null) heroWrapper.Sections = new HeroSection[6];
+                for (int i = 0; i < 6; i++)
+                {
+                    if (heroWrapper.Sections[i] == null) heroWrapper.Sections[i] = new HeroSection();
+                }
+
+                // --- Section 0: Text & Image ---
+                var section0 = heroWrapper.Sections[0];
+                section0.TextContent ??= new TextContentItem[1];
+                section0.TextContent[0] = new TextContentItem
+                {
+                    Heading = model.HeroHeading ?? section0.TextContent[0]?.Heading,
+                    Paragraph = model.HeroParagraph ?? section0.TextContent[0]?.Paragraph
+                };
+                section0.ImageContent ??= new ImageContentItem[1];
+                section0.ImageContent[0] = new ImageContentItem
+                {
+                    Src = model.HeroImageSrc ?? section0.ImageContent[0]?.Src,
+                    Alt = model.HeroImageAlt ?? section0.ImageContent[0]?.Alt
+                };
+
+                // --- Section 1: Course Grid ---
+                var section1 = heroWrapper.Sections[1];
+                if (model.CourseGrid != null)
+                {
+                    section1.CourseGrid = model.CourseGrid
+                        .Select(c => new CourseGridItem
+                        {
+                            Icon = c.Icon,
+                            Heading = c.Heading,
+                            Paragraph = c.Paragraph,
+                            LinkUrl = c.LinkUrl,
+                            LinkText = c.LinkText
+                        }).ToArray();
+                }
+
+                // --- Section 2: Mission ---
+                var section2 = heroWrapper.Sections[2];
+                section2.Mission ??= new MissionSection();
+                section2.Mission.Heading = model.MissionHeading ?? section2.Mission.Heading;
+                section2.Mission.SubHeading = model.MissionSubHeading ?? section2.Mission.SubHeading;
+                section2.Mission.Paragraph = model.MissionParagraph ?? section2.Mission.Paragraph;
+
+                // --- Section 3: Impact Stats ---
+                var section3 = heroWrapper.Sections[3];
+                if (model.ImpactStats != null)
+                {
+                    section3.ImpactStats = model.ImpactStats
+                        .Select(s => new ImpactStatItem { Value = s.Value, Label = s.Label })
+                        .ToArray();
+                }
+
+                // --- Section 4: Testimonials ---
+                var section4 = heroWrapper.Sections[4];
+                if (model.Testimonials != null)
+                {
+                    section4.Testimonials = model.Testimonials
+                        .Select(t => new TestimonialItem { Quote = t.Quote, Author = t.Author })
+                        .ToArray();
+                }
+
+                // --- Section 5: Membership Accordion ---
+                var section5 = heroWrapper.Sections[5];
+                section5.MembershipAccordion ??= new MembershipAccordionSection();
+                section5.MembershipAccordion.Heading = model.MembershipHeading ?? section5.MembershipAccordion.Heading;
+                section5.MembershipAccordion.Schools = model.MembershipSchools?.ToArray() ?? section5.MembershipAccordion.Schools;
+                section5.MembershipAccordion.Credentials = model.MembershipCredentials?.ToArray() ?? section5.MembershipAccordion.Credentials;
+
+                // Save back to JSON
+                dict["Hero"] = JsonSerializer.SerializeToElement(heroWrapper);
+
+                var newJson = JsonSerializer.Serialize(dict, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                });
+
+                System.IO.File.WriteAllText(path, newJson);
+                _contentService.Reload();
+
+                return Json(new { success = true, message = "Hero content saved successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error saving content: " + ex.Message });
+            }
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> UploadHeroImage(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Json(new { success = false, message = "No file selected." });
+
+            try
+            {
+                // Upload file (Blob storage or local, depending on your setup)
+                var sasUri = await _blobService.UploadFileWithSasUrlAsync(
+                    "cms-content",
+                    file.FileName,
+                    file.OpenReadStream(),
+                    file.ContentType,
+                    20
+                );
+
+                // Update Hero JSON
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "content", "content.json");
+                var jsonText = System.IO.File.ReadAllText(path);
+                var dict = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText)
+                           ?? new Dictionary<string, JsonElement>();
+
+                var heroWrapper = dict.ContainsKey("Hero")
+                    ? dict["Hero"].Deserialize<HeroWrapper>() ?? new HeroWrapper()
+                    : new HeroWrapper();
+
+                if (heroWrapper.Sections == null || heroWrapper.Sections.Length == 0)
+                    heroWrapper.Sections = new[] { new HeroSection() };
+
+                var section0 = heroWrapper.Sections[0];
+                section0.ImageContent ??= new ImageContentItem[1];
+
+                section0.ImageContent[0] = new ImageContentItem
+                {
+                    Src = sasUri.ToString(),
+                    Alt = file.FileName
+                };
+
+                dict["Hero"] = JsonSerializer.SerializeToElement(heroWrapper);
+
+                var newJson = JsonSerializer.Serialize(dict, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                });
+
+                System.IO.File.WriteAllText(path, newJson);
+                _contentService.Reload();
+
+                return Json(new { success = true, message = "Hero image uploaded successfully!", url = sasUri.ToString() });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error uploading image: " + ex.Message });
+            }
+        }
+
 
 
 
 
         // Models:
+
+        // Root wrapper for the Hero section
+        // Root wrapper
+        public class HeroWrapper
+        {
+            public HeroSection[] Sections { get; set; }
+        }
+
+        // Each Section
+        public class HeroSection
+        {
+            public TextContentItem[] TextContent { get; set; }
+            public ImageContentItem[] ImageContent { get; set; }
+            public CourseGridItem[] CourseGrid { get; set; }
+            public MissionSection Mission { get; set; }
+            public ImpactStatItem[] ImpactStats { get; set; }
+            public TestimonialItem[] Testimonials { get; set; }
+            public MembershipAccordionSection MembershipAccordion { get; set; }
+        }
+
+        // Course Grid
+        public class CourseGridItem
+        {
+            public string Icon { get; set; }
+            public string Heading { get; set; }
+            public string Paragraph { get; set; }
+            public string LinkUrl { get; set; }
+            public string LinkText { get; set; }
+        }
+
+        // Mission Section
+        public class MissionSection
+        {
+            public string Heading { get; set; }
+            public string SubHeading { get; set; }
+            public string Paragraph { get; set; }
+        }
+
+        // Impact Stats
+        public class ImpactStatItem
+        {
+            public string Value { get; set; }
+            public string Label { get; set; }
+        }
+
+        // Testimonials
+        public class TestimonialItem
+        {
+            public string Quote { get; set; }
+            public string Author { get; set; }
+        }
+
+        // Membership Accordion
+        public class MembershipAccordionSection
+        {
+            public string Heading { get; set; }
+            public string[] Schools { get; set; }
+            public string[] Credentials { get; set; }
+        }
+
+        // Update model for SaveHero
+        public class HeroUpdateModel
+        {
+            public string HeroHeading { get; set; }
+            public string HeroParagraph { get; set; }
+            public string HeroImageSrc { get; set; }
+            public string HeroImageAlt { get; set; }
+
+            public List<CourseGridItem> CourseGrid { get; set; }
+
+            public string MissionHeading { get; set; }
+            public string MissionSubHeading { get; set; }
+            public string MissionParagraph { get; set; }
+
+            public List<ImpactStatItem> ImpactStats { get; set; }
+            public List<TestimonialItem> Testimonials { get; set; }
+
+            public string MembershipHeading { get; set; }
+            public List<string> MembershipSchools { get; set; }
+            public List<string> MembershipCredentials { get; set; }
+        }
+
 
         public class TextContentItem
         {

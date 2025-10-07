@@ -702,6 +702,214 @@
             <div id="successMessageMembers" style="display:none;color:green;margin-top:10px;"></div>
         </div>
 
+        <!-- Admin-only Hero Editor -->
+        <div class="staff-section admin-section">
+            <h2>Edit Hero Page Content</h2>
+        
+            <form id="heroForm">
+                <div class="admin-editor">
+        
+                    <!-- Hero Text & Image Section -->
+                    <h3>Hero Text & Image</h3>
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="HeroHeading" value="@Content.Get("Hero:Sections:0:TextContent:0:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph</label>
+                        <textarea name="HeroParagraph">@Content.Get("Hero:Sections:0:TextContent:0:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group" style="display:none;">
+                        <label>Current Image Src</label>
+                        <input type="text" id="heroImageSrc" name="HeroImageSrc" value="@Content.Get("Hero:Sections:0:ImageContent:0:Src")" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label>Current Image Preview</label>
+                        <img id="heroImagePreview" src="@Content.Get("Hero:Sections:0:ImageContent:0:Src")" 
+                             alt="@Content.Get("Hero:Sections:0:ImageContent:0:Alt")" style="max-width:200px;" />
+                    </div>
+                    <div class="form-group">
+                        <label>Image Alt</label>
+                        <input type="text" name="HeroImageAlt" value="@Content.Get("Hero:Sections:0:ImageContent:0:Alt")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Upload New Image</label>
+                        <input type="file" id="heroImageFile" name="HeroImageFile" accept="image/*" />
+                    </div>
+        
+                    <hr />
+        
+                    <!-- Course Grid Section -->
+                    <h3>Course Grid</h3>
+                    <div id="courseGridContainer">
+                        @{
+                            int courseIndex = 0;
+                            while (true)
+                            {
+                                var heading = Content.Get($"Hero:Sections:1:CourseGrid:{courseIndex}:Heading");
+                                if (string.IsNullOrWhiteSpace(heading)) break;
+        
+                                var icon = Content.Get($"Hero:Sections:1:CourseGrid:{courseIndex}:Icon");
+                                var paragraph = Content.Get($"Hero:Sections:1:CourseGrid:{courseIndex}:Paragraph");
+                                var linkUrl = Content.Get($"Hero:Sections:1:CourseGrid:{courseIndex}:LinkUrl");
+                                var linkText = Content.Get($"Hero:Sections:1:CourseGrid:{courseIndex}:LinkText");
+                        
+                                <div class="form-group course-group" data-index="@courseIndex">
+                                    <h4>Course @courseIndex</h4>
+                                    <label>Icon</label>
+                                    <input type="text" name="CourseIcon_@courseIndex" value="@icon" />
+        
+                                    <label>Heading</label>
+                                    <input type="text" name="CourseHeading_@courseIndex" value="@heading" />
+        
+                                    <label>Paragraph</label>
+                                    <textarea name="CourseParagraph_@courseIndex">@paragraph</textarea>
+        
+                                    <label>Link URL</label>
+                                    <input type="text" name="CourseLinkUrl_@courseIndex" value="@linkUrl" />
+        
+                                    <label>Link Text</label>
+                                    <input type="text" name="CourseLinkText_@courseIndex" value="@linkText" />
+        
+                                    <button type="button" class="btn btn-danger remove-course" style="margin-top:5px;">Remove Course</button>
+                                </div>
+                        
+                                courseIndex++;
+                            }
+                        }
+                    </div>
+                    <button type="button" id="addCourse" class="btn btn-secondary" style="margin-top:10px;">Add Course</button>
+        
+                    <hr />
+        
+                    <!-- Mission Section -->
+                    <h3>Mission Section</h3>
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="MissionHeading" value="@Content.Get("Hero:Sections:2:Mission:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>SubHeading</label>
+                        <input type="text" name="MissionSubHeading" value="@Content.Get("Hero:Sections:2:Mission:SubHeading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph</label>
+                        <textarea name="MissionParagraph">@Content.Get("Hero:Sections:2:Mission:Paragraph")</textarea>
+                    </div>
+        
+                    <hr />
+        
+                    <!-- Impact Stats Section -->
+                    <h3>Impact Stats</h3>
+                    <div id="impactStatsContainer">
+                        @{
+                            int statIndex = 0;
+                            while (true)
+                            {
+                                var value = Content.Get($"Hero:Sections:3:ImpactStats:{statIndex}:Value");
+                                var label = Content.Get($"Hero:Sections:3:ImpactStats:{statIndex}:Label");
+                                if (string.IsNullOrWhiteSpace(value) && string.IsNullOrWhiteSpace(label)) break;
+                        
+                        <div class="form-group stat-group" data-index="@statIndex">
+                            <label>Value</label>
+                            <input type="text" name="StatValue_@statIndex" value="@value" />
+                            <label>Label</label>
+                            <input type="text" name="StatLabel_@statIndex" value="@label" />
+                            <button type="button" class="btn btn-danger remove-stat" style="margin-top:5px;">Remove Stat</button>
+                        </div>
+
+                                statIndex++;
+                            }
+                        }
+                    </div>
+                    <button type="button" id="addStat" class="btn btn-secondary" style="margin-top:10px;">Add Stat</button>
+        
+                    <hr />
+        
+                    <!-- Testimonials Section -->
+                    <h3>Testimonials</h3>
+                    <div id="testimonialsContainer">
+                        @{
+                            int testIndex = 0;
+                            while (true)
+                            {
+                                var quote = Content.Get($"Hero:Sections:4:Testimonials:{testIndex}:Quote");
+                                var author = Content.Get($"Hero:Sections:4:Testimonials:{testIndex}:Author");
+                                if (string.IsNullOrWhiteSpace(quote) && string.IsNullOrWhiteSpace(author)) break;
+                        
+                        <div class="form-group testimonial-group" data-index="@testIndex">
+                            <label>Quote</label>
+                            <textarea name="TestQuote_@testIndex">@quote</textarea>
+                            <label>Author</label>
+                            <input type="text" name="TestAuthor_@testIndex" value="@author" />
+                            <button type="button" class="btn btn-danger remove-testimonial" style="margin-top:5px;">Remove Testimonial</button>
+                        </div>
+
+                                testIndex++;
+                            }
+                        }
+                    </div>
+                    <button type="button" id="addTestimonial" class="btn btn-secondary" style="margin-top:10px;">Add Testimonial</button>
+        
+                    <hr />
+        
+                    <!-- Membership Accordion Section -->
+                    <h3>Membership Accordion</h3>
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="MembershipHeading" value="@Content.Get("Hero:Sections:5:MembershipAccordion:Heading")" />
+                    </div>
+        
+                    <div id="membershipSchoolsContainer">
+                        @{
+                            int schoolIndex = 0;
+                            while (true)
+                            {
+                                var school = Content.Get($"Hero:Sections:5:MembershipAccordion:Schools:{schoolIndex}");
+                                if (string.IsNullOrWhiteSpace(school)) break;
+                        
+                        <div class="form-group school-group" data-index="@schoolIndex">
+                            <label>School</label>
+                            <input type="text" name="School_@schoolIndex" value="@school" />
+                            <button type="button" class="btn btn-danger remove-school" style="margin-top:5px;">Remove School</button>
+                        </div>
+
+                                schoolIndex++;
+                            }
+                        }
+                    </div>
+                    <button type="button" id="addSchool" class="btn btn-secondary" style="margin-top:10px;">Add School</button>
+        
+                    <div id="membershipCredentialsContainer">
+                        @{
+                            int credIndex = 0;
+                            while (true)
+                            {
+                                var cred = Content.Get($"Hero:Sections:5:MembershipAccordion:Credentials:{credIndex}");
+                                if (string.IsNullOrWhiteSpace(cred)) break;
+                        
+                        <div class="form-group credential-group" data-index="@credIndex">
+                            <label>Credential</label>
+                            <input type="text" name="Credential_@credIndex" value="@cred" />
+                            <button type="button" class="btn btn-danger remove-credential" style="margin-top:5px;">Remove Credential</button>
+                        </div>
+
+                                credIndex++;
+                            }
+                        }
+                    </div>
+                    <button type="button" id="addCredential" class="btn btn-secondary" style="margin-top:10px;">Add Credential</button>
+        
+                    <hr />
+        
+                    <button type="submit" class="btn btn-primary" style="margin-top:20px;">Save Changes</button>
+        
+                </div>
+            </form>
+        
+            <div id="successMessageHero" style="display:none;color:green;margin-top:10px;"></div>
+        </div>
+
     }
     <a href="/StaffArea/Logout">Logout</a>
 </section>
@@ -712,6 +920,166 @@
 
 
 @section Scripts {
+    <script>
+        // ===============================
+        // Image Upload
+        // ===============================
+        document.getElementById("heroImageFile").addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch('/StaffArea/UploadHeroImage', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById("heroImageSrc").value = data.url;
+                    document.getElementById("heroImagePreview").src = data.url;
+                    alert("Image uploaded successfully!");
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred during upload.");
+            }
+        });
+
+        // ===============================
+        // Dynamic Add/Remove Handler
+        // ===============================
+        function dynamicAddRemove(containerId, addBtnId, groupClass, templateHtml) {
+            // Add new item
+            document.getElementById(addBtnId).addEventListener('click', () => {
+                const container = document.getElementById(containerId);
+                const index = container.querySelectorAll(`.${groupClass}`).length;
+                const div = document.createElement('div');
+                div.className = `form-group ${groupClass}`;
+                div.dataset.index = index;
+                div.innerHTML = templateHtml(index);
+                container.appendChild(div);
+            });
+
+            // Remove item
+            document.addEventListener('click', (e) => {
+                if (e.target && e.target.classList.contains(`remove-${groupClass.replace('-group', '')}`)) {
+                    e.target.closest(`.${groupClass}`).remove();
+                }
+            });
+        }
+
+        // Templates for dynamic groups
+        const templates = {
+            course: index => `
+                    <h4>Course ${index}</h4>
+                    <label>Icon</label><input type="text" name="CourseIcon_${index}" />
+                    <label>Heading</label><input type="text" name="CourseHeading_${index}" />
+                    <label>Paragraph</label><textarea name="CourseParagraph_${index}"></textarea>
+                    <label>Link URL</label><input type="text" name="CourseLinkUrl_${index}" />
+                    <label>Link Text</label><input type="text" name="CourseLinkText_${index}" />
+                    <button type="button" class="btn btn-danger remove-course" style="margin-top:5px;">Remove Course</button>
+                `,
+            stat: index => `
+                    <label>Value</label><input type="text" name="StatValue_${index}" />
+                    <label>Label</label><input type="text" name="StatLabel_${index}" />
+                    <button type="button" class="btn btn-danger remove-stat" style="margin-top:5px;">Remove Stat</button>
+                `,
+            testimonial: index => `
+                    <label>Quote</label><textarea name="TestQuote_${index}"></textarea>
+                    <label>Author</label><input type="text" name="TestAuthor_${index}" />
+                    <button type="button" class="btn btn-danger remove-testimonial" style="margin-top:5px;">Remove Testimonial</button>
+                `,
+            school: index => `
+                    <label>School</label><input type="text" name="School_${index}" />
+                    <button type="button" class="btn btn-danger remove-school" style="margin-top:5px;">Remove School</button>
+                `,
+            credential: index => `
+                    <label>Credential</label><input type="text" name="Credential_${index}" />
+                    <button type="button" class="btn btn-danger remove-credential" style="margin-top:5px;">Remove Credential</button>
+                `
+        };
+
+        // Initialize dynamic handlers
+        dynamicAddRemove('courseGridContainer', 'addCourse', 'course-group', templates.course);
+        dynamicAddRemove('impactStatsContainer', 'addStat', 'stat-group', templates.stat);
+        dynamicAddRemove('testimonialsContainer', 'addTestimonial', 'testimonial-group', templates.testimonial);
+        dynamicAddRemove('membershipSchoolsContainer', 'addSchool', 'school-group', templates.school);
+        dynamicAddRemove('membershipCredentialsContainer', 'addCredential', 'credential-group', templates.credential);
+
+        // ===============================
+        // Form Submission
+        // ===============================
+        document.getElementById("heroForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            // Collect dynamic arrays
+            data.CourseGrid = [];
+            const courseEls = document.querySelectorAll('.course-group');
+            courseEls.forEach((el, i) => {
+                data.CourseGrid.push({
+                    Icon: el.querySelector(`[name="CourseIcon_${i}"]`)?.value || "",
+                    Heading: el.querySelector(`[name="CourseHeading_${i}"]`)?.value || "",
+                    Paragraph: el.querySelector(`[name="CourseParagraph_${i}"]`)?.value || "",
+                    LinkUrl: el.querySelector(`[name="CourseLinkUrl_${i}"]`)?.value || "",
+                    LinkText: el.querySelector(`[name="CourseLinkText_${i}"]`)?.value || ""
+                });
+            });
+
+            data.ImpactStats = [];
+            const statEls = document.querySelectorAll('.stat-group');
+            statEls.forEach((el, i) => {
+                data.ImpactStats.push({
+                    Value: el.querySelector(`[name="StatValue_${i}"]`)?.value || "",
+                    Label: el.querySelector(`[name="StatLabel_${i}"]`)?.value || ""
+                });
+            });
+
+            data.Testimonials = [];
+            const testEls = document.querySelectorAll('.testimonial-group');
+            testEls.forEach((el, i) => {
+                data.Testimonials.push({
+                    Quote: el.querySelector(`[name="TestQuote_${i}"]`)?.value || "",
+                    Author: el.querySelector(`[name="TestAuthor_${i}"]`)?.value || ""
+                });
+            });
+
+            // Schools & Credentials
+            data.MembershipSchools = [];
+            document.querySelectorAll('[name^="School_"]').forEach(el => {
+                if (el.value.trim()) data.MembershipSchools.push(el.value.trim());
+            });
+
+            data.MembershipCredentials = [];
+            document.querySelectorAll('[name^="Credential_"]').forEach(el => {
+                if (el.value.trim()) data.MembershipCredentials.push(el.value.trim());
+            });
+
+            // Send to server
+            const response = await fetch('@Url.Action("SaveHero", "StaffArea")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            const msgDiv = document.getElementById("successMessageHero");
+
+            if (result.success) {
+                msgDiv.innerText = result.message;
+                msgDiv.style.display = "block";
+                setTimeout(() => msgDiv.style.display = "none", 3000);
+            } else {
+                alert(result.message);
+            }
+        });
+    </script>
+
+
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             // --- Helpers ---

@@ -961,5 +961,215 @@
         ]
       }
     ]
+  },
+  "Hero": {
+    "Sections": [
+      {
+        "TextContent": [
+          {
+            "Heading": "PASS (Physical Activity \u0026 Sports Specialists)",
+            "Paragraph": "We are a passionate and experienced team of professional teachers, coaches, and educators who have been delivering high-quality PE, school sport, and physical activity services to schools since 2013."
+          }
+        ],
+        "ImageContent": [
+          {
+            "Src": "/Assets/Images/IMG_1075.jpg",
+            "Alt": "Activity Image"
+          }
+        ],
+        "CourseGrid": null,
+        "Mission": null,
+        "ImpactStats": null,
+        "Testimonials": null,
+        "MembershipAccordion": null
+      },
+      {
+        "TextContent": null,
+        "ImageContent": null,
+        "CourseGrid": [
+          {
+            "Icon": "\uD83C\uDFAF",
+            "Heading": "Memberships",
+            "Paragraph": "View the memberships we offer here",
+            "LinkUrl": "/memberships",
+            "LinkText": "View Memberships"
+          },
+          {
+            "Icon": "\uD83D\uDCD8",
+            "Heading": "Member\u0027s Area",
+            "Paragraph": "Access our Member\u0027s Area here",
+            "LinkUrl": "/members",
+            "LinkText": "View Member\u0027s Area"
+          },
+          {
+            "Icon": "\uD83C\uDFC3",
+            "Heading": "Training",
+            "Paragraph": "View our Training resources here",
+            "LinkUrl": "/training",
+            "LinkText": "View Training"
+          },
+          {
+            "Icon": "\uD83D\uDDD3\uFE0F",
+            "Heading": "Events",
+            "Paragraph": "View our current Events here",
+            "LinkUrl": "/events",
+            "LinkText": "View Events"
+          },
+          {
+            "Icon": "\uD83D\uDEB2",
+            "Heading": "Bikeability",
+            "Paragraph": "View information about Bikeability here",
+            "LinkUrl": "/bikeability",
+            "LinkText": "View Bikeability"
+          },
+          {
+            "Icon": "\uD83D\uDEB2",
+            "Heading": "Balanceability",
+            "Paragraph": "View information about Balanceability here",
+            "LinkUrl": "/balanceability",
+            "LinkText": "View Balanceability"
+          }
+        ],
+        "Mission": null,
+        "ImpactStats": null,
+        "Testimonials": null,
+        "MembershipAccordion": null
+      },
+      {
+        "TextContent": null,
+        "ImageContent": null,
+        "CourseGrid": null,
+        "Mission": {
+          "Heading": "Our Mission",
+          "SubHeading": "INTENT",
+          "Paragraph": "Our mission is simple: to support schools in delivering inclusive, engaging, and high-impact physical activity experiences that enhance both the physical and mental wellbeing of their pupils. Whether you\u0027re looking to strengthen your PE curriculum, expand extra-curricular sport, upskill staff through CPD, or provide pupils with unforgettable activity experiences \u2013 we\u0027re here to help through a person-centered approach."
+        },
+        "ImpactStats": null,
+        "Testimonials": null,
+        "MembershipAccordion": null
+      },
+      {
+        "TextContent": null,
+        "ImageContent": null,
+        "CourseGrid": null,
+        "Mission": null,
+        "ImpactStats": [
+          {
+            "Value": "80\u002B",
+            "Label": "PE lessons per week"
+          },
+          {
+            "Value": "2,400\u002B",
+            "Label": "Children engaged weekly"
+          },
+          {
+            "Value": "124\u002B",
+            "Label": "Staff supported per week"
+          },
+          {
+            "Value": "25\u002B",
+            "Label": "After school clubs weekly"
+          },
+          {
+            "Value": "35\u002B",
+            "Label": "Competitions held"
+          },
+          {
+            "Value": "40\u002B",
+            "Label": "Schools at events"
+          },
+          {
+            "Value": "2,670\u002B",
+            "Label": "Children participating"
+          },
+          {
+            "Value": "1,260\u002B",
+            "Label": "Girls participating"
+          },
+          {
+            "Value": "1,400\u002B",
+            "Label": "Boys participating"
+          },
+          {
+            "Value": "310\u002B",
+            "Label": "SEND participants"
+          },
+          {
+            "Value": "480\u002B",
+            "Label": "Pupil premium children"
+          }
+        ],
+        "Testimonials": null,
+        "MembershipAccordion": null
+      },
+      {
+        "TextContent": null,
+        "ImageContent": null,
+        "CourseGrid": null,
+        "Mission": null,
+        "ImpactStats": null,
+        "Testimonials": [
+          {
+            "Quote": "\u201CI feel more confident in knowing how to pace the lesson and link skills together for the whole lesson. Also to tailor lessons to suit all abilities using different equipment.\u201D",
+            "Author": "Year 2 Teacher, St Katherine\u2019s School \u0026 Nursery"
+          },
+          {
+            "Quote": "\u201CFantastic experience for our pupils \u2013 they are more engaged and confident in PE.\u201D",
+            "Author": "PE Lead, Borough Green Primary School"
+          },
+          {
+            "Quote": "\u201CThe PASS team are highly professional and inspire both staff and pupils.\u201D",
+            "Author": "Headteacher, Roseacre Junior School"
+          }
+        ],
+        "MembershipAccordion": null
+      },
+      {
+        "TextContent": null,
+        "ImageContent": null,
+        "CourseGrid": null,
+        "Mission": null,
+        "ImpactStats": null,
+        "Testimonials": null,
+        "MembershipAccordion": {
+          "Heading": "PASS Membership Schools \u0026 Credentials",
+          "Schools": [
+            "Borough Green Primary School",
+            "Ditton Infants",
+            "Five Acre Wood School",
+            "Four Elms Primary School",
+            "Holy Family Catholic Primary School",
+            "Kings Hill Primary School and Nursery",
+            "Laddingford Church of England Primary School",
+            "Loose Primary School",
+            "Meopham Community Academy Primary School",
+            "More Park Catholic Primary School",
+            "Offham Primary School",
+            "Park Way Primary School",
+            "Platt Church of England Primary School",
+            "Roseacre Junior School",
+            "Ryarsh Primary School",
+            "Sandling Primary School",
+            "St Katherine\u2019s School and Nursery",
+            "St Margaret\u0027s Collier Street Church of England Primary School",
+            "Trottiscliffe Church of England Primary School",
+            "West Malling Church of England Primary School"
+          ],
+          "Credentials": [
+            "Operating in Kent since 2013",
+            "Currently partnered with 80\u002B schools across the county",
+            "Hold full Public Liability Insurance up to 10 million",
+            "Expert educators minimum QTS or NGB Level 2 Qualified",
+            "All staff hold enhanced DBS",
+            "Staff first aid trained",
+            "Up to date safeguarding training undertaken by all staff",
+            "Designated staff for continuity",
+            "Lesson planning provided for all activities delivered",
+            "Wide range of sports delivery and resources",
+            "Termly impact reports provided"
+          ]
+        }
+      }
+    ]
   }
 }
