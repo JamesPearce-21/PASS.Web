@@ -1,30 +1,36 @@
-﻿/* Main Staff Area Section */
+﻿/* ===============================
+   Staff Area - Main Section
+   =============================== */
 .staff-home-section {
-    padding: 50px 30px;
+    padding: 30px 20px;
     background: #f6faff;
     color: #003366;
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 0.95rem;
 }
 
-/* Individual Sections */
+/* ===============================
+   Staff Sections
+   =============================== */
 .staff-section {
     background: #ffffff;
-    padding: 25px 30px;
-    margin-bottom: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px 25px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
 }
 
     .staff-section h2 {
-        font-size: 1.8rem;
-        margin-bottom: 15px;
+        font-size: 1.5rem;
+        margin-bottom: 12px;
         color: #003366;
     }
 
     .staff-section p {
-        font-size: 1rem;
-        margin-bottom: 15px;
+        font-size: 0.95rem;
+        margin-bottom: 10px;
         color: #555555;
     }
 
@@ -35,72 +41,65 @@
     }
 
         .staff-section ul li {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
             .staff-section ul li a {
                 text-decoration: none;
                 color: #0073cf;
                 background: #f6faff;
-                padding: 6px 10px;
+                padding: 5px 10px;
                 border-radius: 5px;
                 display: inline-block;
-                transition: background 0.2s;
+                transition: background 0.2s, transform 0.1s;
+                font-size: 0.9rem;
             }
 
                 .staff-section ul li a:hover {
                     background: #e6f0ff;
+                    transform: translateY(-1px);
                 }
 
-/* Logout Link */
+/* ===============================
+   Logout Button
+   =============================== */
 .staff-home-section a.logout-btn {
     display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
+    margin-top: 15px;
+    padding: 8px 16px;
     background-color: #003366;
     color: white;
     border-radius: 5px;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background 0.2s;
 }
 
     .staff-home-section a.logout-btn:hover {
         background-color: #0055aa;
     }
 
-/* Responsive Layout */
-@media (max-width: 900px) {
-    .staff-home-section {
-        padding: 30px 15px;
-    }
-
-    .staff-section h2 {
-        font-size: 1.5rem;
-    }
-
-    .staff-section p {
-        font-size: 0.95rem;
-    }
-}
-
-/* Admin Balanceability Editor */
+/* ===============================
+   Admin Sections
+   =============================== */
 .admin-section {
     background: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
     .admin-section h2 {
-        font-size: 2rem;
+        font-size: 1.6rem;
+        margin-bottom: 20px;
         color: #003366;
-        margin-bottom: 25px;
     }
 
 .admin-editor {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
 }
 
     .admin-editor .form-group {
@@ -110,88 +109,108 @@
 
     .admin-editor label {
         font-weight: 600;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
         color: #003366;
+        font-size: 0.9rem;
     }
 
     .admin-editor input[type="text"],
     .admin-editor input[type="file"],
-    .admin-editor textarea {
-        padding: 10px 12px;
-        font-size: 1rem;
+    .admin-editor textarea,
+    .admin-editor select {
+        padding: 8px 10px;
+        font-size: 0.9rem;
         border: 1px solid #ccc;
-        border-radius: 8px;
+        border-radius: 6px;
         transition: border-color 0.2s, box-shadow 0.2s;
     }
 
         .admin-editor input[type="text"]:focus,
-        .admin-editor textarea:focus {
+        .admin-editor textarea:focus,
+        .admin-editor select:focus {
             border-color: #0073cf;
-            box-shadow: 0 0 4px rgba(0, 115, 207, 0.3);
+            box-shadow: 0 0 4px rgba(0, 115, 207, 0.25);
             outline: none;
         }
 
     .admin-editor textarea {
-        min-height: 80px;
+        min-height: 70px;
         resize: vertical;
     }
 
-    .admin-editor img#imagePreview img#imagePreviewBike {
-        max-width: 300px;
-        border-radius: 8px;
+    .admin-editor img {
+        max-width: 180px;
+        border-radius: 6px;
         border: 1px solid #ccc;
         object-fit: contain;
     }
 
-    .admin-editor button.btn-primary {
-        align-self: flex-start;
-        padding: 12px 25px;
-        font-size: 1rem;
+    /* ===============================
+   Buttons
+   =============================== */
+    .admin-editor button.btn-primary,
+    .btn-primary {
+        padding: 8px 16px;
+        font-size: 0.9rem;
         background-color: #0073cf;
         color: #ffffff;
         border: none;
-        border-radius: 8px;
+        border-radius: 6px;
         cursor: pointer;
-        transition: background-color 0.2s;
+        transition: background 0.2s;
+        align-self: flex-start;
     }
 
-        .admin-editor button.btn-primary:hover {
+        .admin-editor button.btn-primary:hover,
+        .btn-primary:hover {
             background-color: #005bb5;
         }
 
-/* Success message */
-#successMessage {
-    font-weight: 600;
+.btn-secondary {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    background-color: #f6faff;
+    color: #003366;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .balanceability-editor img#imagePreview img#imagePreviewBike {
-        max-width: 100%;
+    .btn-secondary:hover {
+        background-color: #e6f0ff;
     }
+
+.btn-danger {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
-/* Admin Panel */
-.admin-panel {
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-}
+    .btn-danger:hover {
+        background-color: #c9302c;
+    }
 
-/* Tab Buttons */
+/* ===============================
+   Tab Buttons
+   =============================== */
 .tab-buttons {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 8px;
     flex-wrap: wrap;
+    margin-bottom: 15px;
 }
 
 .tab-btn {
-    padding: 10px 20px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
     background: #f6faff;
     border: 1px solid #ccc;
-    border-radius: 8px 8px 0 0;
+    border-radius: 6px 6px 0 0;
     cursor: pointer;
     font-weight: 600;
     color: #003366;
@@ -200,11 +219,13 @@
 
     .tab-btn.active {
         background: #0073cf;
-        color: #ffffff;
+        color: #fff;
         border-color: #0073cf;
     }
 
-/* Tab Content */
+/* ===============================
+   Tab Content
+   =============================== */
 .tab-content {
     display: none;
     animation: fadeIn 0.3s ease-in;
@@ -214,7 +235,9 @@
         display: block;
     }
 
-/* Fade in animation */
+/* ===============================
+   Fade-in animation
+   =============================== */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -225,3 +248,34 @@
     }
 }
 
+/* ===============================
+   Responsive
+   =============================== */
+@media (max-width: 900px) {
+    .staff-home-section {
+        padding: 20px 15px;
+    }
+
+    .staff-section h2 {
+        font-size: 1.3rem;
+    }
+
+    .staff-section p,
+    .admin-editor input[type="text"],
+    .admin-editor textarea,
+    .admin-editor select {
+        font-size: 0.85rem;
+    }
+
+    .admin-editor button,
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+    }
+
+    .admin-editor img {
+        max-width: 100%;
+    }
+}
