@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="~/css/Training.css" asp-append-version="true" />
 }
 
+@inject PASS.Web.Services.ContentService Content
+
 @section Scripts {
     <script src="~/js/cpd.js" asp-append-version="true"></script>
     <script>
@@ -23,7 +25,7 @@
         }
 
         const link = document.getElementById('cpd-link');
-        link.href = `/Assets/Documents/CPD and Training 2025-26 X.pdf`;
+        link.href = `@Content.Get("Training:Sections:0:DownloadableContent:0:Src")`;
         link.textContent = `Download CPD List ${yearStart}-${yearEnd}`;
     </script>
 }
@@ -31,25 +33,27 @@
 <section class="cpd-section">
     <div>
         <div>
-            <img src="/Assets/Images/217.JPG" />
+            <img src="@Content.Get("Training:Sections:0:ImageContent:0:Src")"
+                 alt="@Content.Get("Training:Sections:0:ImageContent:0:Alt")">
         </div>
     </div>
 
     <div class="cpd-intro">
-        <h1>CPD & Training</h1>
-        <p>PASS offers a wide range of continuous professional development (CPD) courses and workshops designed to upskill staff and build confidence in delivering high-quality PE lessons.</p>
-        <p>Our training programmes cater to a variety of roles, including specific courses for PE subject leads, school governors, and staff involved in playtime activities and extracurricular opportunities. These sessions ensure that all staff are equipped to enhance the PE experience and contribute to the physical development of pupils.</p>
-        <p>Along with central venues and virtual workshops, PASS also offers a bespoke service whereby schools can receive tailored support through full day, half day, or twilight staff sessions—delivered in the comfort of your own school hall.</p>
-        <p>Get in touch with us today to discuss your school’s needs and how we can create a programme that works best for you.</p>
+        <h1>@Content.Get("Training:Sections:0:TextContent:0:Heading")</h1>
+        <p>@Content.Get("Training:Sections:0:TextContent:1:Paragraph")</p>
+        <p>@Content.Get("Training:Sections:0:TextContent:2:Paragraph")</p>
+        <p>@Content.Get("Training:Sections:0:TextContent:3:Paragraph")</p>
+        <p>@Content.Get("Training:Sections:0:TextContent:4:Paragraph")</p>
     </div>
 
     <div>
         <div>
-            <img src="/Assets/Images/219.JPG" />
+            <img src="@Content.Get("Training:Sections:0:ImageContent:1:Src")"
+                 alt="@Content.Get("Training:Sections:0:ImageContent:1:Alt")">
         </div>
     </div>
 
     <div class="cpd-download">
-        <a id="cpd-link" href="#" class="cpd-btn">Download CPD List</a>
+        <a id="cpd-link" href="#" class="cpd-btn">@Content.Get("Training:Sections:0:DownloadableContent:0:Alt")</a>
     </div>
 </section>

@@ -11,66 +11,1463 @@
 @inject PASS.Web.Services.ContentService Content
 
 <section class="staff-home-section">
-    <h1>Welcome, @username</h1>
 
     <!-- Documents Section (both Staff & Admin) -->
-    <div class="staff-section documents-section">
-        <h2>Documents</h2>
-        <p>Access all staff documents here.</p>
-        <ul>
-            <li><a href="/Assets/Documents/PASS Staff Audit 25-26.docx" target="_blank">PASS Staff Audit 25-26</a></li>
-            <li><a href="/Assets/Documents/PASS STAFF INFORMATION 2025-26.docx" target="_blank">PASS STAFF INFORMATION 2025-26</a></li>
-            <li><a href="/Assets/Documents/PASS UKS2 - Play Leadership.pdf" target="_blank">PASS UKS2 - Play Leadership</a></li>
-        </ul>
-    </div>
+    <h1>Welcome, @username</h1>
 
-    <!-- Information Section (both Staff & Admin) -->
-    <div class="staff-section info-section">
-        <h2>Information</h2>
-        <p>General staff information and announcements.</p>
+    <!-- Documents Section -->
+    <div class="staff-section documents-section">
+        <h2>Staff Documents</h2>
+
+        @if (isAdmin)
+        {
+            <form id="documentsForm">
+                <div id="documentsList">
+                    @{
+                        var d = 0;
+                        // Loop until we hit an empty/null Src
+                        while (!string.IsNullOrEmpty(Content.Get($"StaffDocs:Sections:0:Documents:{d}:Src")))
+                        {
+                            <div class="document-item" data-index="@d">
+                                <input type="text" name="DocSrc_@d"
+                                       value="@Content.Get($"StaffDocs:Sections:0:Documents:{d}:Src")" readonly />
+
+                                <input type="text" name="DocAlt_@d"
+                                       value="@Content.Get($"StaffDocs:Sections:0:Documents:{d}:Alt")" />
+
+                                <button type="button" class="remove-document-btn">Remove</button>
+                            </div>
+                            ;
+
+                            d++;
+                        }
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label>Upload New Document</label>
+                    <input type="file" id="documentFileStaff" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Documents</button>
+            </form>
+        }
+        else
+        {
+            <ul>
+                @{
+                    var d = 0;
+                    while (!string.IsNullOrEmpty(Content.Get($"StaffDocs:Sections:0:Documents:{d}:Src")))
+                    {
+                        <li>
+                            <a href="@Content.Get($"StaffDocs:Sections:0:Documents:{d}:Src")" target="_blank">
+                                @Content.Get($"StaffDocs:Sections:0:Documents:{d}:Alt")
+                            </a>
+                        </li>
+                        ;
+
+                        d++;
+                    }
+                }
+            </ul>
+        }
     </div>
 
     @if (isAdmin)
     {
-        @* <!-- Admin-only Balanceability Editor -->
-        <div class="staff-section admin-balanceability-section">
+
+        <div class="staff-section admin-section">
+            <h2>Change User Password</h2>
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="username" required />
+                </div>
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" id="newPassword" required />
+                </div>
+                <button type="submit" class="btn btn-primary">Update Password</button>
+            </form>
+            <div id="passwordChangeMessage" style="margin-top:10px;"></div>
+        </div>
+
+        <script>
+            document.getElementById("changePasswordForm").addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const username = document.getElementById("username").value.trim();
+                const newPassword = document.getElementById("newPassword").value.trim();
+
+                const response = await fetch('@Url.Action("ChangeUserPassword", "StaffArea")', {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ Username: username, NewPassword: newPassword })
+                });
+
+                const result = await response.json();
+                const msg = document.getElementById("passwordChangeMessage");
+                msg.innerText = result.message;
+                msg.style.color = result.success ? "green" : "red";
+            });
+        </script>
+
+        <!-- Admin-only Balanceability Editor -->
+        <div class="staff-section admin-section">
             <h2>Edit Balanceability Content</h2>
 
             <form id="balanceabilityForm">
-                <div class="balanceability-editor">
-                    <label>Heading</label>
-                    <input type="text" name="Heading" value="@Content.Get("Balanceability:Sections:0:TextContent:0:Heading")" />
+                <div class="admin-editor">
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="Heading" value="@Content.Get("Balanceability:Sections:0:TextContent:0:Heading")" />
+                    </div>
 
-                    <label>Paragraph 1</label>
-                    <textarea name="Paragraph0">@Content.Get("Balanceability:Sections:0:TextContent:0:Paragraph")</textarea>
+                    <div class="form-group">
+                        <label>Paragraph 1</label>
+                        <textarea name="Paragraph1">@Content.Get("Balanceability:Sections:0:TextContent:1:Paragraph")</textarea>
+                    </div>
 
-                    <label>Paragraph 2</label>
-                    <textarea name="Paragraph1">@Content.Get("Balanceability:Sections:0:TextContent:1:Paragraph")</textarea>
+                    <div class="form-group">
+                        <label>Paragraph 2</label>
+                        <textarea name="Paragraph2">@Content.Get("Balanceability:Sections:0:TextContent:2:Paragraph")</textarea>
+                    </div>
 
-                    <label>Paragraph 3</label>
-                    <textarea name="Paragraph2">@Content.Get("Balanceability:Sections:0:TextContent:2:Paragraph")</textarea>
+                    <div class="form-group">
+                        <label>Paragraph 3</label>
+                        <textarea name="Paragraph3">@Content.Get("Balanceability:Sections:0:TextContent:3:Paragraph")</textarea>
+                    </div>
 
-                    <label>Paragraph 4</label>
-                    <textarea name="Paragraph3">@Content.Get("Balanceability:Sections:0:TextContent:3:Paragraph")</textarea>
+                    <div class="form-group">
+                        <label>Paragraph 4</label>
+                        <textarea name="Paragraph4">@Content.Get("Balanceability:Sections:0:TextContent:4:Paragraph")</textarea>
+                    </div>
 
-                    <label>Image Src</label>
-                    <input type="text" name="ImageSrc" value="@Content.Get("Balanceability:Sections:0:ImageContent:0:Src")" />
+                    <div class="form-group" style="display: none;">
+                        <label>Current Image Src</label>
+                        <input type="text" id="imageSrc" name="ImageSrc" value="@Content.Get("Balanceability:Sections:0:ImageContent:0:Src")" readonly />
+                    </div>
 
-                    <label>Image Alt Text</label>
-                    <input type="text" name="ImageAlt" value="@Content.Get("Balanceability:Sections:0:ImageContent:0:Alt")" />
+                    <div class="form-group">
+                        <label>Current Image Preview</label>
+                        <img id="imagePreview" src="@Content.Get("Balanceability:Sections:0:ImageContent:0:Src")"
+                             alt="@Content.Get("Balanceability:Sections:0:ImageContent:0:Alt")" style="max-width:200px;" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Upload New Image</label>
+                        <input type="file" id="imageFile" name="ImageFile" accept="image/*" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Save Changes</button>
             </form>
 
             <div id="successMessage" style="display:none;color:green;margin-top:10px;"></div>
-        </div> *@
-    }
+        </div>
 
+        <!-- Admin-only Bikeability Editor -->
+        <div class="staff-section admin-section">
+            <h2>Edit Bikeability Content</h2>
+
+            <form id="bikeabilityForm">
+                <div class="admin-editor">
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="Heading" value="@Content.Get("Bikeability:Sections:0:TextContent:0:Heading")" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 1</label>
+                        <textarea name="Paragraph1">@Content.Get("Bikeability:Sections:0:TextContent:1:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 2</label>
+                        <textarea name="Paragraph2">@Content.Get("Bikeability:Sections:0:TextContent:2:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 3</label>
+                        <textarea name="Paragraph3">@Content.Get("Bikeability:Sections:0:TextContent:3:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>List Item 1</label>
+                        <textarea name="ListItem1">@Content.Get("Bikeability:Sections:0:TextContent:4:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>List Item 2</label>
+                        <textarea name="ListItem2">@Content.Get("Bikeability:Sections:0:TextContent:5:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>List Item 3</label>
+                        <textarea name="ListItem3">@Content.Get("Bikeability:Sections:0:TextContent:6:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 4</label>
+                        <textarea name="Paragraph4">@Content.Get("Bikeability:Sections:0:TextContent:7:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group" style="display: none;">
+                        <label>Current Image Src</label>
+                        <input type="text" id="imageSrcBike" name="ImageSrc" value="@Content.Get("Bikeability:Sections:0:ImageContent:0:Src")" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Image Preview</label>
+                        <img id="imagePreviewBike" src="@Content.Get("Bikeability:Sections:0:ImageContent:0:Src")"
+                             alt="@Content.Get("Bikeability:Sections:0:ImageContent:0:Alt")" style="max-width:200px;" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload New Image</label>
+                        <input type="file" id="imageFileBike" name="ImageFile" accept="image/*" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+
+            <div id="successMessageBike" style="display:none;color:green;margin-top:10px;"></div>
+        </div>
+
+        <!-- Admin-only Contact Us Editor -->
+        <div class="staff-section admin-section">
+            <h2>Edit Contact Us Content</h2>
+
+            <form id="contactUsForm">
+                <div class="admin-editor">
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="Heading" value="@Content.Get("ContactUs:Sections:0:TextContent:0:Heading")" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 1</label>
+                        <textarea name="Paragraph1">@Content.Get("ContactUs:Sections:0:TextContent:1:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 2</label>
+                        <textarea name="Paragraph2">@Content.Get("ContactUs:Sections:0:TextContent:2:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 3</label>
+                        <textarea name="Paragraph3">@Content.Get("ContactUs:Sections:0:TextContent:3:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 4</label>
+                        <textarea name="Paragraph4">@Content.Get("ContactUs:Sections:0:TextContent:4:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 5</label>
+                        <textarea name="Paragraph4">@Content.Get("ContactUs:Sections:0:TextContent:5:Paragraph")</textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+
+            <div id="successMessageContactUs" style="display:none;color:green;margin-top:10px;"></div>
+        </div>
+
+        <!-- Admin-only Privacy Policy Editor -->
+        <div class="staff-section admin-section">
+            <h2>Edit Privacy Policy Content</h2>
+
+            <form id="privacyPolicyForm">
+                <div class="admin-editor">
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="Heading" value="@Content.Get("PrivacyPolicy:Sections:0:TextContent:0:Heading")" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 1</label>
+                        <textarea name="Paragraph1">@Content.Get("PrivacyPolicy:Sections:0:TextContent:1:Paragraph")</textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+
+            <div id="successMessagePrivacyPolicy" style="display:none;color:green;margin-top:10px;"></div>
+        </div>
+
+        <!-- Admin-only Training Editor -->
+        <div class="staff-section admin-section">
+            <h2>Edit Training Content</h2>
+
+            <form id="trainingForm">
+                <div class="admin-editor">
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="Heading" value="@Content.Get("Training:Sections:0:TextContent:0:Heading")" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 1</label>
+                        <textarea name="Paragraph1">@Content.Get("Training:Sections:0:TextContent:1:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 2</label>
+                        <textarea name="Paragraph2">@Content.Get("Training:Sections:0:TextContent:2:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 3</label>
+                        <textarea name="Paragraph3">@Content.Get("Training:Sections:0:TextContent:3:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Paragraph 4</label>
+                        <textarea name="Paragraph4">@Content.Get("Training:Sections:0:TextContent:4:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group" style="display: none;">
+                        <label>Current Image Src 1</label>
+                        <input type="text" id="imageSrcTraining1" name="ImageSrc" value="@Content.Get("Training:Sections:0:ImageContent:0:Src")" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Image Preview</label>
+                        <img id="imagePreviewTraining1" src="@Content.Get("Training:Sections:0:ImageContent:0:Src")"
+                             alt="@Content.Get("Training:Sections:0:ImageContent:0:Alt")" style="max-width:200px;" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload New Image</label>
+                        <input type="file" id="imageFileTraining1" name="ImageFile" accept="image/*" />
+                    </div>
+
+                    <div class="form-group" style="display: none;">
+                        <label>Current Image Src 2</label>
+                        <input type="text" id="imageSrcTraining2" name="ImageSrc" value="@Content.Get("Training:Sections:0:ImageContent:1:Src")" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Image Preview</label>
+                        <img id="imagePreviewTraining2" src="@Content.Get("Training:Sections:0:ImageContent:1:Src")"
+                             alt="@Content.Get("Training:Sections:0:ImageContent:1:Alt")" style="max-width:200px;" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload New Image</label>
+                        <input type="file" id="imageFileTraining2" name="ImageFile" accept="image/*" />
+                    </div>
+
+                    <div class="form-group" style="display: none;">
+                        <label>Current Document Src</label>
+                        <input type="text" id="documentSrcTraining" name="ImageSrc" value="@Content.Get("Training:Sections:0:DownloadableContent:0:Src")" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Document:</label>
+                            <p id="documentPreviewTraining">@Content.Get("Training:Sections:0:DownloadableContent:0:Src")</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload New Document</label>
+                        <input type="file" id="documentFileTraining" name="ImageFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+
+            <div id="successMessageTraining" style="display:none;color:green;margin-top:10px;"></div>
+        </div>
+
+        //The Team:
+
+        <!-- Admin-only TheTeam Editor -->
+        <div class="staff-section admin-section">
+            <h2>Edit Team Members</h2>
+
+            <form id="teamForm">
+                <div id="teamMembersContainer" class="admin-editor">
+                    @{
+                        int i = 1; // start after the intro
+                        while (true)
+                        {
+                            var heading = Content.Get($"TheTeam:Sections:0:TextContent:{i}:Heading");
+                            var paragraph = Content.Get($"TheTeam:Sections:0:TextContent:{i}:Paragraph");
+
+                            if (string.IsNullOrWhiteSpace(paragraph))
+                            {
+                                break; // stop if no more members
+                            }
+
+                            <text>
+                                <div class="form-group team-member-group">
+                                    <label>Team Member Name</label>
+                                    <input type="text" name="Members[@i].Heading" value="@heading" />
+
+                                    <label>Job Title & Description</label>
+                                    <textarea name="Members[@i].Paragraph">@paragraph</textarea>
+
+                                    <button type="button" class="btn btn-danger remove-member">Remove</button>
+                                </div>
+                            </text>
+
+                            i++;
+                        }
+                    }
+                </div>
+
+                <button type="button" id="addTeamMember" class="btn btn-secondary" style="margin-top:10px;">Add Team Member</button>
+                <button type="submit" class="btn btn-primary" style="margin-top:10px;">Save Changes</button>
+            </form>
+
+            <div id="successMessageTeam" style="display:none;color:green;margin-top:10px;"></div>
+        </div>
+
+        //Memberships:
+
+        <!-- Admin-only Memberships Editor -->
+        <div class="staff-section admin-section">
+            <h2>Edit Memberships Content</h2>
+
+            <form id="membershipsForm">
+                <div class="admin-editor">
+
+                    <!-- Intro -->
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="Heading" value="@Content.Get("Memberships:Sections:0:TextContent:0:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph 1</label>
+                        <textarea name="Paragraph1">@Content.Get("Memberships:Sections:0:TextContent:1:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph 2</label>
+                        <textarea name="Paragraph2">@Content.Get("Memberships:Sections:0:TextContent:2:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph 3</label>
+                        <textarea name="Paragraph3">@Content.Get("Memberships:Sections:0:TextContent:3:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph 4</label>
+                        <textarea name="Paragraph4">@Content.Get("Memberships:Sections:0:TextContent:4:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph 5</label>
+                        <textarea name="Paragraph5">@Content.Get("Memberships:Sections:0:TextContent:5:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph 6</label>
+                        <textarea name="Paragraph6">@Content.Get("Memberships:Sections:0:TextContent:6:Paragraph")</textarea>
+                    </div>
+
+                    <!-- Packages -->
+                    <div class="form-group">
+                        <label>Bronze Heading</label>
+                        <input type="text" name="BronzeHeading" value="@Content.Get("Memberships:Sections:0:TextContent:6:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bronze Paragraph</label>
+                        <textarea name="BronzeParagraph">@Content.Get("Memberships:Sections:0:TextContent:6:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Silver Heading</label>
+                        <input type="text" name="SilverHeading" value="@Content.Get("Memberships:Sections:0:TextContent:7:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Silver Paragraph</label>
+                        <textarea name="SilverParagraph">@Content.Get("Memberships:Sections:0:TextContent:7:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Gold Heading</label>
+                        <input type="text" name="GoldHeading" value="@Content.Get("Memberships:Sections:0:TextContent:8:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Gold Paragraph</label>
+                        <textarea name="GoldParagraph">@Content.Get("Memberships:Sections:0:TextContent:8:Paragraph")</textarea>
+                    </div>
+
+                    <!-- CPD / Competitions / Contact -->
+                    <div class="form-group">
+                        <label>CPD Heading</label>
+                        <input type="text" name="CPDHeading" value="@Content.Get("Memberships:Sections:0:TextContent:9:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>CPD Paragraph</label>
+                        <textarea name="CPDParagraph">@Content.Get("Memberships:Sections:0:TextContent:9:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Competitions Heading</label>
+                        <input type="text" name="CompetitionsHeading" value="@Content.Get("Memberships:Sections:0:TextContent:10:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Competitions Paragraph</label>
+                        <textarea name="CompetitionsParagraph">@Content.Get("Memberships:Sections:0:TextContent:10:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Get in Touch Heading</label>
+                        <input type="text" name="GetInTouchHeading" value="@Content.Get("Memberships:Sections:0:TextContent:11:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Get in Touch Paragraph</label>
+                        <textarea name="GetInTouchParagraph">@Content.Get("Memberships:Sections:0:TextContent:11:Paragraph")</textarea>
+                    </div>
+
+                    <!-- Images -->
+                    @for (int b = 0; b < 5; b++)
+                    {
+                        <div class="form-group" style="display:none;">
+                            <label>Current Image @(b + 1) Src</label>
+                            <input type="text" id="imageSrcMembership@(b + 1)" name="ImageSrc@(b + 1)" value="@Content.Get($"Memberships:Sections:0:ImageContent:{b}:Src")" readonly />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Current Image @(b + 1) Preview</label>
+                            <img id="imagePreviewMembership@(b + 1)" src="@Content.Get($"Memberships:Sections:0:ImageContent:{b}:Src")"
+                                 alt="@Content.Get($"Memberships:Sections:0:ImageContent:{b}:Alt")" style="max-width:200px;" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Upload New Image @(b + 1)</label>
+                            <input type="file" id="imageFileMembership@(b + 1)" accept="image/*" />
+                        </div>
+                    }
+
+
+
+                    <!-- Document -->
+                    <div class="form-group" style="display: none;">
+                        <label>Current Packages Document Src</label>
+                        <input type="text" id="documentSrcMemberships" name="PackagesDocumentSrc" value="@Content.Get("Memberships:Sections:0:DownloadableContent:0:Src")" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Packages Document:</label>
+                        <p id="documentPreviewMemberships">@Content.Get("Memberships:Sections:0:DownloadableContent:0:Src")</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload New Packages Document</label>
+                        <input type="file" id="documentFileMemberships" name="PackagesDocumentFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+
+            <div id="successMessageMemberships" style="display:none;color:green;margin-top:10px;"></div>
+        </div>
+
+        // Events:
+
+        <!-- Admin-only Events Editor -->
+        <div class="staff-section admin-section">
+            <h2>Edit Events</h2>
+
+            <form id="eventsForm">
+                <div class="admin-editor">
+                    <!-- Intro Section -->
+                    <div class="form-group">
+                        <label>Intro Heading</label>
+                        <input type="text" name="IntroHeading" value="@Content.Get("Events:Sections:0:TextContent:0:Heading")" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Intro Paragraph 1</label>
+                        <textarea name="IntroParagraph1">@Content.Get("Events:Sections:0:TextContent:1:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Intro Paragraph 2</label>
+                        <textarea name="IntroParagraph2">@Content.Get("Events:Sections:0:TextContent:2:Paragraph")</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Intro Paragraph 3</label>
+                        <textarea name="IntroParagraph3">@Content.Get("Events:Sections:0:TextContent:3:Paragraph")</textarea>
+                    </div>
+
+                    <!-- Dynamic Events -->
+                    <div id="eventsContainer">
+                        @{
+                            int c = 4; // events start at index 4
+                            while (true)
+                            {
+                                var heading = Content.Get($"Events:Sections:0:TextContent:{c}:Heading");
+                                var paragraph = Content.Get($"Events:Sections:0:TextContent:{c}:Paragraph");
+                                var status = Content.Get($"Events:Sections:0:TextContent:{c}:Status");
+                                var bookingUrl = Content.Get($"Events:Sections:0:TextContent:{c}:BookingUrl");
+                                var startDate = Content.Get($"Events:Sections:0:TextContent:{c}:StartDate");
+                                var endDate = Content.Get($"Events:Sections:0:TextContent:{c}:EndDate");
+
+                                if (string.IsNullOrWhiteSpace(heading) && string.IsNullOrWhiteSpace(paragraph))
+                                {
+                                    break; // stop if there are no more events
+                                }
+                                <text>
+                                    <div class="form-group event-group">
+                                        <label>Event Heading</label>
+                                        <input type="text" name="Events[@c].Heading" value="@heading" />
+
+                                        <label>Event Description</label>
+                                        <textarea name="Events[@c].Paragraph">@paragraph</textarea>
+
+                                        <label>Status</label>
+                                        <select name="Events[@c].Status">
+                                            <option value="Coming Soon" selected="@(status == "Coming Soon")">Coming Soon</option>
+                                            <option value="Open" selected="@(status == "Open")">Open</option>
+                                            <option value="Closed" selected="@(status == "Closed")">Closed</option>
+                                        </select>
+
+                                        <label>Booking URL</label>
+                                        <input type="text" name="Events[@c].BookingUrl" value="@bookingUrl" />
+
+                                        <div class="date-fields">
+                                            <div>
+                                                <label>Start Date</label>
+                                                <input type="date" name="Events[@c].StartDate" value="@startDate" />
+                                            </div>
+                                            <div>
+                                                <label>End Date</label>
+                                                <input type="date" name="Events[@c].EndDate" value="@endDate" />
+                                            </div>
+                                        </div>
+
+                                        <button type="button" class="btn btn-danger remove-event" style="margin-top:5px;">Remove Event</button>
+                                    </div>
+                                </text>
+                                c++;
+                            }
+                        }
+                    </div>
+
+                    <button type="button" id="addEvent" class="btn btn-secondary" style="margin-top:10px;">Add Event</button>
+                    <button type="submit" class="btn btn-primary" style="margin-top:10px;">Save Changes</button>
+                </div>
+            </form>
+
+            <div id="successMessageEvents" style="display:none;color:green;margin-top:10px;"></div>
+        </div>
+
+
+        // MEmbers Area:
+        <!-- Admin-only Members Area Editor -->
+        <div class="staff-section admin-section">
+            <h2>Edit Members Area Content</h2>
+
+            <form id="membersAreaForm" novalidate>
+                <div class="admin-editor">
+
+                    <!-- Intro Section -->
+                    <h3>Intro Section</h3>
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="IntroHeading" value="@Content.Get("MembersArea:Sections:2:TextContent:0:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph</label>
+                        <textarea name="IntroParagraph">@Content.Get("MembersArea:Sections:2:TextContent:0:Paragraph")</textarea>
+                    </div>
+
+                    <hr />
+
+                    <!-- Loop through each Year Group -->
+                    @{
+                        int yearIndex = 0;
+                        while (true)
+                        {
+                            var yearGroupName = Content.Get($"MembersArea:Sections:2:Schemes:{yearIndex}:YearGroup");
+                            if (string.IsNullOrWhiteSpace(yearGroupName)) break;
+                        
+                        <div class="year-group-admin" data-year="@yearIndex">
+                            <h4>Year Group: @yearGroupName</h4>
+
+                            <div class="form-group">
+                                <label>Year Group Name</label>
+                                <input type="text" class="yeargroup-name" value="@yearGroupName" />
+                            </div>
+
+                            <div class="documents-container">
+                                <h5>Documents</h5>
+
+                                <div id="documentsContainer_@yearIndex">
+                                    @{
+                                        int docIndex = 0;
+                                        while (true)
+                                        {
+                                            var docTitle = Content.Get($"MembersArea:Sections:2:Schemes:{yearIndex}:Documents:{docIndex}:Title");
+                                            var docUrl = Content.Get($"MembersArea:Sections:2:Schemes:{yearIndex}:Documents:{docIndex}:Url");
+                                            if (string.IsNullOrWhiteSpace(docTitle)) break;
+                                        
+                                        <div class="form-group document-group">
+                                            <label>Document Title</label>
+                                            <input type="text" class="doc-title" value="@docTitle" />
+
+                                            <label>Current Document</label>
+                                            <p class="doc-link">
+                                                @if (!string.IsNullOrWhiteSpace(docUrl))
+                                                {
+                                                    <a href="@docUrl" target="_blank">@docUrl</a>
+                                                    ;
+                                                }
+                                            </p>
+                                            <input type="hidden" class="doc-url" value="@docUrl" />
+
+                                            <label>Upload / Replace Document</label>
+                                            <input type="file" class="upload-doc" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" />
+
+                                            <button type="button" class="btn btn-danger remove-document">Remove</button>
+                                        </div>
+                                        docIndex++;
+                                        
+                                    }
+                                    }
+                                    
+                                </div>
+
+                                <button type="button" class="btn btn-secondary add-document" data-year="@yearIndex" style="margin-bottom:10px;">Add Document</button>
+                            </div>
+
+                            <hr />
+                        </div>
+
+                        yearIndex++;
+                    }
+                    }
+                </div>
+
+                <button type="button" id="saveMembersArea" class="btn btn-primary" style="margin-top:20px;">Save Changes</button>
+            </form>
+
+            <div id="successMessageMembers" style="display:none;color:green;margin-top:10px;"></div>
+        </div>
+
+        <!-- Admin-only Hero Editor -->
+        <div class="staff-section admin-section">
+            <h2>Edit Hero Page Content</h2>
+        
+            <form id="heroForm">
+                <div class="admin-editor">
+        
+                    <!-- Hero Text & Image Section -->
+                    <h3>Hero Text & Image</h3>
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="HeroHeading" value="@Content.Get("Hero:Sections:0:TextContent:0:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph</label>
+                        <textarea name="HeroParagraph">@Content.Get("Hero:Sections:0:TextContent:0:Paragraph")</textarea>
+                    </div>
+                    <div class="form-group" style="display:none;">
+                        <label>Current Image Src</label>
+                        <input type="text" id="heroImageSrc" name="HeroImageSrc" value="@Content.Get("Hero:Sections:0:ImageContent:0:Src")" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label>Current Image Preview</label>
+                        <img id="heroImagePreview" src="@Content.Get("Hero:Sections:0:ImageContent:0:Src")" 
+                             alt="@Content.Get("Hero:Sections:0:ImageContent:0:Alt")" style="max-width:200px;" />
+                    </div>
+                    <div class="form-group">
+                        <label>Image Alt</label>
+                        <input type="text" name="HeroImageAlt" value="@Content.Get("Hero:Sections:0:ImageContent:0:Alt")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Upload New Image</label>
+                        <input type="file" id="heroImageFile" name="HeroImageFile" accept="image/*" />
+                    </div>
+        
+                    <hr />
+        
+                    <!-- Course Grid Section -->
+                    <h3>Course Grid</h3>
+                    <div id="courseGridContainer">
+                        @{
+                            int courseIndex = 0;
+                            while (true)
+                            {
+                                var heading = Content.Get($"Hero:Sections:1:CourseGrid:{courseIndex}:Heading");
+                                if (string.IsNullOrWhiteSpace(heading)) break;
+        
+                                var icon = Content.Get($"Hero:Sections:1:CourseGrid:{courseIndex}:Icon");
+                                var paragraph = Content.Get($"Hero:Sections:1:CourseGrid:{courseIndex}:Paragraph");
+                                var linkUrl = Content.Get($"Hero:Sections:1:CourseGrid:{courseIndex}:LinkUrl");
+                                var linkText = Content.Get($"Hero:Sections:1:CourseGrid:{courseIndex}:LinkText");
+                        
+                                <div class="form-group course-group" data-index="@courseIndex">
+                                    <h4>Course @courseIndex</h4>
+                                    <label>Icon</label>
+                                    <input type="text" name="CourseIcon_@courseIndex" value="@icon" />
+        
+                                    <label>Heading</label>
+                                    <input type="text" name="CourseHeading_@courseIndex" value="@heading" />
+        
+                                    <label>Paragraph</label>
+                                    <textarea name="CourseParagraph_@courseIndex">@paragraph</textarea>
+        
+                                    <label>Link URL</label>
+                                    <input type="text" name="CourseLinkUrl_@courseIndex" value="@linkUrl" />
+        
+                                    <label>Link Text</label>
+                                    <input type="text" name="CourseLinkText_@courseIndex" value="@linkText" />
+        
+                                    <button type="button" class="btn btn-danger remove-course" style="margin-top:5px;">Remove Course</button>
+                                </div>
+                        
+                                courseIndex++;
+                            }
+                        }
+                    </div>
+                    <button type="button" id="addCourse" class="btn btn-secondary" style="margin-top:10px;">Add Course</button>
+        
+                    <hr />
+        
+                    <!-- Mission Section -->
+                    <h3>Mission Section</h3>
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="MissionHeading" value="@Content.Get("Hero:Sections:2:Mission:Heading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>SubHeading</label>
+                        <input type="text" name="MissionSubHeading" value="@Content.Get("Hero:Sections:2:Mission:SubHeading")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Paragraph</label>
+                        <textarea name="MissionParagraph">@Content.Get("Hero:Sections:2:Mission:Paragraph")</textarea>
+                    </div>
+        
+                    <hr />
+        
+                    <!-- Impact Stats Section -->
+                    <h3>Impact Stats</h3>
+                    <div id="impactStatsContainer">
+                        @{
+                            int statIndex = 0;
+                            while (true)
+                            {
+                                var value = Content.Get($"Hero:Sections:3:ImpactStats:{statIndex}:Value");
+                                var label = Content.Get($"Hero:Sections:3:ImpactStats:{statIndex}:Label");
+                                if (string.IsNullOrWhiteSpace(value) && string.IsNullOrWhiteSpace(label)) break;
+                        
+                        <div class="form-group stat-group" data-index="@statIndex">
+                            <label>Value</label>
+                            <input type="text" name="StatValue_@statIndex" value="@value" />
+                            <label>Label</label>
+                            <input type="text" name="StatLabel_@statIndex" value="@label" />
+                            <button type="button" class="btn btn-danger remove-stat" style="margin-top:5px;">Remove Stat</button>
+                        </div>
+
+                                statIndex++;
+                            }
+                        }
+                    </div>
+                    <button type="button" id="addStat" class="btn btn-secondary" style="margin-top:10px;">Add Stat</button>
+        
+                    <hr />
+        
+                    <!-- Testimonials Section -->
+                    <h3>Testimonials</h3>
+                    <div id="testimonialsContainer">
+                        @{
+                            int testIndex = 0;
+                            while (true)
+                            {
+                                var quote = Content.Get($"Hero:Sections:4:Testimonials:{testIndex}:Quote");
+                                var author = Content.Get($"Hero:Sections:4:Testimonials:{testIndex}:Author");
+                                if (string.IsNullOrWhiteSpace(quote) && string.IsNullOrWhiteSpace(author)) break;
+                        
+                        <div class="form-group testimonial-group" data-index="@testIndex">
+                            <label>Quote</label>
+                            <textarea name="TestQuote_@testIndex">@quote</textarea>
+                            <label>Author</label>
+                            <input type="text" name="TestAuthor_@testIndex" value="@author" />
+                            <button type="button" class="btn btn-danger remove-testimonial" style="margin-top:5px;">Remove Testimonial</button>
+                        </div>
+
+                                testIndex++;
+                            }
+                        }
+                    </div>
+                    <button type="button" id="addTestimonial" class="btn btn-secondary" style="margin-top:10px;">Add Testimonial</button>
+        
+                    <hr />
+        
+                    <!-- Membership Accordion Section -->
+                    <h3>Membership Accordion</h3>
+                    <div class="form-group">
+                        <label>Heading</label>
+                        <input type="text" name="MembershipHeading" value="@Content.Get("Hero:Sections:5:MembershipAccordion:Heading")" />
+                    </div>
+        
+                    <div id="membershipSchoolsContainer">
+                        @{
+                            int schoolIndex = 0;
+                            while (true)
+                            {
+                                var school = Content.Get($"Hero:Sections:5:MembershipAccordion:Schools:{schoolIndex}");
+                                if (string.IsNullOrWhiteSpace(school)) break;
+                        
+                        <div class="form-group school-group" data-index="@schoolIndex">
+                            <label>School</label>
+                            <input type="text" name="School_@schoolIndex" value="@school" />
+                            <button type="button" class="btn btn-danger remove-school" style="margin-top:5px;">Remove School</button>
+                        </div>
+
+                                schoolIndex++;
+                            }
+                        }
+                    </div>
+                    <button type="button" id="addSchool" class="btn btn-secondary" style="margin-top:10px;">Add School</button>
+        
+                    <div id="membershipCredentialsContainer">
+                        @{
+                            int credIndex = 0;
+                            while (true)
+                            {
+                                var cred = Content.Get($"Hero:Sections:5:MembershipAccordion:Credentials:{credIndex}");
+                                if (string.IsNullOrWhiteSpace(cred)) break;
+                        
+                        <div class="form-group credential-group" data-index="@credIndex">
+                            <label>Credential</label>
+                            <input type="text" name="Credential_@credIndex" value="@cred" />
+                            <button type="button" class="btn btn-danger remove-credential" style="margin-top:5px;">Remove Credential</button>
+                        </div>
+
+                                credIndex++;
+                            }
+                        }
+                    </div>
+                    <button type="button" id="addCredential" class="btn btn-secondary" style="margin-top:10px;">Add Credential</button>
+        
+                    <hr />
+        
+                    <button type="submit" class="btn btn-primary" style="margin-top:20px;">Save Changes</button>
+        
+                </div>
+            </form>
+        
+            <div id="successMessageHero" style="display:none;color:green;margin-top:10px;"></div>
+        </div>
+
+    }
     <a href="/StaffArea/Logout">Logout</a>
 </section>
 
+
+
+
+
+
 @section Scripts {
+    <script>
+        // ===============================
+        // Image Upload
+        // ===============================
+        document.getElementById("heroImageFile").addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch('/StaffArea/UploadHeroImage', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById("heroImageSrc").value = data.url;
+                    document.getElementById("heroImagePreview").src = data.url;
+                    alert("Image uploaded successfully!");
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred during upload.");
+            }
+        });
+
+        // ===============================
+        // Dynamic Add/Remove Handler
+        // ===============================
+        function dynamicAddRemove(containerId, addBtnId, groupClass, templateHtml) {
+            // Add new item
+            document.getElementById(addBtnId).addEventListener('click', () => {
+                const container = document.getElementById(containerId);
+                const index = container.querySelectorAll(`.${groupClass}`).length;
+                const div = document.createElement('div');
+                div.className = `form-group ${groupClass}`;
+                div.dataset.index = index;
+                div.innerHTML = templateHtml(index);
+                container.appendChild(div);
+            });
+
+            // Remove item
+            document.addEventListener('click', (e) => {
+                if (e.target && e.target.classList.contains(`remove-${groupClass.replace('-group', '')}`)) {
+                    e.target.closest(`.${groupClass}`).remove();
+                }
+            });
+        }
+
+        // Templates for dynamic groups
+        const templates = {
+            course: index => `
+                    <h4>Course ${index}</h4>
+                    <label>Icon</label><input type="text" name="CourseIcon_${index}" />
+                    <label>Heading</label><input type="text" name="CourseHeading_${index}" />
+                    <label>Paragraph</label><textarea name="CourseParagraph_${index}"></textarea>
+                    <label>Link URL</label><input type="text" name="CourseLinkUrl_${index}" />
+                    <label>Link Text</label><input type="text" name="CourseLinkText_${index}" />
+                    <button type="button" class="btn btn-danger remove-course" style="margin-top:5px;">Remove Course</button>
+                `,
+            stat: index => `
+                    <label>Value</label><input type="text" name="StatValue_${index}" />
+                    <label>Label</label><input type="text" name="StatLabel_${index}" />
+                    <button type="button" class="btn btn-danger remove-stat" style="margin-top:5px;">Remove Stat</button>
+                `,
+            testimonial: index => `
+                    <label>Quote</label><textarea name="TestQuote_${index}"></textarea>
+                    <label>Author</label><input type="text" name="TestAuthor_${index}" />
+                    <button type="button" class="btn btn-danger remove-testimonial" style="margin-top:5px;">Remove Testimonial</button>
+                `,
+            school: index => `
+                    <label>School</label><input type="text" name="School_${index}" />
+                    <button type="button" class="btn btn-danger remove-school" style="margin-top:5px;">Remove School</button>
+                `,
+            credential: index => `
+                    <label>Credential</label><input type="text" name="Credential_${index}" />
+                    <button type="button" class="btn btn-danger remove-credential" style="margin-top:5px;">Remove Credential</button>
+                `
+        };
+
+        // Initialize dynamic handlers
+        dynamicAddRemove('courseGridContainer', 'addCourse', 'course-group', templates.course);
+        dynamicAddRemove('impactStatsContainer', 'addStat', 'stat-group', templates.stat);
+        dynamicAddRemove('testimonialsContainer', 'addTestimonial', 'testimonial-group', templates.testimonial);
+        dynamicAddRemove('membershipSchoolsContainer', 'addSchool', 'school-group', templates.school);
+        dynamicAddRemove('membershipCredentialsContainer', 'addCredential', 'credential-group', templates.credential);
+
+        // ===============================
+        // Form Submission
+        // ===============================
+        document.getElementById("heroForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            // Collect dynamic arrays
+            data.CourseGrid = [];
+            const courseEls = document.querySelectorAll('.course-group');
+            courseEls.forEach((el, i) => {
+                data.CourseGrid.push({
+                    Icon: el.querySelector(`[name="CourseIcon_${i}"]`)?.value || "",
+                    Heading: el.querySelector(`[name="CourseHeading_${i}"]`)?.value || "",
+                    Paragraph: el.querySelector(`[name="CourseParagraph_${i}"]`)?.value || "",
+                    LinkUrl: el.querySelector(`[name="CourseLinkUrl_${i}"]`)?.value || "",
+                    LinkText: el.querySelector(`[name="CourseLinkText_${i}"]`)?.value || ""
+                });
+            });
+
+            data.ImpactStats = [];
+            const statEls = document.querySelectorAll('.stat-group');
+            statEls.forEach((el, i) => {
+                data.ImpactStats.push({
+                    Value: el.querySelector(`[name="StatValue_${i}"]`)?.value || "",
+                    Label: el.querySelector(`[name="StatLabel_${i}"]`)?.value || ""
+                });
+            });
+
+            data.Testimonials = [];
+            const testEls = document.querySelectorAll('.testimonial-group');
+            testEls.forEach((el, i) => {
+                data.Testimonials.push({
+                    Quote: el.querySelector(`[name="TestQuote_${i}"]`)?.value || "",
+                    Author: el.querySelector(`[name="TestAuthor_${i}"]`)?.value || ""
+                });
+            });
+
+            // Schools & Credentials
+            data.MembershipSchools = [];
+            document.querySelectorAll('[name^="School_"]').forEach(el => {
+                if (el.value.trim()) data.MembershipSchools.push(el.value.trim());
+            });
+
+            data.MembershipCredentials = [];
+            document.querySelectorAll('[name^="Credential_"]').forEach(el => {
+                if (el.value.trim()) data.MembershipCredentials.push(el.value.trim());
+            });
+
+            // Send to server
+            const response = await fetch('@Url.Action("SaveHero", "StaffArea")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            const msgDiv = document.getElementById("successMessageHero");
+
+            if (result.success) {
+                msgDiv.innerText = result.message;
+                msgDiv.style.display = "block";
+                setTimeout(() => msgDiv.style.display = "none", 3000);
+            } else {
+                alert(result.message);
+            }
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // --- Helpers ---
+            function createDocumentNode(yearIndex, title = "", url = "") {
+                const wrapper = document.createElement("div");
+                wrapper.className = "form-group document-group";
+                wrapper.innerHTML = `
+                    <label>Document Title</label>
+                    <input type="text" class="doc-title" value="${escapeHtml(title)}" />
+
+                    <label>Current Document</label>
+                    <p class="doc-link">${url ? `<a href="${escapeAttr(url)}" target="_blank">${escapeHtml(url)}</a>` : ""}</p>
+                    <input type="hidden" class="doc-url" value="${escapeAttr(url)}" />
+
+                    <label>Upload / Replace Document</label>
+                    <input type="file" class="upload-doc" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" />
+
+                    <button type="button" class="btn btn-danger remove-document">Remove</button>
+                `;
+                return wrapper;
+            }
+
+            function escapeHtml(s) {
+                if (!s) return "";
+                return s.replace(/[&<>"']/g, function (m) {
+                    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m];
+                });
+            }
+            function escapeAttr(s) { return escapeHtml(s); }
+
+            // Attach add-document handlers
+            document.querySelectorAll(".add-document").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const yearIndex = btn.getAttribute("data-year");
+                    const container = document.getElementById("documentsContainer_" + yearIndex);
+                    const node = createDocumentNode(yearIndex, "", "");
+                    container.appendChild(node);
+
+                    // wire up upload handler for this new node
+                    const uploadInput = node.querySelector(".upload-doc");
+                    uploadInput.addEventListener("change", handleUploadChange);
+
+                    // remove button is delegated globally (see below)
+                });
+            });
+
+            // Delegated remove-document handler
+            document.addEventListener("click", (e) => {
+                if (e.target.classList.contains("remove-document")) {
+                    const node = e.target.closest(".document-group");
+                    if (node) node.remove();
+                }
+            });
+
+            // Upload-on-change handler (for existing and dynamically added inputs)
+            async function handleUploadChange(e) {
+                const input = e.target;
+                const file = input.files[0];
+                if (!file) return;
+
+                // Small UI feedback
+                const container = input.closest(".document-group");
+                const linkP = container.querySelector(".doc-link");
+                const urlHidden = container.querySelector(".doc-url");
+
+                try {
+                    const fd = new FormData();
+                    fd.append("file", file);
+
+                    const res = await fetch('/StaffArea/UploadMembersDocument', {
+                        method: 'POST',
+                        body: fd
+                    });
+
+                    const data = await res.json();
+                    if (data.success && data.url) {
+                        urlHidden.value = data.url;
+                        linkP.innerHTML = `<a href="${escapeAttr(data.url)}" target="_blank">${escapeHtml(data.url)}</a>`;
+                        alert("File uploaded successfully");
+                    } else {
+                        alert("Upload failed: " + (data.message || "unknown error"));
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("An error occurred during upload");
+                }
+            }
+
+            // Attach upload handler to existing file inputs
+            document.querySelectorAll(".upload-doc").forEach(input => {
+                input.addEventListener("change", handleUploadChange);
+            });
+
+            // Build JSON from DOM and POST to SaveMembersArea
+            document.getElementById("saveMembersArea").addEventListener("click", async () => {
+                const payload = {
+                    Intro: {
+                        Heading: document.querySelector('[name="IntroHeading"]').value || "",
+                        Paragraph: document.querySelector('[name="IntroParagraph"]').value || ""
+                    },
+                    Schemes: []
+                };
+
+                document.querySelectorAll(".year-group-admin").forEach((yg) => {
+                    const yearGroup = (yg.querySelector(".yeargroup-name") || {}).value || "";
+                    const scheme = { YearGroup: yearGroup, Documents: [] };
+
+                    yg.querySelectorAll(".document-group").forEach((doc) => {
+                        const title = (doc.querySelector(".doc-title") || {}).value || "";
+                        const url = (doc.querySelector(".doc-url") || {}).value || "";
+                        // Only include documents that have a title OR a URL (you can adjust)
+                        if (title.trim() || url.trim()) {
+                            scheme.Documents.push({ Title: title.trim(), Url: url.trim() });
+                        }
+                    });
+
+                    payload.Schemes.push(scheme);
+                });
+
+                // send JSON to server
+                try {
+                    const res = await fetch('/StaffArea/SaveMembersArea', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const data = await res.json();
+                    if (data.success) {
+                        const msg = document.getElementById("successMessageMembers");
+                        msg.innerText = data.message || "Saved";
+                        msg.style.display = "block";
+                        setTimeout(() => msg.style.display = "none", 3000);
+                    } else {
+                        alert("Save failed: " + (data.message || "unknown"));
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("An error occurred while saving.");
+                }
+            });
+        });
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const container = document.getElementById("teamMembersContainer");
+            const addBtn = document.getElementById("addTeamMember");
+            const form = document.getElementById("teamForm");
+
+            // Function to update input names after add/remove
+            function updateMemberIndices() {
+                container.querySelectorAll(".team-member-group").forEach((div, index) => {
+                    div.querySelector('input[name^="Members"]').name = `Members[${index}].Heading`;
+                    div.querySelector('textarea[name^="Members"]').name = `Members[${index}].Paragraph`;
+                });
+            }
+
+            // Add new team member dynamically
+            addBtn.addEventListener("click", () => {
+                const div = document.createElement("div");
+                div.className = "form-group team-member-group";
+                div.innerHTML = `
+                    <label>Team Member Name</label>
+                    <input type="text" name="Members[].Heading" value="" />
+
+                    <label>Job Title & Description</label>
+                    <textarea name="Members[].Paragraph"></textarea>
+
+                    <button type="button" class="btn btn-danger remove-member">Remove</button>
+                `;
+
+                container.appendChild(div);
+                updateMemberIndices();
+            });
+
+            // Remove team member
+            container.addEventListener("click", (e) => {
+                if (e.target.classList.contains("remove-member")) {
+                    e.target.closest(".team-member-group").remove();
+                    updateMemberIndices();
+                }
+            });
+
+            // Handle form submission
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const members = [];
+                container.querySelectorAll(".team-member-group").forEach((div) => {
+                    const headingInput = div.querySelector('input[name^="Members"]');
+                    const paragraphInput = div.querySelector('textarea[name^="Members"]');
+                    if (!headingInput || !paragraphInput) return;
+
+                    members.push({
+                        Heading: headingInput.value.trim(),
+                        Paragraph: paragraphInput.value.trim()
+                    });
+                });
+
+                if (!members.length) {
+                    alert("Please add at least one team member before saving.");
+                    return;
+                }
+
+                try {
+                    const response = await fetch('@Url.Action("SaveTheTeam", "StaffArea")', {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ Members: members })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        const msgDiv = document.getElementById("successMessageTeam");
+                        msgDiv.innerText = result.message;
+                        msgDiv.style.display = "block";
+                        setTimeout(() => (msgDiv.style.display = "none"), 3000);
+                    } else {
+                        alert(result.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("An error occurred during submission.");
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const container = document.getElementById("eventsContainer");
+            const addBtn = document.getElementById("addEvent");
+            const form = document.getElementById("eventsForm");
+
+            function updateIndices() {
+                container.querySelectorAll(".event-group").forEach((div, index) => {
+                    div.querySelector('input[name^="Events"][name$=".Heading"]').name = `Events[${index}].Heading`;
+                    div.querySelector('textarea[name^="Events"][name$=".Paragraph"]').name = `Events[${index}].Paragraph`;
+                    div.querySelector('select[name^="Events"][name$=".Status"]').name = `Events[${index}].Status`;
+                    div.querySelector('input[name^="Events"][name$=".BookingUrl"]').name = `Events[${index}].BookingUrl`;
+                    div.querySelector('input[name^="Events"][name$=".StartDate"]').name = `Events[${index}].StartDate`;
+                    div.querySelector('input[name^="Events"][name$=".EndDate"]').name = `Events[${index}].EndDate`;
+                });
+            }
+
+            addBtn.addEventListener("click", () => {
+                const div = document.createElement("div");
+                div.className = "form-group event-group";
+                div.innerHTML = `
+                        <label>Event Heading</label>
+                        <input type="text" name="Events[].Heading" value="" />
+
+                        <label>Description</label>
+                        <textarea name="Events[].Paragraph"></textarea>
+
+                        <label>Status</label>
+                        <select name="Events[].Status">
+                            <option value="Coming Soon">Coming Soon</option>
+                            <option value="Open">Open</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+
+                        <label>Booking URL</label>
+                        <input type="text" name="Events[].BookingUrl" value="" />
+
+                        <div class="date-range-box">
+                            <label>Start Date:</label>
+                            <input type="date" name="Events[].StartDate" class="date-range-input" />
+
+                            <label>End Date:</label>
+                            <input type="date" name="Events[].EndDate" class="date-range-input" />
+                        </div>
+
+                        <button type="button" class="btn btn-danger remove-event" style="margin-top:5px;">Remove</button>
+                        <hr />
+                    `;
+                container.appendChild(div);
+                updateIndices();
+            });
+
+            container.addEventListener("click", (e) => {
+                if (e.target.classList.contains("remove-event")) {
+                    e.target.closest(".event-group").remove();
+                    updateIndices();
+                }
+            });
+
+            // Submit form
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const events = [];
+                container.querySelectorAll(".event-group").forEach(div => {
+                    const heading = div.querySelector('input[name$=".Heading"]')?.value.trim() || "";
+                    const paragraph = div.querySelector('textarea[name$=".Paragraph"]')?.value.trim() || "";
+                    const status = div.querySelector('select[name$=".Status"]')?.value || "";
+                    const bookingUrl = div.querySelector('input[name$=".BookingUrl"]')?.value.trim() || "";
+                    const startDate = div.querySelector('input[name$=".StartDate"]')?.value || "";
+                    const endDate = div.querySelector('input[name$=".EndDate"]')?.value || "";
+
+                    events.push({
+                        Heading: heading,
+                        Paragraph: paragraph,
+                        Status: status,
+                        BookingUrl: bookingUrl,
+                        StartDate: startDate,
+                        EndDate: endDate
+                    });
+                });
+
+                try {
+                    const response = await fetch('@Url.Action("SaveEvents", "StaffArea")', {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ Events: events })
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        const msgDiv = document.getElementById("successMessageEvents");
+                        msgDiv.innerText = result.message;
+                        msgDiv.style.display = "block";
+                        setTimeout(() => (msgDiv.style.display = "none"), 3000);
+                    } else {
+                        alert(result.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("An error occurred during submission.");
+                }
+            });
+        });
+    </script>
+
+
+
+
     <script>
         document.getElementById("balanceabilityForm").addEventListener("submit", async function (e) {
             e.preventDefault();
@@ -97,4 +1494,465 @@
             }
         });
     </script>
+    <script>
+        document.getElementById("bikeabilityForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('@Url.Action("SaveBikeability", "StaffArea")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                const msgDiv = document.getElementById("successMessageBike");
+                msgDiv.innerText = result.message;
+                msgDiv.style.display = "block";
+
+                // Hide after 3 seconds
+                setTimeout(() => msgDiv.style.display = "none", 3000);
+            } else {
+                alert(result.message);
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("contactUsForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('@Url.Action("SaveContactUs", "StaffArea")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                const msgDiv = document.getElementById("successMessageContactUs");
+                msgDiv.innerText = result.message;
+                msgDiv.style.display = "block";
+
+                // Hide after 3 seconds
+                setTimeout(() => msgDiv.style.display = "none", 3000);
+            } else {
+                alert(result.message);
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("privacyPolicyForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('@Url.Action("SavePrivacyPolicy", "StaffArea")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                const msgDiv = document.getElementById("successMessagePrivacyPolicy");
+                msgDiv.innerText = result.message;
+                msgDiv.style.display = "block";
+
+                // Hide after 3 seconds
+                setTimeout(() => msgDiv.style.display = "none", 3000);
+            } else {
+                alert(result.message);
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("trainingForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('@Url.Action("SaveTraining", "StaffArea")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                const msgDiv = document.getElementById("successMessageTraining");
+                msgDiv.innerText = result.message;
+                msgDiv.style.display = "block";
+
+                // Hide after 3 seconds
+                setTimeout(() => msgDiv.style.display = "none", 3000);
+            } else {
+                alert(result.message);
+            }
+        });
+    </script>
+
+    <script>
+        document.getElementById("imageFile").addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch('/StaffArea/UploadImage', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    // Update the ImageSrc textbox so it gets saved later
+                    document.getElementById("imageSrc").value = data.url;
+
+                    // Update the image preview
+                    const preview = document.getElementById("imagePreview");
+                    preview.src = data.url;
+
+                    alert("Image uploaded successfully!");
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred during upload.");
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("imageFileBike").addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch('/StaffArea/UploadBikeabilityImage', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    // Update the hidden ImageSrc textbox
+                    document.getElementById("imageSrcBike").value = data.url;
+
+                    // Update the image preview
+                    const preview = document.getElementById("imagePreviewBike");
+                    preview.src = data.url;
+
+                    alert("Bikeability image uploaded successfully!");
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred during upload.");
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("imageFileTraining1").addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch('/StaffArea/UploadTrainingImage', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    // Update the hidden ImageSrc textbox
+                    document.getElementById("imageSrcTraining1").value = data.url;
+
+                    // Update the image preview
+                    const preview = document.getElementById("imagePreviewTraining1");
+                    preview.src = data.url;
+
+                    alert("Training images uploaded successfully!");
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred during upload.");
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("imageFileTraining2").addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch('/StaffArea/UploadTrainingImage1', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    // Update the hidden ImageSrc textbox
+                    document.getElementById("imageSrcTraining2").value = data.url;
+
+                    // Update the image preview
+                    const preview = document.getElementById("imagePreviewTraining2");
+                    preview.src = data.url;
+
+                    alert("Training images uploaded successfully!");
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred during upload.");
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("documentFileTraining").addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch('/StaffArea/UploadTrainingDocument', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    // Update the hidden ImageSrc textbox
+                    document.getElementById("documentSrcTraining").value = data.url;
+
+                    // Update the image preview
+                    const preview = document.getElementById("documentPreviewTraining");
+                    preview.src = data.url;
+
+                    alert("Training document uploaded successfully!");
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred during upload.");
+            }
+        });
+    </script>
+    <script>
+        for (let i = 1; i <= 5; i++) {
+            const fileInput = document.getElementById(`imageFileMembership${i}`);
+            fileInput.addEventListener("change", async function () {
+                const file = this.files[0];
+                if (!file) return;
+
+                const formData = new FormData();
+                formData.append("file", file);
+
+                try {
+                    const res = await fetch(`/StaffArea/UploadMembershipImage?index=${i - 1}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await res.json();
+                    if (data.success) {
+                        // Update the hidden ImageSrc textbox
+                        document.getElementById(`imageSrcMembership${i}`).value = data.url;
+
+                        // Update the image preview
+                        document.getElementById(`imagePreviewMembership${i}`).src = data.url;
+
+                        alert(`Membership image ${i} uploaded successfully!`);
+                    } else {
+                        alert("Upload failed: " + data.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("An error occurred during upload.");
+                }
+            });
+        }
+    </script>
+
+
+    <script>
+        // Handle memberships document upload
+        document.getElementById("documentFileMemberships").addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch('/StaffArea/UploadMembershipDocument', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    // Update hidden DocumentSrc textbox
+                    document.getElementById("documentSrcMemberships").value = data.url;
+
+                    // Update document preview
+                    const preview = document.getElementById("documentPreviewMemberships");
+                    preview.textContent = data.url;
+
+                    alert("Memberships document uploaded successfully!");
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred during upload.");
+            }
+        });
+    </script>
+
+    <script>
+        // Handle form submission
+        document.getElementById("membershipsForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('@Url.Action("SaveMemberships", "StaffArea")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                const msgDiv = document.getElementById("successMessageMemberships");
+                msgDiv.innerText = result.message;
+                msgDiv.style.display = "block";
+
+                setTimeout(() => msgDiv.style.display = "none", 3000);
+            } else {
+                alert(result.message);
+            }
+        });
+    </script>
+
+    <script>
+        // Upload new document
+        document.getElementById("documentFileStaff")?.addEventListener("change", async function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const res = await fetch('/StaffArea/UploadStaffDocument', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    const list = document.getElementById("documentsList");
+                    const index = list.children.length;
+                    const div = document.createElement("div");
+                    div.className = "document-item";
+                    div.dataset.index = index;
+                    div.innerHTML = `
+                            <input type="text" name="DocSrc_${index}" value="${data.url}" readonly />
+                            <input type="text" name="DocAlt_${index}" value="${file.name}" />
+                            <button type="button" class="remove-document-btn">Remove</button>
+                        `;
+                    list.appendChild(div);
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Error uploading document.");
+            }
+        });
+
+        // Remove document
+        document.getElementById("documentsList")?.addEventListener("click", function (e) {
+            if (e.target.classList.contains("remove-document-btn")) {
+                e.target.parentElement.remove();
+            }
+        });
+
+        // Save documents
+        document.getElementById("documentsForm")?.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('@Url.Action("SaveStaffDocuments", "StaffArea")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert(result.message);
+            } else {
+                alert(result.message);
+            }
+        });
+
+        // Save info paragraph
+        document.getElementById("staffInfoForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const paragraph = document.getElementById("staffInfoParagraph").value;
+
+            try {
+                const response = await fetch('/StaffArea/SaveStaffInfo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ paragraph })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert(result.message);
+                } else {
+                    alert(result.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("An error occurred while saving.");
+            }
+        });
+
+
+    </script>
+
+
 }

@@ -16,11 +16,12 @@
             <p class="fade-in delay-2">@Content.Get("Balanceability:Sections:0:TextContent:1:Paragraph")</p>
             <p class="fade-in delay-3">@Content.Get("Balanceability:Sections:0:TextContent:2:Paragraph")</p>
             <p class="fade-in delay-4">@Content.Get("Balanceability:Sections:0:TextContent:3:Paragraph")</p>
-            <p class="fade-in delay-4">Courses can also be purchased individually, and we encourage schools to contact us to discuss their specific requirements.</p>
+            <p class="fade-in delay-4">@Content.Get("Balanceability:Sections:0:TextContent:4:Paragraph")</p>
         </div>
         <div class="image-content fade-in delay-5">
             <div class="image-card">
-                <img src="/Assets/Images/Bikeability logo.png" alt="Bikeability logo">
+                <img src="@Content.Get("Balanceability:Sections:0:ImageContent:0:Src")"
+                     alt="@Content.Get("Balanceability:Sections:0:ImageContent:0:Alt")">
             </div>
         </div>
     </div>

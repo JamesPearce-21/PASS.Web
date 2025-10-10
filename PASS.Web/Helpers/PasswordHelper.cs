@@ -5,12 +5,13 @@ namespace PASS.Web.Helpers
 {
     public static class PasswordHelper
     {
-        public static string ComputeSha256Hash(string rawData)
+        public static string HashPassword(string password)
         {
-            using (SHA256 sha256 = SHA256.Create())
+            using (var sha256 = SHA256.Create())
             {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-                return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+                var bytes = Encoding.UTF8.GetBytes(password);
+                var hash = sha256.ComputeHash(bytes);
+                return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
             }
         }
     }

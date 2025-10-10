@@ -1,5 +1,20 @@
-﻿@page
-@model PASS.Web.Views.Home.PrivacyPolicyModel
-@{
-    <h1>PRIVACY POLICY</h1>
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
 }
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/PrivacyPolicy.css" asp-append-version="true" />
+}
+
+@inject PASS.Web.Services.ContentService Content
+
+<section class="privacypolicy-section">
+    <div class="privacypolicy-grid">
+        <div class="text-content">
+            <h1 class="fade-in">@Content.Get("PrivacyPolicy:Sections:0:TextContent:0:Heading")</h1>
+            <p class="">
+                @Content.Get("PrivacyPolicy:Sections:0:TextContent:1:Paragraph")
+            </p>
+        </div>
+    </div>
+</section>
