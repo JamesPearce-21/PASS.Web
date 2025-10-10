@@ -345,61 +345,81 @@
             "Heading": "Our Events",
             "Paragraph": "",
             "Status": null,
-            "BookingUrl": null
+            "BookingUrl": null,
+            "StartDate": null,
+            "EndDate": null
           },
           {
             "Heading": null,
             "Paragraph": "At PASS, we are proud to deliver a diverse range of high-quality, inclusive festivals and competitions that cater to all ages and abilities.",
             "Status": null,
-            "BookingUrl": null
+            "BookingUrl": null,
+            "StartDate": null,
+            "EndDate": null
           },
           {
             "Heading": null,
             "Paragraph": "Our events are designed to inspire participation, celebrate achievement, and ensure every young person - regardless of skill level - has the opportunity to enjoy and succeed in physical activity.",
             "Status": null,
-            "BookingUrl": null
+            "BookingUrl": null,
+            "StartDate": null,
+            "EndDate": null
           },
           {
             "Heading": null,
             "Paragraph": "Below are some examples of our upcoming events:",
             "Status": null,
-            "BookingUrl": null
+            "BookingUrl": null,
+            "StartDate": null,
+            "EndDate": null
           },
           {
-            "Heading": "Sports Crew Training - 01/01/2026",
+            "Heading": "Sports Crew Training",
             "Paragraph": "A training session for sports crew to develop their leadership and teamwork skills.",
             "Status": "Coming Soon",
-            "BookingUrl": ""
+            "BookingUrl": "",
+            "StartDate": "2026-01-01",
+            "EndDate": "2026-01-03"
           },
           {
-            "Heading": "KS2 Hockey - 01/01/2026",
+            "Heading": "KS2 Hockey",
             "Paragraph": "A hockey competition for Key Stage 2 students focusing on teamwork and skill development.",
             "Status": "Open",
-            "BookingUrl": ""
+            "BookingUrl": "",
+            "StartDate": "2026-02-10",
+            "EndDate": "2026-02-12"
           },
           {
-            "Heading": "KS1 Dance and Movement Festival - 01/01/2026",
+            "Heading": "KS1 Dance and Movement Festival",
             "Paragraph": "A fun and engaging festival for KS1 students to explore dance and movement.",
             "Status": "Closed",
-            "BookingUrl": ""
+            "BookingUrl": "",
+            "StartDate": "2026-03-01",
+            "EndDate": "2026-03-02"
           },
           {
-            "Heading": "This Girl Can Festival - 01/01/2026",
+            "Heading": "This Girl Can Festival",
             "Paragraph": "A celebration of female participation in sports, designed to encourage girls of all ages to get active.",
             "Status": "Open",
-            "BookingUrl": ""
+            "BookingUrl": "",
+            "StartDate": "2026-04-01",
+            "EndDate": "2026-04-05"
           },
           {
-            "Heading": "Cross Country - 01/01/2026",
+            "Heading": "Cross Country",
             "Paragraph": "A cross-country race for all ages to challenge endurance and fitness levels.",
             "Status": "Coming Soon",
-            "BookingUrl": ""
+            "BookingUrl": "",
+            "StartDate": "2026-05-10",
+            "EndDate": "2026-05-10"
           },
           {
-            "Heading": "Cross Country - 01/01/2026",
+            "Heading": "Cross Country",
             "Paragraph": "A cross-country race for all ages to challenge endurance and fitness levels.",
             "Status": "Coming Soon",
-            "BookingUrl": ""
+            "BookingUrl": "",
+            "StartDate": "2026-05-10",
+            "EndDate": "2026-05-10"
           }
         ]
       }

@@ -536,7 +536,7 @@
         <!-- Admin-only Events Editor -->
         <div class="staff-section admin-section">
             <h2>Edit Events</h2>
-        
+
             <form id="eventsForm">
                 <div class="admin-editor">
                     <!-- Intro Section -->
@@ -544,22 +544,22 @@
                         <label>Intro Heading</label>
                         <input type="text" name="IntroHeading" value="@Content.Get("Events:Sections:0:TextContent:0:Heading")" />
                     </div>
-        
+
                     <div class="form-group">
                         <label>Intro Paragraph 1</label>
                         <textarea name="IntroParagraph1">@Content.Get("Events:Sections:0:TextContent:1:Paragraph")</textarea>
                     </div>
-        
+
                     <div class="form-group">
                         <label>Intro Paragraph 2</label>
                         <textarea name="IntroParagraph2">@Content.Get("Events:Sections:0:TextContent:2:Paragraph")</textarea>
                     </div>
-        
+
                     <div class="form-group">
                         <label>Intro Paragraph 3</label>
                         <textarea name="IntroParagraph3">@Content.Get("Events:Sections:0:TextContent:3:Paragraph")</textarea>
                     </div>
-        
+
                     <!-- Dynamic Events -->
                     <div id="eventsContainer">
                         @{
@@ -570,30 +570,42 @@
                                 var paragraph = Content.Get($"Events:Sections:0:TextContent:{c}:Paragraph");
                                 var status = Content.Get($"Events:Sections:0:TextContent:{c}:Status");
                                 var bookingUrl = Content.Get($"Events:Sections:0:TextContent:{c}:BookingUrl");
-        
+                                var startDate = Content.Get($"Events:Sections:0:TextContent:{c}:StartDate");
+                                var endDate = Content.Get($"Events:Sections:0:TextContent:{c}:EndDate");
+
                                 if (string.IsNullOrWhiteSpace(heading) && string.IsNullOrWhiteSpace(paragraph))
                                 {
                                     break; // stop if there are no more events
                                 }
-        
                                 <text>
                                     <div class="form-group event-group">
                                         <label>Event Heading</label>
                                         <input type="text" name="Events[@c].Heading" value="@heading" />
-        
+
                                         <label>Event Description</label>
                                         <textarea name="Events[@c].Paragraph">@paragraph</textarea>
-        
+
                                         <label>Status</label>
-                                                <select name="Events[@c].Status">
-                                                    <option value="Coming Soon" selected="@(status == "Coming Soon")">Coming Soon</option>
-                                                    <option value="Open" selected="@(status == "Open")">Open</option>
-                                                    <option value="Closed" selected="@(status == "Closed")">Closed</option>
-                                                </select>
-        
+                                        <select name="Events[@c].Status">
+                                            <option value="Coming Soon" selected="@(status == "Coming Soon")">Coming Soon</option>
+                                            <option value="Open" selected="@(status == "Open")">Open</option>
+                                            <option value="Closed" selected="@(status == "Closed")">Closed</option>
+                                        </select>
+
                                         <label>Booking URL</label>
                                         <input type="text" name="Events[@c].BookingUrl" value="@bookingUrl" />
-        
+
+                                        <div class="date-fields">
+                                            <div>
+                                                <label>Start Date</label>
+                                                <input type="date" name="Events[@c].StartDate" value="@startDate" />
+                                            </div>
+                                            <div>
+                                                <label>End Date</label>
+                                                <input type="date" name="Events[@c].EndDate" value="@endDate" />
+                                            </div>
+                                        </div>
+
                                         <button type="button" class="btn btn-danger remove-event" style="margin-top:5px;">Remove Event</button>
                                     </div>
                                 </text>
@@ -601,14 +613,15 @@
                             }
                         }
                     </div>
-        
+
                     <button type="button" id="addEvent" class="btn btn-secondary" style="margin-top:10px;">Add Event</button>
                     <button type="submit" class="btn btn-primary" style="margin-top:10px;">Save Changes</button>
                 </div>
             </form>
-        
+
             <div id="successMessageEvents" style="display:none;color:green;margin-top:10px;"></div>
         </div>
+
 
         // MEmbers Area:
         <!-- Admin-only Members Area Editor -->
@@ -1320,7 +1333,9 @@
                     div.querySelector('input[name^="Events"][name$=".Heading"]').name = `Events[${index}].Heading`;
                     div.querySelector('textarea[name^="Events"][name$=".Paragraph"]').name = `Events[${index}].Paragraph`;
                     div.querySelector('select[name^="Events"][name$=".Status"]').name = `Events[${index}].Status`;
-                    div.querySelector('input[name^="Events"][name$=".BookingURL"]').name = `Events[${index}].BookingUrl`;
+                    div.querySelector('input[name^="Events"][name$=".BookingUrl"]').name = `Events[${index}].BookingUrl`;
+                    div.querySelector('input[name^="Events"][name$=".StartDate"]').name = `Events[${index}].StartDate`;
+                    div.querySelector('input[name^="Events"][name$=".EndDate"]').name = `Events[${index}].EndDate`;
                 });
             }
 
@@ -1328,27 +1343,33 @@
                 const div = document.createElement("div");
                 div.className = "form-group event-group";
                 div.innerHTML = `
-                    <label>Event Name & Date</label>
-                    <input type="text" name="Events[].Heading" value="" />
+                        <label>Event Heading</label>
+                        <input type="text" name="Events[].Heading" value="" />
 
-                    <label>Description</label>
-                    <textarea name="Events[].Paragraph"></textarea>
+                        <label>Description</label>
+                        <textarea name="Events[].Paragraph"></textarea>
 
-        <div class="form-group event-group">
-            <label>Status</label>
-            <select name="Events[].Status">
-                <option value="coming-soon">Coming Soon</option>
-                <option value="open">Open</option>
-                <option value="closed">Closed</option>
-            </select>
-        </div>
+                        <label>Status</label>
+                        <select name="Events[].Status">
+                            <option value="Coming Soon">Coming Soon</option>
+                            <option value="Open">Open</option>
+                            <option value="Closed">Closed</option>
+                        </select>
 
-                    <label>Booking URL</label>
-                    <input type="text" name="Events[].BookingURL" value="" />
+                        <label>Booking URL</label>
+                        <input type="text" name="Events[].BookingUrl" value="" />
 
-                    <button type="button" class="btn btn-danger remove-event">Remove</button>
-                    <hr />
-                `;
+                        <div class="date-range-box">
+                            <label>Start Date:</label>
+                            <input type="date" name="Events[].StartDate" class="date-range-input" />
+
+                            <label>End Date:</label>
+                            <input type="date" name="Events[].EndDate" class="date-range-input" />
+                        </div>
+
+                        <button type="button" class="btn btn-danger remove-event" style="margin-top:5px;">Remove</button>
+                        <hr />
+                    `;
                 container.appendChild(div);
                 updateIndices();
             });
@@ -1360,23 +1381,27 @@
                 }
             });
 
-            // Only bind to this specific form
+            // Submit form
             form.addEventListener("submit", async (e) => {
                 e.preventDefault();
 
                 const events = [];
                 container.querySelectorAll(".event-group").forEach(div => {
-                    const headingInput = div.querySelector('input[name$=".Heading"]');
-                    const paragraphInput = div.querySelector('textarea[name$=".Paragraph"]');
-                    const statusSelect = div.querySelector('select[name$=".Status"]');
-                    const bookingInput = div.querySelector('input[name$=".BookingURL"]');
+                    const heading = div.querySelector('input[name$=".Heading"]')?.value.trim() || "";
+                    const paragraph = div.querySelector('textarea[name$=".Paragraph"]')?.value.trim() || "";
+                    const status = div.querySelector('select[name$=".Status"]')?.value || "";
+                    const bookingUrl = div.querySelector('input[name$=".BookingUrl"]')?.value.trim() || "";
+                    const startDate = div.querySelector('input[name$=".StartDate"]')?.value || "";
+                    const endDate = div.querySelector('input[name$=".EndDate"]')?.value || "";
 
-                    const heading = headingInput ? headingInput.value.trim() : "";
-                    const paragraph = paragraphInput ? paragraphInput.value.trim() : "";
-                    const status = statusSelect ? statusSelect.value : "";
-                    const bookingUrl = bookingInput ? bookingInput.value.trim() : "";
-
-                    events.push({ Heading: heading, Paragraph: paragraph, Status: status, BookingUrl: bookingUrl });
+                    events.push({
+                        Heading: heading,
+                        Paragraph: paragraph,
+                        Status: status,
+                        BookingUrl: bookingUrl,
+                        StartDate: startDate,
+                        EndDate: endDate
+                    });
                 });
 
                 try {
@@ -1400,9 +1425,9 @@
                     alert("An error occurred during submission.");
                 }
             });
-
         });
     </script>
+
 
 
 

@@ -94,7 +94,6 @@
 
     .event-btn.booking-form {
         background-color: #6c757d; /* muted grey-blue for distinction */
-        margin-top: 10px;
     }
 
         .event-btn.booking-form:hover {
@@ -128,3 +127,28 @@
         width: 90%;
     }
 }
+
+.date-range-box {
+    margin: 15px auto; /* centers horizontally within parent */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* centers content inside the box */
+    gap: 8px;
+    text-align: center;
+}
+
+    .date-range-box label {
+        font-weight: 600;
+        color: #333;
+    }
+
+.date-range-input {
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    width: 200px;
+    text-align: center;
+}
+

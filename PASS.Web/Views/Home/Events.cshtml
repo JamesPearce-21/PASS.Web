@@ -18,29 +18,41 @@
 
     <div class="events-list">
         @{
-            int i = 4; // Start after the intro paragraphs
+            int i = 4; // Start after intro paragraphs
             while (true)
             {
                 var heading = Content.Get($"Events:Sections:0:TextContent:{i}:Heading");
                 var paragraph = Content.Get($"Events:Sections:0:TextContent:{i}:Paragraph");
                 var status = Content.Get($"Events:Sections:0:TextContent:{i}:Status");
                 var bookingUrl = Content.Get($"Events:Sections:0:TextContent:{i}:BookingUrl");
+                var startDate = Content.Get($"Events:Sections:0:TextContent:{i}:StartDate");
+                var endDate = Content.Get($"Events:Sections:0:TextContent:{i}:EndDate");
 
                 if (string.IsNullOrWhiteSpace(heading) && string.IsNullOrWhiteSpace(paragraph))
                 {
-                    break; // Stop if no more events
+                    break; // No more events
                 }
 
-                // Determine status class for styling
                 var statusClass = status?.ToLower().Replace(" ", "-") ?? "open";
 
-                <div class="event-item">
-                    <h3>@heading</h3>
-                    <p>@paragraph</p>
+            <div class="event-item">
+                <h3>@heading</h3>
+                <p>@paragraph</p>
+
+                @if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
+                {
+                    <div class="date-range-box">
+                        <input type="text" readonly value="@($"{startDate} - {endDate}")" class="date-range-input" />
+                    </div>
+                }
+
+                <div class="event-buttons">
                     <a href="#" class="event-btn @statusClass">@status</a>
                     <a href="@bookingUrl" class="event-btn booking-form">Booking Form</a>
                 </div>
-                i++;
+            </div>
+
+            i++;
             }
         }
     </div>
