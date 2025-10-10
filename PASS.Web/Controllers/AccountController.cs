@@ -23,7 +23,7 @@ namespace PASS.Web.Controllers
             var accounts = _configuration.GetSection("UserAccounts").Get<List<UserAccount>>();
 
             var trimmedPassword = password.Trim();
-            var hashedPassword = PasswordHelper.ComputeSha256Hash(trimmedPassword);
+            var hashedPassword = PasswordHelper.HashPassword(trimmedPassword);
 
             var user = accounts.FirstOrDefault(u =>
                 u.Username.Trim().Equals(username.Trim(), StringComparison.OrdinalIgnoreCase)

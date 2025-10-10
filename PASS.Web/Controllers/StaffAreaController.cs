@@ -49,7 +49,7 @@ namespace PASS.Web.Controllers
         {
             var accounts = _configuration.GetSection("UserAccounts").Get<List<UserAccount>>();
 
-            var hashedPassword = PasswordHelper.ComputeSha256Hash(password.Trim());
+            var hashedPassword = PasswordHelper.HashPassword(password.Trim());
 
             var user = accounts.FirstOrDefault(u =>
                 u.Username.Equals(username, System.StringComparison.OrdinalIgnoreCase)
@@ -1598,11 +1598,67 @@ namespace PASS.Web.Controllers
             }
         }
 
+        // PASSWORDS:
+        [HttpPost]
+        public IActionResult ChangeUserPassword([FromBody] ChangePasswordModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Username) || string.IsNullOrWhiteSpace(model.NewPassword))
+                return Json(new { success = false, message = "Invalid input." });
+
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
+                var jsonText = System.IO.File.ReadAllText(path);
+                var json = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonText)
+                           ?? new Dictionary<string, JsonElement>();
+
+                if (!json.TryGetValue("UserAccounts", out var usersElement))
+                    return Json(new { success = false, message = "UserAccounts section not found." });
+
+                var users = JsonSerializer.Deserialize<List<UserAccount>>(usersElement.GetRawText());
+
+                var user = users.FirstOrDefault(u =>
+                    string.Equals(u.Username, model.Username, StringComparison.OrdinalIgnoreCase));
+
+                if (user == null)
+                    return Json(new { success = false, message = "User not found." });
+
+                // Hash new password
+                user.PasswordHash = PasswordHelper.HashPassword(model.NewPassword);
+
+                // Re-serialize and overwrite appsettings.json
+                json["UserAccounts"] = JsonSerializer.SerializeToElement(users);
+
+                var newJson = JsonSerializer.Serialize(json, new JsonSerializerOptions { WriteIndented = true });
+                System.IO.File.WriteAllText(path, newJson);
+
+                return Json(new { success = true, message = "Password updated successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error updating password: " + ex.Message });
+            }
+        }
 
 
 
 
         // Models:
+
+        //PASSWORDS:
+        public class ChangePasswordModel
+        {
+            public string Username { get; set; }
+            public string NewPassword { get; set; }
+        }
+
+        public class UserAccount
+        {
+            public string Username { get; set; }
+            public string PasswordHash { get; set; }
+            public string Role { get; set; }
+        }
+
 
         // Root wrapper for the Hero section
         // Root wrapper

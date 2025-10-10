@@ -75,6 +75,43 @@
 
     @if (isAdmin)
     {
+
+        <div class="staff-section admin-section">
+            <h2>Change User Password</h2>
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="username" required />
+                </div>
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" id="newPassword" required />
+                </div>
+                <button type="submit" class="btn btn-primary">Update Password</button>
+            </form>
+            <div id="passwordChangeMessage" style="margin-top:10px;"></div>
+        </div>
+
+        <script>
+            document.getElementById("changePasswordForm").addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const username = document.getElementById("username").value.trim();
+                const newPassword = document.getElementById("newPassword").value.trim();
+
+                const response = await fetch('@Url.Action("ChangeUserPassword", "StaffArea")', {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ Username: username, NewPassword: newPassword })
+                });
+
+                const result = await response.json();
+                const msg = document.getElementById("passwordChangeMessage");
+                msg.innerText = result.message;
+                msg.style.color = result.success ? "green" : "red";
+            });
+        </script>
+
         <!-- Admin-only Balanceability Editor -->
         <div class="staff-section admin-section">
             <h2>Edit Balanceability Content</h2>
