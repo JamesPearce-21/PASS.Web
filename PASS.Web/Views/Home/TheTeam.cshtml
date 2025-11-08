@@ -1,102 +1,50 @@
 ﻿@{
-    ViewData["Title"] = "Members Area";
-    bool isLoggedIn = ViewBag.IsLoggedIn ?? false;
+    ViewData["Title"] = "The Team";
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/Members.css" asp-append-version="true" />
-}
-
-@section Scripts {
-    <script src="~/js/members.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/css/Team.css" asp-append-version="true" />
 }
 
 @inject PASS.Web.Services.ContentService Content
 
-<section class="members-section">
+@section Scripts {
+    <script src="~/js/team.js" asp-append-version="true"></script>
+}
 
-    <!-- Login + Contact Form Section -->
-    <div class="login-contact-wrapper" style="@(isLoggedIn ? "display:none;" : "display:flex;")">
-        <div class="login-box">
-            <h2>@Content.Get("MembersArea:Sections:0:TextContent:0:Heading")</h2>
-            <p>@Content.Get("MembersArea:Sections:0:TextContent:0:Paragraph")</p>
-            <form method="post" action="/Account/Login" class="login-form-styling">
-                <input type="text" name="username" placeholder="Username" required />
-                <input type="password" name="password" placeholder="Password" required />
-                <button type="submit" class="login-btn">Login</button>
-
-                @if (TempData["LoginError"] != null)
-                {
-                    <div class="login-error" style="display:block;">@TempData["LoginError"]</div>
-                }
-            </form>
-        </div>
-
-        <div class="contact-box">
-            <h2>@Content.Get("MembersArea:Sections:0:TextContent:1:Heading")</h2>
-            <p>@Content.Get("MembersArea:Sections:0:TextContent:1:Paragraph")</p>
-            <a href="@Content.Get("MembersArea:Sections:0:TextContent:1:LinkUrl")" class="contact-btn">
-                @Content.Get("MembersArea:Sections:0:TextContent:1:LinkText")
-            </a>
-        </div>
+<section class="team-section">
+    <div class="team-intro">
+        <h1>@Content.Get("TheTeam:Sections:0:TextContent:0:Heading")</h1>
+        <p>@Content.Get("TheTeam:Sections:0:TextContent:0:Paragraph")</p>
     </div>
 
-    <!-- Public Sample Lesson Plans -->
-    <div class="example-section public-samples">
-        <h2>@Content.Get("MembersArea:Sections:1:TextContent:0:Heading")</h2>
-        <p>@Content.Get("MembersArea:Sections:1:TextContent:0:Paragraph")</p>
-        <div class="sample-list">
-            @{
-                int s = 0;
-                while (true)
+    <div class="team-card-grid">
+        @{
+            int i = 1; // start after the intro
+            while (true)
+            {
+                var heading = Content.Get($"TheTeam:Sections:0:TextContent:{i}:Heading");
+                var paragraph = Content.Get($"TheTeam:Sections:0:TextContent:{i}:Paragraph");
+
+                if (string.IsNullOrWhiteSpace(paragraph))
                 {
-                    var sampleTitle = Content.Get($"MembersArea:Sections:1:TextContent:0:Documents:{s}:Title");
-                    var sampleUrl = Content.Get($"MembersArea:Sections:1:TextContent:0:Documents:{s}:Url");
-
-                    if (string.IsNullOrWhiteSpace(sampleTitle)) break;
-
-                    <a href="@sampleUrl" class="sample-link">@sampleTitle</a>
-                    ;
-                    s++;
+                    break; // stop loop if no more team members
                 }
+
+                // Split job title from description
+                var parts = paragraph.Split(" — ", 2);
+                var jobTitle = parts.Length > 1 ? parts[0] : "";
+                var description = parts.Length > 1 ? parts[1] : paragraph;
+
+                // Output HTML inside the code block
+                <div class="team-card">
+                    <h3>@heading</h3>
+                    <p class="job-title">@jobTitle</p>
+                    <p>@description</p>
+                </div>
+
+                i++; // move to next member
             }
-        </div>
-    </div>
-
-    <!-- Members Content -->
-    <div class="members-content" style="@(isLoggedIn ? "display:block;" : "display:none;")">
-        <div class="members-intro">
-            <h1>@Content.Get("MembersArea:Sections:2:TextContent:0:Heading")</h1>
-            <p>@Content.Get("MembersArea:Sections:2:TextContent:0:Paragraph")</p>
-        </div>
-
-        <div class="schemes-section">
-            <h2>@Content.Get("MembersArea:Sections:2:Heading")</h2>
-            <div class="year-group-list">
-
-                @for (int yearIndex = 0; yearIndex <= 7; yearIndex++)
-                {
-                    <div class="year-group-card">
-                        <h3>@Content.Get($"MembersArea:Sections:2:Schemes:{yearIndex}:YearGroup")</h3>
-                        <ul class="scheme-links">
-                            @{
-                                int docIndex = 0;
-                                while (true)
-                                {
-                                    var docTitle = Content.Get($"MembersArea:Sections:2:Schemes:{yearIndex}:Documents:{docIndex}:Title");
-                                    var docUrl = Content.Get($"MembersArea:Sections:2:Schemes:{yearIndex}:Documents:{docIndex}:Url");
-
-                                    if (string.IsNullOrWhiteSpace(docTitle)) break;
-
-                                    <li><a href="@docUrl">@docTitle</a></li>
-                                    ;
-                                    docIndex++;
-                                }
-                            }
-                        </ul>
-                    </div>
-                }
-            </div>
-        </div>
+        }
     </div>
 </section>
