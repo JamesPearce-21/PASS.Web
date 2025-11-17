@@ -466,10 +466,6 @@
                         <label>Paragraph 5</label>
                         <textarea name="Paragraph5">@Content.Get("Memberships:Sections:0:TextContent:5:Paragraph")</textarea>
                     </div>
-                    <div class="form-group">
-                        <label>Paragraph 6</label>
-                        <textarea name="Paragraph6">@Content.Get("Memberships:Sections:0:TextContent:6:Paragraph")</textarea>
-                    </div>
 
                     <!-- Packages -->
                     <div class="form-group">
@@ -523,25 +519,150 @@
                         <textarea name="GetInTouchParagraph">@Content.Get("Memberships:Sections:0:TextContent:11:Paragraph")</textarea>
                     </div>
 
-                    <!-- Images -->
-                    @for (int b = 0; b < 5; b++)
-                    {
-                        <div class="form-group" style="display:none;">
-                            <label>Current Image @(b + 1) Src</label>
-                            <input type="text" id="imageSrcMembership@(b + 1)" name="ImageSrc@(b + 1)" value="@Content.Get($"Memberships:Sections:0:ImageContent:{b}:Src")" readonly />
-                        </div>
+                    <!-- Images (explicit 5 fields) -->
+                    <div class="form-group" style="display:none;">
+                        <label>Current Image 1 Src</label>
+                        <input type="text"
+                               id="imageSrcMembership1"
+                               name="BronzeImageSrc"
+                               value="@Content.Get("Memberships:Sections:0:ImageContent:0:Src")"
+                               readonly />
+                        <input type="text"
+                               id="imageAltMembership1"
+                               name="BronzeImageAlt"
+                               value="@Content.Get("Memberships:Sections:0:ImageContent:0:Alt")"
+                               readonly />
+                    </div>
 
-                        <div class="form-group">
-                            <label>Current Image @(b + 1) Preview</label>
-                            <img id="imagePreviewMembership@(b + 1)" src="@Content.Get($"Memberships:Sections:0:ImageContent:{b}:Src")"
-                                 alt="@Content.Get($"Memberships:Sections:0:ImageContent:{b}:Alt")" style="max-width:200px;" />
-                        </div>
+                    <div class="form-group">
+                        <label>Current Image 1 Preview</label>
+                        <img id="imagePreviewMembership1"
+                             src="@Content.Get("Memberships:Sections:0:ImageContent:0:Src")"
+                             alt="@Content.Get("Memberships:Sections:0:ImageContent:0:Alt")"
+                             style="max-width:200px;" />
+                    </div>
 
-                        <div class="form-group">
-                            <label>Upload New Image @(b + 1)</label>
-                            <input type="file" id="imageFileMembership@(b + 1)" accept="image/*" />
-                        </div>
-                    }
+                    <div class="form-group">
+                        <label>Upload New Image 1</label>
+                        <input type="file" id="imageFileMembership1" name="ImageFile1" accept="image/*" />
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group" style="display:none;">
+                        <label>Current Image 2 Src</label>
+                        <input type="text"
+                               id="imageSrcMembership2"
+                               name="SilverImageSrc"
+                               value="@Content.Get("Memberships:Sections:0:ImageContent:1:Src")"
+                               readonly />
+                        <input type="text"
+                               id="imageAltMembership2"
+                               name="SilverImageAlt"
+                               value="@Content.Get("Memberships:Sections:0:ImageContent:1:Alt")"
+                               readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Image 2 Preview</label>
+                        <img id="imagePreviewMembership2"
+                             src="@Content.Get("Memberships:Sections:0:ImageContent:1:Src")"
+                             alt="@Content.Get("Memberships:Sections:0:ImageContent:1:Alt")"
+                             style="max-width:200px;" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload New Image 2</label>
+                        <input type="file" id="imageFileMembership2" name="ImageFile2" accept="image/*" />
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group" style="display:none;">
+                        <label>Current Image 3 Src</label>
+                        <input type="text"
+                               id="imageSrcMembership3"
+                               name="GoldImageSrc"
+                               value="@Content.Get("Memberships:Sections:0:ImageContent:2:Src")"
+                               readonly />
+                        <input type="text"
+                               id="imageAltMembership3"
+                               name="GoldImageAlt"
+                               value="@Content.Get("Memberships:Sections:0:ImageContent:2:Alt")"
+                               readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Image 3 Preview</label>
+                        <img id="imagePreviewMembership3"
+                             src="@Content.Get("Memberships:Sections:0:ImageContent:2:Src")"
+                             alt="@Content.Get("Memberships:Sections:0:ImageContent:2:Alt")"
+                             style="max-width:200px;" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload New Image 3</label>
+                        <input type="file" id="imageFileMembership3" name="ImageFile3" accept="image/*" />
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group" style="display:none;">
+                        <label>Current Image 4 Src</label>
+                        <input type="text"
+                               id="imageSrcMembership4"
+                               name="CPDImageSrc"
+                               value="@Content.Get("Memberships:Sections:0:ImageContent:3:Src")"
+                               readonly />
+                        <input type="text"
+                               id="imageAltMembership4"
+                               name="CPDImageAlt"
+                               value="@Content.Get("Memberships:Sections:0:ImageContent:3:Alt")"
+                               readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Image 4 Preview</label>
+                        <img id="imagePreviewMembership4"
+                             src="@Content.Get("Memberships:Sections:0:ImageContent:3:Src")"
+                             alt="@Content.Get("Memberships:Sections:0:ImageContent:3:Alt")"
+                             style="max-width:200px;" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload New Image 4</label>
+                        <input type="file" id="imageFileMembership4" name="ImageFile4" accept="image/*" />
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group" style="display:none;">
+                        <label>Current Image 5 Src</label>
+                        <input type="text"
+                               id="imageSrcMembership5"
+                               name="CompetitionsImageSrc"
+                               value="@Content.Get("Memberships:Sections:0:ImageContent:4:Src")"
+                               readonly />
+                        <input type="text"
+                               id="imageAltMembership5"
+                               name="CompetitionsImageAlt"
+                               value="@Content.Get("Memberships:Sections:0:ImageContent:4:Alt")"
+                               readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Image 5 Preview</label>
+                        <img id="imagePreviewMembership5"
+                             src="@Content.Get("Memberships:Sections:0:ImageContent:4:Src")"
+                             alt="@Content.Get("Memberships:Sections:0:ImageContent:4:Alt")"
+                             style="max-width:200px;" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload New Image 5</label>
+                        <input type="file" id="imageFileMembership5" name="ImageFile5" accept="image/*" />
+                    </div>
+
 
 
 
@@ -549,6 +670,12 @@
                     <div class="form-group" style="display: none;">
                         <label>Current Packages Document Src</label>
                         <input type="text" id="documentSrcMemberships" name="PackagesDocumentSrc" value="@Content.Get("Memberships:Sections:0:DownloadableContent:0:Src")" readonly />
+                    </div>
+
+                    <div class="form-group" style="display: none;">
+                        <label>Current Packages Document Alt</label>
+                        <input type="text" id="documentAltMemberships" name="PackagesDocumentAlt"
+                               value="@Content.Get("Memberships:Sections:0:DownloadableContent:0:Alt")" readonly />
                     </div>
 
                     <div class="form-group">
